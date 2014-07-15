@@ -48,13 +48,13 @@ function setupMain(){
 	$("#main").layout({resize:false});
 	$(".centered").center();
 
-	$("#game").keydown( function(e) {
+	$("#game,#controls-container").keydown( function(e) {
 	  return handleInput(e,true);
-
 	});
-	$("#game").keyup( function(e) {
+	$("#game,#controls-container").keyup( function(e) {
 	  return handleInput(e,false);
 	});
+	
 	
 	var config = {
 		preserveAspectRatio:"xMinYMin meet",

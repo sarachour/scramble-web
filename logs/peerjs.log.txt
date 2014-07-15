@@ -1,28 +1,4 @@
 Started PeerServer, port: 9000, path: / (v. 0.2.6)
 Socket closed: sara
-OFFER from moo to sara
-CANDIDATE from moo to sara
-CANDIDATE from moo to sara
-CANDIDATE from moo to sara
-CANDIDATE from moo to sara
-CANDIDATE from moo to sara
-CANDIDATE from moo to sara
-ANSWER from sara to moo
-CANDIDATE from sara to moo
-CANDIDATE from sara to moo
-CANDIDATE from sara to moo
-CANDIDATE from sara to moo
 Socket closed: sara
-Socket closed: moo
-OFFER from qbert to sara
-CANDIDATE from qbert to sara
-CANDIDATE from qbert to sara
-CANDIDATE from qbert to sara
-CANDIDATE from qbert to sara
-CANDIDATE from qbert to sara
-CANDIDATE from qbert to sara
-ANSWER from sara to qbert
-CANDIDATE from sara to qbert
-CANDIDATE from sara to qbert
-CANDIDATE from sara to qbert
-CANDIDATE from sara to qbert
+Socket closed: sara
