@@ -1,140 +1,23 @@
 Started PeerServer, port: 9000, path: / (v. 0.2.6)
-Socket closed: sara
-Socket closed: sara
-Socket closed: sara
-Socket closed: ss
-Socket closed: rr
-Socket closed: sara
-Socket closed: sara
-Socket closed: sara
-Socket closed: sara
-Socket closed: sara
-Socket closed: sara
-Socket closed: sara
-Socket closed: sara
-EXPIRE from sara to f
-Socket closed: f
-OFFER from ss to s
-CANDIDATE from ss to s
-CANDIDATE from ss to s
-CANDIDATE from ss to s
-CANDIDATE from ss to s
-CANDIDATE from ss to s
-CANDIDATE from ss to s
-ANSWER from s to ss
-CANDIDATE from s to ss
-CANDIDATE from s to ss
-CANDIDATE from s to ss
-CANDIDATE from s to ss
-Socket closed: s
-Socket closed: ss
-OFFER from ss to farara
-CANDIDATE from ss to farara
-CANDIDATE from ss to farara
-CANDIDATE from ss to farara
-CANDIDATE from ss to farara
-CANDIDATE from ss to farara
-CANDIDATE from ss to farara
-ANSWER from farara to ss
-CANDIDATE from farara to ss
-CANDIDATE from farara to ss
-CANDIDATE from farara to ss
-CANDIDATE from farara to ss
-Socket closed: farara
-Socket closed: sara
-Socket closed: ss
-OFFER from sss to sara
-CANDIDATE from sss to sara
-CANDIDATE from sss to sara
-CANDIDATE from sss to sara
-CANDIDATE from sss to sara
-CANDIDATE from sss to sara
-CANDIDATE from sss to sara
-ANSWER from sara to sss
-CANDIDATE from sara to sss
-CANDIDATE from sara to sss
-CANDIDATE from sara to sss
-CANDIDATE from sara to sss
-Socket closed: sara
-Socket closed: sss
-OFFER from ss to frufru
-CANDIDATE from ss to frufru
-CANDIDATE from ss to frufru
-CANDIDATE from ss to frufru
-CANDIDATE from ss to frufru
-CANDIDATE from ss to frufru
-CANDIDATE from ss to frufru
-ANSWER from frufru to ss
-CANDIDATE from frufru to ss
-CANDIDATE from frufru to ss
-CANDIDATE from frufru to ss
-CANDIDATE from frufru to ss
-Socket closed: ss
-OFFER from qq to frufru
-CANDIDATE from qq to frufru
-CANDIDATE from qq to frufru
-CANDIDATE from qq to frufru
-CANDIDATE from qq to frufru
-CANDIDATE from qq to frufru
-CANDIDATE from qq to frufru
-ANSWER from frufru to qq
-CANDIDATE from frufru to qq
-CANDIDATE from frufru to qq
-CANDIDATE from frufru to qq
-CANDIDATE from frufru to qq
-Socket closed: frufru
-Socket closed: qq
-OFFER from ff to sara
-CANDIDATE from ff to sara
-CANDIDATE from ff to sara
-CANDIDATE from ff to sara
-CANDIDATE from ff to sara
-CANDIDATE from ff to sara
-CANDIDATE from ff to sara
-ANSWER from sara to ff
-CANDIDATE from sara to ff
-CANDIDATE from sara to ff
-CANDIDATE from sara to ff
-CANDIDATE from sara to ff
-Socket closed: sara
+Socket closed: qqq
+Socket closed: farfelle
+Socket closed: dd
+Socket closed: dd
+Socket closed: dd
+Socket closed: ddd
+Socket closed: dd
+Socket closed: dd
 Socket closed: ff
-OFFER from ff to sara
-CANDIDATE from ff to sara
-CANDIDATE from ff to sara
-CANDIDATE from ff to sara
-CANDIDATE from ff to sara
-CANDIDATE from ff to sara
-CANDIDATE from ff to sara
-ANSWER from sara to ff
-CANDIDATE from sara to ff
-CANDIDATE from sara to ff
-CANDIDATE from sara to ff
-CANDIDATE from sara to ff
-Socket closed: ff
-Socket closed: sara
-EXPIRE from sara to ss
 Socket closed: ss
-Socket closed: ss
-OFFER from ss to sara
-CANDIDATE from ss to sara
-CANDIDATE from ss to sara
-CANDIDATE from ss to sara
-CANDIDATE from ss to sara
-CANDIDATE from ss to sara
-CANDIDATE from ss to sara
-ANSWER from sara to ss
-CANDIDATE from sara to ss
-CANDIDATE from sara to ss
-CANDIDATE from sara to ss
-CANDIDATE from sara to ss
-Socket closed: ss
-Socket closed: sara
-OFFER from G to sara
-ANSWER from sara to G
-CANDIDATE from sara to G
-CANDIDATE from sara to G
-CANDIDATE from sara to G
-CANDIDATE from sara to G
-CANDIDATE from G to sara
-CANDIDATE from G to sara
-Socket closed: G
+OFFER from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+ANSWER from sara to dd
+CANDIDATE from sara to dd
+CANDIDATE from sara to dd
+CANDIDATE from sara to dd
+CANDIDATE from sara to dd

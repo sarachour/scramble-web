@@ -25,20 +25,24 @@ GameHost = function(name,canv){
 			else that.net.reject_connection(p.peer);
 		})
 		this.net.bind(["connect.ready"], "send_game", function(p){
+			that.manager.add(p.peer);
 			var pkg = {
 				cmd:"init", 
 				game:that.game.pack('create'),
 				manager: that.manager.pack()
 			};
+			console.log("Sending Game");
 			that.net.send_data(p.peer, pkg);
+
 		})
 		this.net.bind(["connect.request", "connect.ready", "connect.kick", "error"], "print", function(p){
 			console.log("MSG:", p);
 		})
+
 		this.net.bind(["connect.request", "connect.ready", "connect.kick", "connect.close"], "update_peer_list", function(p){
 			that._trigger("update.peer.list", that.net.get_connections());
 		})
-
+		console.log(this.manager);
 		//bind manager callbacks
 		this.manager.bind(["update"], "game.update", function(d){
 			that._trigger("game.update", d);
