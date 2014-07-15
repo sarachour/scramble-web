@@ -42,7 +42,9 @@ GameHost = function(name,canv){
 		this.net.bind(["connect.request", "connect.ready", "connect.kick", "connect.close"], "update_peer_list", function(p){
 			that._trigger("update.peer.list", that.net.get_connections());
 		})
-		console.log(this.manager);
+		this.net.bind_data(['upd'], "pass_manager", function(d){
+			console.log("MGR", d);
+		});	
 		//bind manager callbacks
 		this.manager.bind(["update"], "game.update", function(d){
 			that._trigger("game.update", d);

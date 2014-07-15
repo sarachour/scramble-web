@@ -27,6 +27,9 @@ GamePeer = function(name, canv){
 			that.manager.start();
 			that._trigger(["game.init"],  d);
 		});
+		this.net.bind_data(['upd'], "pass_manager", function(d){
+			console.log("MGR", d);
+		});
 		this.callbacks = {};
 		this.callbacks["update.host.status"] = {};
 		this.callbacks["game.init"] = {};
