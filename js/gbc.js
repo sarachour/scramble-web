@@ -52,7 +52,7 @@ GameboyColorView = function(){
 		
 	}
 
-	this.key = function(key, down){
+	this.input = function(key, down){
 		var idx = this.keymap.indexOf(key);
 		if(idx >= 0){
 			this.gbc.JoyPadEvent(idx, down);
@@ -69,9 +69,6 @@ GameboyColorView = function(){
 	this.state = function(){
 		var that = this;
 		this.start();
-		this.qstate();
-	}
-	this.qstate = function(){ //quick load after slow out
 		this.gbc.stopEmulator &= 1;
 		this.gbc.returnFromState(this.sram.st);
 		this.gbc.returnFromRTCState(this.sram.rtc);
@@ -84,12 +81,6 @@ GameboyColorView = function(){
 		this.sram.st = this.gbc.saveState();
 
 		return {mem: this.sram.mem, rtc: this.sram.rtc, st:this.sram.st};
-	}
-	this.qsave = function(){
-		this.sram.rtc = this.gbc.saveRTCState();
-		this.sram.st = this.gbc.saveState();
-
-		return {rtc: this.sram.rtc, st:this.sram.st};
 	}
 	this.controls = function(){
 		return {

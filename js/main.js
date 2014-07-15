@@ -118,6 +118,24 @@ function setupMain(){
 	setupTimer();
 }
 
+function initHost(rom, sav){
+	globals.peer.create(rom, sav);
+
+	globals.peer.bind(["game.tick"], "update.wedge", function(d){
+		var frac = d.i/d.n;
+		globals.timer.update(frac);
+	})
+	//initialize controls
+	var ctrls= globals.peer.controls();
+	$("#controls").svg('get').load(ctrls.svg, {
+		onLoad:function(){
+			var bbox = $("g")[0].getBBox();
+			var bboxstr = bbox.x + "," + bbox.y + "," + bbox.width + "," + bbox.height;
+			$("#controls").svg('get').configure($('#controls').svg('get').root(), {viewBox:bboxstr});
+		}
+	});
+	$(".centered").center();
+}
 function createHost(name){
 	var canv = $("#screen", $("#main"))[0];
 	var rom = $("#rom", $("#setup"))[0].files;
@@ -133,30 +151,12 @@ function createHost(name){
 	if(sav.length > 0)
 		FileUtils.read([rom[0], sav[0]], function(d){
 			var rom = d[0]; var sav = d[1];
-			globals.peer.create(rom, sav);
-			var ctrls= globals.peer.controls();
-			$("#controls").svg('get').load(ctrls.svg, {
-				onLoad:function(){
-					var bbox = $("g")[0].getBBox();
-					var bboxstr = bbox.x + "," + bbox.y + "," + bbox.width + "," + bbox.height;
-					$("#controls").svg('get').configure($('#controls').svg('get').root(), {viewBox:bboxstr});
-				}
-			});
-			$(".centered").center();
+			initHost(rom, sav);
 		})
 	else
 		FileUtils.read([rom[0]], function(d){
 			var rom = d[0];
-			globals.peer.create(rom, null);
-			var ctrls= globals.peer.controls();
-			$("#controls").svg('get').load(LOCAL(ctrls.svg), {
-				onLoad:function(){
-					var bbox = $("g")[0].getBBox();
-					var bboxstr = bbox.x + "," + bbox.y + "," + bbox.width + "," + bbox.height;
-					$("#controls").svg('get').configure($('#controls').svg('get').root(), {viewBox:bboxstr});
-				}
-			});
-			$(".centered").center();
+			initHost(rom, null);
 		})
 
 	globals.peer.bind(["update.peer.list"], "update.ui", function(plist){

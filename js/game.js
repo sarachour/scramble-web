@@ -18,6 +18,7 @@ define(["js/gbc.js"/*, "js/gba.js"*/], function(){
 				return null;
 		}
 		this.pack = function(cmd, n, keys){
+			this.save();
 			if(cmd == "create")
 				return {
 					cmd: "create",
@@ -65,23 +66,18 @@ define(["js/gbc.js"/*, "js/gba.js"*/], function(){
 				}
 			}
 		}
+		this.input = function(key, isdown){
+			this.emul.input(key, isdown);
+		}
 		this.save = function(){
 			this.sav.data = this.emul.save();
-		}
-		this.qsave = function(){
-			this.qsav = this.emul.qsave();
 		}
 		this.state = function(){
 			this.emul.write(this.sav.data);
 			this.emul.state();
 		}
-		this.qstate = function(){
-			this.emul.write(this.qsav);
-			this.emul.qstate();
-		}
 		this.step = function(n){
 			this.emul.step(n);
-			this.qsave();
 		}
 		this.create = function(rom, save){
 			var name = rom.f.name;
@@ -95,7 +91,6 @@ define(["js/gbc.js"/*, "js/gba.js"*/], function(){
 				this.emul.load(this.game.data);
 				this.emul.start();
 				//initial save
-				this.save();
 
 				if(save != null){
 					this.sav.info = save.f;

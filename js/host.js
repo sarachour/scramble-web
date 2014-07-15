@@ -35,11 +35,22 @@ GameHost = function(name,canv){
 			console.log("MSG:", p);
 		})
 		this.net.bind(["connect.request", "connect.ready", "connect.kick", "connect.close"], "update_peer_list", function(p){
-			that._trigger(["update.peer.list"], that.net.get_connections());
+			that._trigger("update.peer.list", that.net.get_connections());
+		})
+
+		//bind manager callbacks
+		this.manager.bind(["update"], "game.update", function(d){
+			that._trigger("game.update", d);
+		})
+
+		this.manager.bind(["tick"], "game.tick", function(d){
+			that._trigger("game.tick", d);
 		})
 
 		this.callbacks = {};
 		this.callbacks["update.peer.list"] = {};
+		this.callbacks["game.tick"] = {};
+		this.callbacks["game.update"] = {};
 	}
 	this.controls = function(){
 		return this.game.controls();
@@ -62,6 +73,7 @@ GameHost = function(name,canv){
 	}
 	this.input = function(code, down){
 		console.log("entering into manager.");
+		this.manager.input(this.name, code, down);
 	}
 	this.create = function(romdata, savdata){
 		var that = this;
@@ -70,14 +82,11 @@ GameHost = function(name,canv){
 		
 		
 	}
-	this.kick = function(name){
-		if(this.peer.connections.hasOwnProperty(name)){
-			var conns = this.peer.connections[name];
-			for(var i=0; i < conns.length; i++){
-				conns[i].close();
-			}
-		}
-
+	this.start = function(){
+		this.manager.start();
+	}
+	this.stop = function(){
+		this.manager.stop();
 	}
 
 	this.init(name,canv);

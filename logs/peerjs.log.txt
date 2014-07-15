@@ -4,3 +4,54 @@ Socket closed: sara
 Socket closed: sara
 Socket closed: ss
 Socket closed: rr
+Socket closed: sara
+Socket closed: sara
+Socket closed: sara
+Socket closed: sara
+Socket closed: sara
+Socket closed: sara
+Socket closed: sara
+Socket closed: sara
+EXPIRE from sara to f
+Socket closed: f
+OFFER from ss to s
+CANDIDATE from ss to s
+CANDIDATE from ss to s
+CANDIDATE from ss to s
+CANDIDATE from ss to s
+CANDIDATE from ss to s
+CANDIDATE from ss to s
+ANSWER from s to ss
+CANDIDATE from s to ss
+CANDIDATE from s to ss
+CANDIDATE from s to ss
+CANDIDATE from s to ss
+Socket closed: s
+Socket closed: ss
+OFFER from ss to farara
+CANDIDATE from ss to farara
+CANDIDATE from ss to farara
+CANDIDATE from ss to farara
+CANDIDATE from ss to farara
+CANDIDATE from ss to farara
+CANDIDATE from ss to farara
+ANSWER from farara to ss
+CANDIDATE from farara to ss
+CANDIDATE from farara to ss
+CANDIDATE from farara to ss
+CANDIDATE from farara to ss
+Socket closed: farara
+Socket closed: sara
+Socket closed: ss
+OFFER from sss to sara
+CANDIDATE from sss to sara
+CANDIDATE from sss to sara
+CANDIDATE from sss to sara
+CANDIDATE from sss to sara
+CANDIDATE from sss to sara
+CANDIDATE from sss to sara
+ANSWER from sara to sss
+CANDIDATE from sara to sss
+CANDIDATE from sara to sss
+CANDIDATE from sara to sss
+CANDIDATE from sara to sss
