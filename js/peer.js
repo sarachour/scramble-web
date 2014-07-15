@@ -23,6 +23,8 @@ GamePeer = function(name, canv){
 		})
 		this.net.bind_data(['init'], "init_game", function(d){
 			that.game.unpack(d.game);
+			that.manager = ManagerFactory.unpack(d.manager,that.game);
+			that.manager.start();
 			that._trigger(["game.init"],  d);
 		});
 		this.callbacks = {};
@@ -48,8 +50,17 @@ GamePeer = function(name, canv){
 			this.callbacks[evt][n](args);
 		}
 	}
+	this.stop = function(){
+		if(this.hasOwnProperty("manager"))
+			this.manager.stop();
+	}
+	this.start = function(){
+		if(this.hasOwnProperty("manager"))
+			this.manager.start();
+	}
 	this.input = function(code, down){
-		console.log("sending to host..");
+		if(this.hasOwnProperty("manager"))
+			this.manager.input(this.name, code, down);
 	}
 	this.join = function(host){
 		this.net.request_connection(host);

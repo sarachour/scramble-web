@@ -27,7 +27,8 @@ GameHost = function(name,canv){
 		this.net.bind(["connect.ready"], "send_game", function(p){
 			var pkg = {
 				cmd:"init", 
-				game:that.game.pack('create')
+				game:that.game.pack('create'),
+				manager: that.manager.pack()
 			};
 			that.net.send_data(p.peer, pkg);
 		})

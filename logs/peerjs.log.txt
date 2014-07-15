@@ -55,3 +55,75 @@ CANDIDATE from sara to sss
 CANDIDATE from sara to sss
 CANDIDATE from sara to sss
 CANDIDATE from sara to sss
+Socket closed: sara
+Socket closed: sss
+OFFER from ss to frufru
+CANDIDATE from ss to frufru
+CANDIDATE from ss to frufru
+CANDIDATE from ss to frufru
+CANDIDATE from ss to frufru
+CANDIDATE from ss to frufru
+CANDIDATE from ss to frufru
+ANSWER from frufru to ss
+CANDIDATE from frufru to ss
+CANDIDATE from frufru to ss
+CANDIDATE from frufru to ss
+CANDIDATE from frufru to ss
+Socket closed: ss
+OFFER from qq to frufru
+CANDIDATE from qq to frufru
+CANDIDATE from qq to frufru
+CANDIDATE from qq to frufru
+CANDIDATE from qq to frufru
+CANDIDATE from qq to frufru
+CANDIDATE from qq to frufru
+ANSWER from frufru to qq
+CANDIDATE from frufru to qq
+CANDIDATE from frufru to qq
+CANDIDATE from frufru to qq
+CANDIDATE from frufru to qq
+Socket closed: frufru
+Socket closed: qq
+OFFER from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+ANSWER from sara to ff
+CANDIDATE from sara to ff
+CANDIDATE from sara to ff
+CANDIDATE from sara to ff
+CANDIDATE from sara to ff
+Socket closed: sara
+Socket closed: ff
+OFFER from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+ANSWER from sara to ff
+CANDIDATE from sara to ff
+CANDIDATE from sara to ff
+CANDIDATE from sara to ff
+CANDIDATE from sara to ff
+Socket closed: ff
+Socket closed: sara
+EXPIRE from sara to ss
+Socket closed: ss
+Socket closed: ss
+OFFER from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+ANSWER from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss

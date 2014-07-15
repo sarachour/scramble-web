@@ -1,8 +1,15 @@
 
 require(["js/game.js"], function(){
-
+	ManagerFactory = {
+		unpack: function(pkg,game){
+			console.log(pkg, game);
+			if(pkg.type == "SoloManager"){
+				return new SoloManager(pkg.host, pkg.peers, game);
+			}
+		}
+	}
 	//play a solo game
-	SoloManager =function(hostname, peerlist, game) {
+	SoloManager = function(hostname, peerlist, game) {
 		this.init = function(hostname, peerlist, game){
 			this.host = hostname;
 			this.peers = peerlist;
@@ -18,6 +25,13 @@ require(["js/game.js"], function(){
 			this.callbacks = {};
 			this.callbacks["update"] = {};
 			this.callbacks["tick"] = {};
+		}
+		this.pack = function(){
+			return {
+				host: this.host,
+				peers: this.peers,
+				type: "SoloManager"
+			}
 		}
 		this.speed = function(n){
 			this.timer.chunk = n;
