@@ -43,6 +43,44 @@ function handleInput(e, isdown){
 	}
 	return true;
 }
+function setupTimer(n){
+	var generateWedgeString = function(startX, startY, startAngle, endAngle, radius){
+        var x1 = startX + radius * Math.cos(Math.PI * startAngle/180);
+        var y1 = startY + radius * Math.sin(Math.PI * startAngle/180);
+        var x2 = startX + radius * Math.cos(Math.PI * endAngle/180);
+        var y2 = startY + radius * Math.sin(Math.PI * endAngle/180);
+
+        var pathString = "M"+ startX + " " + startY + " L" + x1 + " " + y1 + " A" + radius + " " + radius + " 0 0 1 " + x2 + " " + y2 + " z";
+
+        return pathString;
+
+    }
+
+
+    var wdeg = 360/n;
+    var pad = 1;
+    var rad = 35;
+    var cx = rad;
+    var cy = rad;
+
+    var config = {
+		width:(rad*2)+"px",
+		height:(rad*2)+"px"
+	};
+	$("#timer").svg({settings:config});
+    var sv = $("#timer").svg('get');
+
+    
+    for(var i=0; i < n; i++){
+    	var wstr = generateWedgeString(cx,cy,i*wdeg+pad, (i+1)*wdeg-pad, rad);
+    	var set = {d: wstr}
+    	sv.path(wstr, {fill:"white"});
+    	
+    }
+	
+	
+    sv.circle(cx,cy,rad/2, {fill:"grey", stroke:"grey"});
+}
 function setupMain(){
 	
 	$("#main").layout({resize:false});
@@ -63,6 +101,7 @@ function setupMain(){
 	};
 	$("#controls").svg({settings:config})
 
+	setupTimer(8);
 }
 
 function createHost(name){
@@ -200,6 +239,8 @@ function setupWizard(){
 			createPeer(name);
 		}
 	})
+
+
 
 }
 

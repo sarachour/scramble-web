@@ -2,3 +2,5 @@ Started PeerServer, port: 9000, path: / (v. 0.2.6)
 Socket closed: sara
 Socket closed: sara
 Socket closed: sara
+Socket closed: ss
+Socket closed: rr
