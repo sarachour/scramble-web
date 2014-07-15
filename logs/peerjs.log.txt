@@ -127,3 +127,14 @@ CANDIDATE from sara to ss
 CANDIDATE from sara to ss
 CANDIDATE from sara to ss
 CANDIDATE from sara to ss
+Socket closed: ss
+Socket closed: sara
+OFFER from G to sara
+ANSWER from sara to G
+CANDIDATE from sara to G
+CANDIDATE from sara to G
+CANDIDATE from sara to G
+CANDIDATE from sara to G
+CANDIDATE from G to sara
+CANDIDATE from G to sara
+Socket closed: G
