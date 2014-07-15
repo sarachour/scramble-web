@@ -1,0 +1,85 @@
+<head>
+
+<link rel="stylesheet" href="css/style.css" />
+<!--
+<script src="lib/jquery/jquery-1.10.2.js"></script>
+<script src="lib/jquery/jquery-ui-1.10.4.min.js"></script>
+
+<script src="lib/jquery/jquery.sizes.js"></script>
+<script src="lib/jlayout/jlayout.border.js"></script>
+<script src="lib/jlayout/jquery.jlayout.js"></script>
+-->
+<script data-main="js/main.js" src="lib/requirejs/require.js"></script>
+</head>
+<body>
+<div id="setup" class="overlay black white-text thick-border text">
+	<div id="general" class="left-half">
+		<div style='height:25%; width:100%;'>
+			<h1>Setup</h1>
+		</div>
+		<div><input id="peer-name" type='text' placeholder='nickname'></input></div>
+		<div class="med-text"><input type="radio" name="game-type" value="join" checked>Join Game</div>
+		<div class="med-text"><input type="radio" name="game-type" value="make">Host Game</div>
+	</div>
+	<div id="details" class="right-half white black-text">
+		<div id="client" >
+			<div id="name" style='height:25%; width:100%;'>
+				<h1>Client</h1>
+			</div>
+			<div><input id="host-name" type='text' placeholder='host nickname'></input></div>
+		</div>
+
+		<div id="host">
+			<div id="name" style='height:25%; width:100%;'>
+				<h1>Host</h1>
+			</div>
+			<div>
+				<h3>Upload Game</h3>
+				<input type="file" id="rom" name="file" />
+				<output id="rom-out"></output>
+			</div>
+			<div>
+				<h3>Upload Save</h3>
+				<input type="file" id="save" name="savest" />
+				<output id="save-out"></output>
+			</div>
+		</div>
+		<div class="bottom-right black-text">
+			<button id="ok">Done</button>
+		</div>
+	</div>
+</div>
+<div id="main" data-layout='{"type": "border", "hgap": 3, "vgap": 3}' class='main'>
+	<div id="title" class="north text">
+		<h1>Scramble Collaborative Retro Emulator</h1>
+	</div>
+	<div id="menu" class="west blue rounded">
+		<div id="host-menu">
+		host menu
+		</div>
+		<div id="peer-menu">
+
+		</div>
+	</div>
+	<div id="players" class="east green rounded">
+		<table id="peer-list" class="wide">
+		<tr><td>Name</td></tr>
+		</table>
+		<table id="host-list" class="wide">
+		<tr><td>Name</td><td>Kick</td></tr>
+		</table>
+	</div>
+	<div id="game" class="center black rounded thick-border" tabindex="0">
+		<canvas id="screen" width="480" height="320" class="white viewport centered thick-border rounded"></canvas>
+	</div>
+	<div id="timer" class="south grey rounded">
+		<div style="position: relative; width: 50%; left: 25%; height: 90%; top:5%;">
+			<div id="controls" ></div>
+		</div>
+		<div class="pie bottom-right" id="timer" >
+			
+		</div>
+	</div>
+</div>
+<div id="terminal_output" class="hidden"></div>
+</body>
