@@ -12,7 +12,19 @@ require(
 	"js/host.js"], function(){
 
 globals = {
-	peer: null
+	peer: null,
+	 timer : {
+		n: 10,
+		update: function(pct){
+			var limit = this.n*pct;
+			for(var i=0; i < limit; i++){
+				$(("#timer"+i)).show();
+			}
+			for(var i=limit; i < this.n; i++){
+				$(("#timer"+i)).hide();
+			}
+		}
+	}
 }
 
 function handleInput(e, isdown){
@@ -43,7 +55,7 @@ function handleInput(e, isdown){
 	}
 	return true;
 }
-function setupTimer(n){
+function setupTimer(){
 	var generateWedgeString = function(startX, startY, startAngle, endAngle, radius){
         var x1 = startX + radius * Math.cos(Math.PI * startAngle/180);
         var y1 = startY + radius * Math.sin(Math.PI * startAngle/180);
@@ -57,6 +69,7 @@ function setupTimer(n){
     }
 
 
+    var n = globals.timer.n;
     var wdeg = 360/n;
     var pad = 1;
     var rad = 35;
@@ -74,13 +87,14 @@ function setupTimer(n){
     for(var i=0; i < n; i++){
     	var wstr = generateWedgeString(cx,cy,i*wdeg+pad, (i+1)*wdeg-pad, rad);
     	var set = {d: wstr}
-    	sv.path(wstr, {fill:"white"});
+    	sv.path(wstr, {fill:"white", id:("timer"+i)});
     	
     }
 	
 	
     sv.circle(cx,cy,rad/2, {fill:"grey", stroke:"grey"});
 }
+
 function setupMain(){
 	
 	$("#main").layout({resize:false});
@@ -101,7 +115,7 @@ function setupMain(){
 	};
 	$("#controls").svg({settings:config})
 
-	setupTimer(8);
+	setupTimer();
 }
 
 function createHost(name){
