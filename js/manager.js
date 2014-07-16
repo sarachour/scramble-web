@@ -1,4 +1,7 @@
+/*
+TODO: key, steps, queue. play is a continuous loop that waits for more work.
 
+*/
 require(["js/game.js"], function(){
 	ManagerFactory = {
 		unpack: function(pkg,game,net){
@@ -106,6 +109,7 @@ require(["js/game.js"], function(){
 			this.net = net;
 			this.consensus = {};
 			this.gathered = 0;
+			this.index = 0;
 			this.__proto__.init(hostname, peerlist, game);
 		}
 		this.pack = function(){
@@ -120,6 +124,10 @@ require(["js/game.js"], function(){
 				this._consensus(d);
 			else if(d.scmd == "k")
 				this._key(d);
+		}
+		this._sync = function(k){
+
+
 		}
 		this._consensus = function(k){
 			if(this.is_host){
@@ -149,6 +157,7 @@ require(["js/game.js"], function(){
 				this.key = k.key;
 				this.play();
 			}
+			console.log("idx", this.index);
 			
 		}
 		this._key = function(k){
@@ -197,6 +206,8 @@ require(["js/game.js"], function(){
 				console.log("consensus", this.key);
 				
 			}
+			//increase the number of ticks.
+			this.index+=1;
 			return {keys: [this.key]};
 		}
 		this.init(hostname, peerlist, game, net);

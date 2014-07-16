@@ -279,3 +279,31 @@ CANDIDATE from sara to G
 CANDIDATE from sara to G
 Socket closed: G
 Socket closed: sara
+OFFER from bob to sara
+CANDIDATE from bob to sara
+CANDIDATE from bob to sara
+CANDIDATE from bob to sara
+CANDIDATE from bob to sara
+CANDIDATE from bob to sara
+CANDIDATE from bob to sara
+ANSWER from sara to bob
+CANDIDATE from sara to bob
+CANDIDATE from sara to bob
+CANDIDATE from sara to bob
+CANDIDATE from sara to bob
+Socket closed: bob
+Socket closed: sara
+OFFER from st to qr
+CANDIDATE from st to qr
+CANDIDATE from st to qr
+CANDIDATE from st to qr
+CANDIDATE from st to qr
+CANDIDATE from st to qr
+CANDIDATE from st to qr
+ANSWER from qr to st
+CANDIDATE from qr to st
+CANDIDATE from qr to st
+CANDIDATE from qr to st
+CANDIDATE from qr to st
+Socket closed: st
+Socket closed: qr
