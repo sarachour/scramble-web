@@ -107,15 +107,18 @@ NetNode = function(name){
 			if(d.cmd == "confirm"){
 				if(d.status == true){
 					that._trigger("connect.accept", {peer:other,status:"accept"});
-					that.conns[other].c.on('data', function(d){
-						that._trigger("data.recv", {peer:other, data:d});
-					})
+					//remove self from server
 				}
 				else{
 					that._trigger("connect.reject", {peer:other, status:"reject"});
 				}
+				//disconnect from server
+				that.peer.disconnect();
 				that.conns[other].c.send({cmd:"confirm.ack"})
 				that.conns[other].c.on('data', function(){})
+			}
+			else{
+				that._trigger("data.recv", {peer:other, data:d});
 			}
 		})
 	}
@@ -129,19 +132,22 @@ NetNode = function(name){
 		that.conns[other].c.send({cmd:"confirm",status:true})
 		that.conns[other].c.on('data', function(d){
 			var cmd = d.cmd;
-			if(cmd == 'confirm.ack'){
-				//send host info
-				that.conns[other].status = "ready";
-				that._trigger("connect.ready", {peer:other});
-				that.conns[other].c.on('data', function(d){
-					that._trigger("data.recv", {peer:other, data:d, status: "ready"});
-				})
+			console.log(d);
+			if(that.conns[other].status != "ready"){
+				if(cmd == 'confirm.ack'){
+					//send host info
+					that.conns[other].status = "ready";
+					that._trigger("connect.ready", {peer:other});
 
+				}
+				else{
+					//start game.
+					that.conns[other].status = "retry";
+					that.conns[other].c.send({cmd:"confirm",status:true})
+				}
 			}
 			else{
-				//start game.
-				that.conns[other].status = "retry";
-				that.conns[other].c.send({cmd:"confirm",status:true})
+				that._trigger("data.recv", {peer:other, data:d, status: "ready"});
 			}
 		})
 	}
@@ -166,7 +172,8 @@ NetNode = function(name){
 		})
 	}
 	this.send_data = function(other, data){
-		this.conns[other].c.send(data)
+		if(this.conns.hasOwnProperty(other))
+			this.conns[other].c.send(data)
 	}
 	this.recv_data = function(cbk){
 		this.bind(["data.recv"], "RECV", cbk);

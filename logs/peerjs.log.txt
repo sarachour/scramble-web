@@ -14,3 +14,128 @@ CANDIDATE from sara to ss
 CANDIDATE from sara to ss
 CANDIDATE from sara to ss
 Socket closed: sara
+Socket closed: ss
+OFFER from fff to sara
+CANDIDATE from fff to sara
+CANDIDATE from fff to sara
+CANDIDATE from fff to sara
+CANDIDATE from fff to sara
+CANDIDATE from fff to sara
+CANDIDATE from fff to sara
+ANSWER from sara to fff
+CANDIDATE from sara to fff
+CANDIDATE from sara to fff
+CANDIDATE from sara to fff
+CANDIDATE from sara to fff
+Socket closed: fff
+OFFER from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+ANSWER from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+Socket closed: sara
+Socket closed: ss
+OFFER from farfalle to sara
+CANDIDATE from farfalle to sara
+CANDIDATE from farfalle to sara
+CANDIDATE from farfalle to sara
+CANDIDATE from farfalle to sara
+CANDIDATE from farfalle to sara
+CANDIDATE from farfalle to sara
+ANSWER from sara to farfalle
+CANDIDATE from sara to farfalle
+CANDIDATE from sara to farfalle
+CANDIDATE from sara to farfalle
+CANDIDATE from sara to farfalle
+Socket closed: farfalle
+Socket closed: sara
+OFFER from farfalle to sara
+CANDIDATE from farfalle to sara
+CANDIDATE from farfalle to sara
+CANDIDATE from farfalle to sara
+CANDIDATE from farfalle to sara
+CANDIDATE from farfalle to sara
+CANDIDATE from farfalle to sara
+ANSWER from sara to farfalle
+CANDIDATE from sara to farfalle
+CANDIDATE from sara to farfalle
+CANDIDATE from sara to farfalle
+CANDIDATE from sara to farfalle
+Socket closed: farfalle
+Socket closed: sara
+OFFER from fa to sara
+CANDIDATE from fa to sara
+CANDIDATE from fa to sara
+CANDIDATE from fa to sara
+CANDIDATE from fa to sara
+CANDIDATE from fa to sara
+CANDIDATE from fa to sara
+ANSWER from sara to fa
+CANDIDATE from sara to fa
+CANDIDATE from sara to fa
+CANDIDATE from sara to fa
+CANDIDATE from sara to fa
+Socket closed: fa
+Socket closed: sara
+OFFER from d to fara
+CANDIDATE from d to fara
+CANDIDATE from d to fara
+CANDIDATE from d to fara
+CANDIDATE from d to fara
+CANDIDATE from d to fara
+CANDIDATE from d to fara
+ANSWER from fara to d
+CANDIDATE from fara to d
+CANDIDATE from fara to d
+CANDIDATE from fara to d
+CANDIDATE from fara to d
+Socket closed: d
+Socket closed: fara
+OFFER from bob to sara
+CANDIDATE from bob to sara
+CANDIDATE from bob to sara
+CANDIDATE from bob to sara
+CANDIDATE from bob to sara
+CANDIDATE from bob to sara
+CANDIDATE from bob to sara
+ANSWER from sara to bob
+CANDIDATE from sara to bob
+CANDIDATE from sara to bob
+CANDIDATE from sara to bob
+CANDIDATE from sara to bob
+Socket closed: bob
+Socket closed: sara
+OFFER from near to far
+CANDIDATE from near to far
+CANDIDATE from near to far
+CANDIDATE from near to far
+CANDIDATE from near to far
+CANDIDATE from near to far
+CANDIDATE from near to far
+ANSWER from far to near
+CANDIDATE from far to near
+CANDIDATE from far to near
+CANDIDATE from far to near
+CANDIDATE from far to near
+Socket closed: near
+Socket closed: far
+OFFER from near to far
+CANDIDATE from near to far
+CANDIDATE from near to far
+CANDIDATE from near to far
+CANDIDATE from near to far
+CANDIDATE from near to far
+CANDIDATE from near to far
+ANSWER from far to near
+CANDIDATE from far to near
+CANDIDATE from far to near
+CANDIDATE from far to near
+CANDIDATE from far to near
+Socket closed: near

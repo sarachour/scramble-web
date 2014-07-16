@@ -141,9 +141,11 @@ require(["js/game.js"], function(){
 				}
 				this.consensus = {};
 				this.key = maxc;
+				this.play();
 			}
 			else {
 				this.key = k.key;
+				this.play();
 			}
 			
 		}
@@ -158,11 +160,11 @@ require(["js/game.js"], function(){
 			}
 			else{
 				var code = k.code;
-				this.consensus[peer] = code;
+				this.consensus[k.peer] = code;
 			}
 		}
 		this.start = function(){ //start new round
-			this.play();
+			if(this.is_host) this.play();
 		}
 		this.stop = function(){
 
@@ -190,7 +192,7 @@ require(["js/game.js"], function(){
 			if(this.is_host){
 				this._consensus();
 				console.log("consensus", this.key);
-				this.play();
+				
 			}
 			
 		}
