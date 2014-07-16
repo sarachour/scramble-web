@@ -129,8 +129,14 @@ function initHost(rom, sav){
 			var bbox = $("g")[0].getBBox();
 			var bboxstr = bbox.x + "," + bbox.y + "," + bbox.width + "," + bbox.height;
 			$("#controls").svg('get').configure($('#controls').svg('get').root(), {viewBox:bboxstr});
+			for(k in ctrls.keys){
+				var ky = ctrls.keys[k];
+				$("#"+ky.image.on).hide();
+				$("#"+ky.image.out).hide();
+			}
 		}
 	});
+
 	$(".centered").center();
 }
 function createHost(name){
@@ -203,8 +209,13 @@ function createPeer(name){
 				var bbox = $("g")[0].getBBox();
 				var bboxstr = bbox.x + "," + bbox.y + "," + bbox.width + "," + bbox.height;
 				$("#controls").svg('get').configure($('#controls').svg('get').root(), {viewBox:bboxstr});
+				for(k in ctrls.keys){
+					var ky = ctrls.keys[k];
+					$("#"+ky.image.on +",#"+ky.image.out).hide();
+				}
 			}
 		});
+		
 		$(".centered").center();
 	})
 
@@ -216,6 +227,23 @@ function initBoth(){
 	globals.peer.bind(["game.tick"], "update.wedge", function(d){
 		var frac = d.i/d.n;
 		globals.timer.update(frac);
+	})
+	globals.peer.bind(["game.update"], "update.past.keys", function(d){
+		var ctrls= globals.peer.controls();
+		if(ctrls != null){
+			if(d.hasOwnProperty("keys")){
+				var k = d.keys;
+				for(var c in ctrls.keys){
+					$("#"+ctrls.keys[c].image.out).hide();
+				}
+				for(var i=0; i < k.length; i++){
+					var b = ctrls.map(k[i]);
+					if(b != null){
+						$("#"+b.image.out).show();
+					}
+				}
+			}
+		}
 	})
 }
 function setupWizard(){

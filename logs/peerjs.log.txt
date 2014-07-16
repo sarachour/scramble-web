@@ -214,3 +214,34 @@ Socket closed: sara
 Socket closed: sara
 Socket closed: fffs
 Socket closed: ff
+Socket closed: ss
+Socket closed: fare
+Socket closed: sara
+Socket closed: sara
+Socket closed: sara
+Socket closed: sara
+Socket closed: sara
+Socket closed: dd
+Socket closed: sara
+Socket closed: ss
+Socket closed: sss
+Socket closed: ss
+Socket closed: sara
+Socket closed: sara
+Socket closed: dd
+Socket closed: sara
+Socket closed: sara
+Socket closed: sara
+OFFER from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+ANSWER from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+Socket closed: ss

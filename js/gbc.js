@@ -98,39 +98,39 @@ GameboyColorView = function(){
 				right: {
 					map:"right",
 					description: "move right.",
-					image: {on:"right_on", off:"right_off"}
+					image: {on:"right_on", off:"right_off", out:"right_out"}
 				},
 				left: {
 					map:"left",
 					description: "move left.",
-					image: {on:"left_on", off:"left_off"}
+					image: {on:"left_on", off:"left_off", out:"left_out"}
 				},
 				up: {
 					map:"up",
 					description: "move up.",
-					image: {on:"up_on", off:"up_off"}
+					image: {on:"up_on", off:"up_off", out:"up_out"}
 				},
 				down: {
 					map:"down",
 					description: "move down.",
-					image: {on:"down_on", off:"down_off"}
+					image: {on:"down_on", off:"down_off", out:"down_out"}
 				},
 				a: {
 					map: "s",
 					description: "a button.",
-					image: {on:"a_on", off:"a_off"}
+					image: {on:"a_on", off:"a_off", out:"a_out"}
 				},
 				b: {
 					map: "a",
-					image: {on:"b_on", off:"b_off"}
+					image: {on:"b_on", off:"b_off", out:"b_out"}
 				},
 				select: {
 					map: "w",
-					image: {on:"sel_on", off:"sel_off"}
+					image: {on:"sel_on", off:"sel_off", out:"sel_out"}
 				},
 				start: {
 					map: "q",
-					image: {on:"start_on", off:"start_off"}
+					image: {on:"start_on", off:"start_off", out:"start_out"}
 				}
 			}
 

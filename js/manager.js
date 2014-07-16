@@ -68,7 +68,7 @@ require(["js/game.js"], function(){
 			
 		}
 		this.tick = function(){
-
+			return {i:that.timer.n, n:that.timer.step};
 		}
 		this.start = function(){
 			this.play();
@@ -77,19 +77,21 @@ require(["js/game.js"], function(){
 			var that = this;
 			this.timer._timer = setInterval(function() {
 			      // Do something after 5 seconds
-			      that.tick();
+			      var tdat = that.tick();
+			      tdat.i = that.timer.n;
+			      tdat.n = that.timer.step;
 			      if(that.timer.n + 1 == that.timer.step) {
-			      	that.update();
-			      	that._trigger("update", {});
+			      	var dat = that.update();
+			      	that._trigger("update", dat);
 			      }
-			      that._trigger("tick", {i:that.timer.n, n:that.timer.step});
+			      that._trigger("tick", tdat);
 			      //update step index
 			      that.timer.n = (that.timer.n+1)%that.timer.step;
 			}, this.timer.unit/this.timer.step);
 		}
 		//push changes to game
 		this.update = function(){
-			
+			return {};
 		}
 		this.stop = function(){
 			clearInterval(this.timer._timer);
@@ -184,6 +186,7 @@ require(["js/game.js"], function(){
 				}
 			}
 			this.game.step(this.timer.chunk);
+			return {};
 		}
 		//push changes to game
 		this.update = function(){
@@ -194,7 +197,7 @@ require(["js/game.js"], function(){
 				console.log("consensus", this.key);
 				
 			}
-			
+			return {keys: [this.key]};
 		}
 		this.init(hostname, peerlist, game, net);
 	}
