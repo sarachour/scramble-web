@@ -1,4 +1,7 @@
-1. Timer 
+1. Timer: Fix timer for client - start counting from consensus. 
 2. Manager
+	- Peerlist from Net.
+	- Shadow chosen keys.
+	- Display context on player bar.
 3. Feedback for join, waiting on join
 4. Choose player icon, control pad color

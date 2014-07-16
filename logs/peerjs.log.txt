@@ -139,3 +139,75 @@ CANDIDATE from far to near
 CANDIDATE from far to near
 CANDIDATE from far to near
 Socket closed: near
+Socket closed: far
+OFFER from marmar to gargar
+CANDIDATE from marmar to gargar
+CANDIDATE from marmar to gargar
+CANDIDATE from marmar to gargar
+CANDIDATE from marmar to gargar
+CANDIDATE from marmar to gargar
+CANDIDATE from marmar to gargar
+ANSWER from gargar to marmar
+CANDIDATE from gargar to marmar
+CANDIDATE from gargar to marmar
+CANDIDATE from gargar to marmar
+CANDIDATE from gargar to marmar
+Socket closed: marmar
+EXPIRE from farfar to barbar
+Socket closed: barbar
+EXPIRE from farfar to ff
+Socket closed: gargar
+Socket closed: ff
+OFFER from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+ANSWER from sara to ff
+CANDIDATE from sara to ff
+CANDIDATE from sara to ff
+CANDIDATE from sara to ff
+CANDIDATE from sara to ff
+Socket closed: ff
+OFFER from bara to sara
+CANDIDATE from bara to sara
+CANDIDATE from bara to sara
+CANDIDATE from bara to sara
+CANDIDATE from bara to sara
+CANDIDATE from bara to sara
+CANDIDATE from bara to sara
+ANSWER from sara to bara
+CANDIDATE from sara to bara
+CANDIDATE from sara to bara
+CANDIDATE from sara to bara
+CANDIDATE from sara to bara
+Socket closed: bara
+OFFER from qq to sara
+CANDIDATE from qq to sara
+CANDIDATE from qq to sara
+CANDIDATE from qq to sara
+CANDIDATE from qq to sara
+CANDIDATE from qq to sara
+CANDIDATE from qq to sara
+ANSWER from sara to qq
+CANDIDATE from sara to qq
+CANDIDATE from sara to qq
+CANDIDATE from sara to qq
+CANDIDATE from sara to qq
+Socket closed: qq
+OFFER from qqd to sara
+CANDIDATE from qqd to sara
+CANDIDATE from qqd to sara
+CANDIDATE from qqd to sara
+CANDIDATE from qqd to sara
+CANDIDATE from qqd to sara
+CANDIDATE from qqd to sara
+ANSWER from sara to qqd
+CANDIDATE from sara to qqd
+CANDIDATE from sara to qqd
+CANDIDATE from sara to qqd
+CANDIDATE from sara to qqd
+Socket closed: qqd
+Socket closed: sara

@@ -121,10 +121,7 @@ function setupMain(){
 function initHost(rom, sav){
 	globals.peer.create(rom, sav);
 
-	globals.peer.bind(["game.tick"], "update.wedge", function(d){
-		var frac = d.i/d.n;
-		globals.timer.update(frac);
-	})
+	
 	//initialize controls
 	var ctrls= globals.peer.controls();
 	$("#controls").svg('get').load(ctrls.svg, {
@@ -215,6 +212,12 @@ function createPeer(name){
 	$(".centered").center();
 }
 
+function initBoth(){
+	globals.peer.bind(["game.tick"], "update.wedge", function(d){
+		var frac = d.i/d.n;
+		globals.timer.update(frac);
+	})
+}
 function setupWizard(){
 	function error(s){
 		alert(s)
@@ -251,6 +254,7 @@ function setupWizard(){
 		else if(type == "join"){
 			createPeer(name);
 		}
+		initBoth();
 	})
 
 
