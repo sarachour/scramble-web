@@ -1,10 +1,13 @@
 
 require(["js/game.js"], function(){
 	ManagerFactory = {
-		unpack: function(pkg,game){
+		unpack: function(pkg,game,net){
 			console.log(pkg, game);
 			if(pkg.type == "SoloManager"){
 				return new SoloManager(pkg.host, pkg.peers, game);
+			}
+			else if(pkg.type == "DemocracyManager"){
+				return new DemocracyManager(pkg.host, pkg.peers, game, net)
 			}
 		}
 	}
@@ -25,6 +28,10 @@ require(["js/game.js"], function(){
 			this.callbacks["update"] = {};
 			this.callbacks["tick"] = {};
 		}
+		this.set_name = function(name){
+			this.name = name;
+			this.is_host = this.name == this.host;
+		}
 		this.pack = function(type){
 			return {
 				host: this.host,
@@ -43,6 +50,9 @@ require(["js/game.js"], function(){
 				this.callbacks[evts[i]][name] = cbk;
 			}
 		}
+		this.recv = function(){
+
+		}
 		this.unbind = function(evts, name){
 			for(var i=0; i < evts.length; i++){
 				delete this.callbacks[evts[i]][name];
@@ -54,18 +64,21 @@ require(["js/game.js"], function(){
 				this.callbacks[evt][n](args);
 			}
 		}
-		this.input = function(peername, code, isdown){
+		this.input = function(code, isdown){
 			
 		}
 		this.tick = function(){
 
 		}
-		this.start = function(){ //start new round
+		this.start = function(){
+			this.play();
+		}
+		this.play = function(){ //start new round
 			var that = this;
 			this.timer._timer = setInterval(function() {
 			      // Do something after 5 seconds
 			      that.tick();
-			      if(that.timer.n == that.timer.step) {
+			      if(that.timer.n + 1 == that.timer.step) {
 			      	that.update();
 			      	that._trigger("update", {});
 			      }
@@ -75,7 +88,7 @@ require(["js/game.js"], function(){
 			}, this.timer.unit/this.timer.step);
 		}
 		//push changes to game
-		this.update = function(game){
+		this.update = function(){
 			
 		}
 		this.stop = function(){
@@ -83,9 +96,107 @@ require(["js/game.js"], function(){
 		}
 		this.init(hostname, peerlist, game);
 	}
-	DemocracyManager = function(host, plist, game){
+	DemocracyManager = function(hostname, peerlist, game, net){
 
+
+		this.init = function(hostname, peerlist, game, net){
+			console.log(this);
+			this.net = net;
+			this.consensus = {};
+			this.gathered = 0;
+			this.__proto__.init(hostname, peerlist, game);
+		}
+		this.pack = function(){
+			return this.__proto__.pack("DemocracyManager");
+		}
+		this.tick = function(){
+			
+		}
+		this.recv = function(d){
+			console.log("recv:",d);
+			if(d.scmd == "c")
+				this._consensus(d);
+			else if(d.scmd == "k")
+				this._key(d);
+		}
+		this._consensus = function(k){
+			if(this.is_host){
+				var codes = {};
+				var maxc = null;
+				for(var p in this.consensus){
+					var k = this.consensus[p];
+					if(!codes.hasOwnProperty(k)){
+						codes[k] = 0;
+					}
+					codes[k]++;
+				}
+				for(var c in codes){
+					if(maxc == null || codes[maxc] < codes[c]){
+						maxc = c;
+					}
+				}
+				var d = {cmd:"upd", scmd:"c", key:maxc};
+				for(var i=0; i < this.peers.length; i++){
+					this.net.send_data(this.peers[i], d)
+				}
+				this.consensus = {};
+				this.key = maxc;
+			}
+			else {
+				this.key = k.key;
+			}
+			
+		}
+		this._key = function(k){
+			if(!this.is_host){
+				this.net.send_data(this.host, {
+					cmd: "upd",
+					scmd: "k",
+					code: k.code,
+					peer: this.name
+				})
+			}
+			else{
+				var code = k.code;
+				this.consensus[peer] = code;
+			}
+		}
+		this.start = function(){ //start new round
+			this.play();
+		}
+		this.stop = function(){
+
+		}
+		this.input = function(code, isdown){
+			if(!isdown) return;
+			this._key({code:code});
+			
+		}
+		this.tick = function(){
+			if(this.key != null){
+				if(this.timer.n == 0){
+					this.game.input(this.key, true);
+				}
+				else if(this.timer.n == this.timer.step/2){
+					this.game.input(this.key, false);
+				}
+			}
+			this.game.step(this.timer.chunk);
+		}
+		//push changes to game
+		this.update = function(){
+			
+			clearInterval(this.timer._timer);
+			if(this.is_host){
+				this._consensus();
+				console.log("consensus", this.key);
+				this.play();
+			}
+			
+		}
+		this.init(hostname, peerlist, game, net);
 	}
+	DemocracyManager.prototype = new Manager();
 	//play a solo game
 	SoloManager = function(hostname, peerlist, game) {
 		this.init = function(hostname, peerlist, game){
@@ -98,7 +209,8 @@ require(["js/game.js"], function(){
 		this.tick = function(){
 			this.game.step(this.timer.chunk);
 		}
-		this.input = function(peername, code, isdown){
+
+		this.input = function(code, isdown){
 			this.game.input(code, isdown);
 		}
 		//push changes to game

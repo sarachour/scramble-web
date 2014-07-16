@@ -17,8 +17,9 @@ GameHost = function(name,canv){
 		this.net = new NetNode(name);
 		this.game = new Game();
 		this.game.canvas(canv); 
-		this.manager = new SoloManager(this.name, [], this.game);
-
+		//this.manager = new SoloManager(this.name, [], this.game);
+		this.manager = new DemocracyManager(this.name, [], this.game, this.net);
+		this.manager.set_name(this.name);
 		this.net.bind(["connect.request"],"allow_or_reject", function(p){
 			var result = window.confirm("Allow "+p.peer+" to connect?");
 			if(result == true) that.net.accept_connection(p.peer);
@@ -44,6 +45,7 @@ GameHost = function(name,canv){
 		})
 		this.net.bind_data(['upd'], "pass_manager", function(d){
 			console.log("MGR", d);
+			that.manager.recv(d);
 		});	
 		//bind manager callbacks
 		this.manager.bind(["update"], "game.update", function(d){
@@ -80,7 +82,7 @@ GameHost = function(name,canv){
 	}
 	this.input = function(code, down){
 		console.log("entering into manager.");
-		this.manager.input(this.name, code, down);
+		this.manager.input(code, down);
 	}
 	this.create = function(romdata, savdata){
 		var that = this;

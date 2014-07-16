@@ -1,23 +1,16 @@
 Started PeerServer, port: 9000, path: / (v. 0.2.6)
-Socket closed: qqq
-Socket closed: farfelle
-Socket closed: dd
-Socket closed: dd
-Socket closed: dd
-Socket closed: ddd
-Socket closed: dd
-Socket closed: dd
-Socket closed: ff
-Socket closed: ss
-OFFER from dd to sara
-CANDIDATE from dd to sara
-CANDIDATE from dd to sara
-CANDIDATE from dd to sara
-CANDIDATE from dd to sara
-CANDIDATE from dd to sara
-CANDIDATE from dd to sara
-ANSWER from sara to dd
-CANDIDATE from sara to dd
-CANDIDATE from sara to dd
-CANDIDATE from sara to dd
-CANDIDATE from sara to dd
+Socket closed: sara
+Socket closed: sara
+OFFER from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+ANSWER from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+Socket closed: sara

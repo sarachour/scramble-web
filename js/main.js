@@ -192,7 +192,6 @@ function createPeer(name){
 
 	globals.peer.bind(["update.host.status"], "update.host.page", function(pstat){
 		if(pstat.status == "accept"){
-			alert("Connection Successful: connected to "+pstat.peer);
 			
 		}
 		else {
