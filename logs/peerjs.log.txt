@@ -211,3 +211,6 @@ CANDIDATE from sara to qqd
 CANDIDATE from sara to qqd
 Socket closed: qqd
 Socket closed: sara
+Socket closed: sara
+Socket closed: fffs
+Socket closed: ff
