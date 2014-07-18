@@ -177,7 +177,7 @@ require(["js/game.js"], function(){
 				});
 				this.input_loop.bind(['update'], "update.upd", function(u){
 					that.update();
-					u.keys = [that.key];
+					u.keys = that.key;
 					that._trigger('update',u);
 				})
 			}
@@ -202,50 +202,54 @@ require(["js/game.js"], function(){
 		}
 		this._consensus = function(k){
 			if(this.is_host){
-				var codes = {};
-				var maxc = null;
+				var codes = {}; 
+				var npeers = Math.floor(this.net.get_n_connections()/2);
 				for(var p in this.consensus){
 					var k = this.consensus[p];
-					if(!codes.hasOwnProperty(k)){
-						codes[k] = 0;
+					var tag = k.code+"."+k.down; //down and code
+					if(!codes.hasOwnProperty(tag)){
+						codes[tag] = {cnt:0, data:k};
 					}
-					codes[k]++;
+					codes[tag].cnt++;
 				}
-				for(var c in codes){
-					if(maxc == null || codes[maxc] < codes[c]){
-						maxc = c;
+				this.key = [];
+				for(var p in codes){
+					if(codes[p].cnt >= npeers){
+						this.key.push(codes[p].data);
 					}
 				}
-				var d = {cmd:"upd", scmd:"c", key:maxc};
+				if(this.key.length > 0) console.log("consensus:", this.key);
+				var d = {cmd:"upd", scmd:"c", key:this.key};
 				this.net.broadcast_data(d);
 				this.consensus = {};
-				this.key = maxc;
+				this.game.input(this.key);
 
 			}
 			else {
 				this.key = k.key;
+				this.game.input(this.key);
 			}
-			this.game.input([{code:this.key, down:true},{code:this.key, down:false}]);
+			
 			//console.log("idx", this.key);
 			
 		}
 		this._key = function(k){
 			if(!this.is_host){
-				console.log("host?", this.host);
 				this.net.send_data(this.host, {
 					cmd: "upd",
 					scmd: "k",
 					code: k.code,
+					down: k.down,
 					peer: this.name
 				})
 			}
 			else{
 				var code = k.code;
-				this.consensus[k.peer] = code;
+				this.consensus[k.peer] = {code:k.code, down:k.down};
 			}
 		}
 		this.input = function(code, isdown){
-			if(isdown) this._key({code:code, peer:this.name});
+			this._key({code:code, down:isdown, peer:this.name});
 		}
 		this.init(game, net, name, host);
 	}

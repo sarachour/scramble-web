@@ -126,6 +126,9 @@ NetNode = function(name){
 	this.get_connections = function(){
 		return this.conns;
 	}
+	this.get_n_connections = function(){
+		return Object.keys(this.conns).length;
+	}
 	//accept connection
 	this.accept_connection = function(other){
 		var that = this;
