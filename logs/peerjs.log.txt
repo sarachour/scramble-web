@@ -409,3 +409,353 @@ CANDIDATE from sara to ss
 CANDIDATE from sara to ss
 CANDIDATE from sara to ss
 Socket closed: ss
+Socket closed: sara
+OFFER from sasa to sara
+CANDIDATE from sasa to sara
+CANDIDATE from sasa to sara
+CANDIDATE from sasa to sara
+CANDIDATE from sasa to sara
+CANDIDATE from sasa to sara
+CANDIDATE from sasa to sara
+ANSWER from sara to sasa
+CANDIDATE from sara to sasa
+CANDIDATE from sara to sasa
+CANDIDATE from sara to sasa
+CANDIDATE from sara to sasa
+Socket closed: sasa
+Socket closed: sara
+EXPIRE from sara to dd
+Socket closed: dd
+OFFER from sasa to sara
+CANDIDATE from sasa to sara
+CANDIDATE from sasa to sara
+CANDIDATE from sasa to sara
+CANDIDATE from sasa to sara
+CANDIDATE from sasa to sara
+CANDIDATE from sasa to sara
+ANSWER from sara to sasa
+CANDIDATE from sara to sasa
+CANDIDATE from sara to sasa
+CANDIDATE from sara to sasa
+CANDIDATE from sara to sasa
+Socket closed: sasa
+Socket closed: sara
+OFFER from d to sara
+CANDIDATE from d to sara
+CANDIDATE from d to sara
+CANDIDATE from d to sara
+CANDIDATE from d to sara
+CANDIDATE from d to sara
+CANDIDATE from d to sara
+ANSWER from sara to d
+CANDIDATE from sara to d
+CANDIDATE from sara to d
+CANDIDATE from sara to d
+CANDIDATE from sara to d
+Socket closed: d
+Socket closed: sara
+Socket closed: ss
+OFFER from ff to qq
+CANDIDATE from ff to qq
+CANDIDATE from ff to qq
+CANDIDATE from ff to qq
+CANDIDATE from ff to qq
+CANDIDATE from ff to qq
+CANDIDATE from ff to qq
+ANSWER from qq to ff
+CANDIDATE from qq to ff
+CANDIDATE from qq to ff
+CANDIDATE from qq to ff
+CANDIDATE from qq to ff
+Socket closed: ff
+Socket closed: qq
+OFFER from ssa to sara
+CANDIDATE from ssa to sara
+CANDIDATE from ssa to sara
+CANDIDATE from ssa to sara
+CANDIDATE from ssa to sara
+CANDIDATE from ssa to sara
+CANDIDATE from ssa to sara
+ANSWER from sara to ssa
+CANDIDATE from sara to ssa
+CANDIDATE from sara to ssa
+CANDIDATE from sara to ssa
+CANDIDATE from sara to ssa
+Socket closed: ssa
+Socket closed: sara
+OFFER from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+ANSWER from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+Socket closed: ss
+OFFER from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+ANSWER from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+Socket closed: ss
+Socket closed: sara
+OFFER from sara to dd
+CANDIDATE from sara to dd
+CANDIDATE from sara to dd
+CANDIDATE from sara to dd
+CANDIDATE from sara to dd
+CANDIDATE from sara to dd
+CANDIDATE from sara to dd
+ANSWER from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+Socket closed: sara
+Socket closed: dd
+Socket closed: sss
+Socket closed: farfar
+Socket closed: ss
+OFFER from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+ANSWER from sara to ff
+CANDIDATE from sara to ff
+CANDIDATE from sara to ff
+CANDIDATE from sara to ff
+CANDIDATE from sara to ff
+Socket closed: ff
+Socket closed: sara
+OFFER from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+ANSWER from sara to ff
+CANDIDATE from sara to ff
+CANDIDATE from sara to ff
+CANDIDATE from sara to ff
+CANDIDATE from sara to ff
+Socket closed: ff
+Socket closed: sara
+EXPIRE from sara to ff
+Socket closed: ff
+OFFER from s to sara
+CANDIDATE from s to sara
+CANDIDATE from s to sara
+CANDIDATE from s to sara
+CANDIDATE from s to sara
+CANDIDATE from s to sara
+CANDIDATE from s to sara
+ANSWER from sara to s
+CANDIDATE from sara to s
+CANDIDATE from sara to s
+CANDIDATE from sara to s
+CANDIDATE from sara to s
+Socket closed: s
+Socket closed: sara
+OFFER from sar to sara
+CANDIDATE from sar to sara
+CANDIDATE from sar to sara
+CANDIDATE from sar to sara
+CANDIDATE from sar to sara
+CANDIDATE from sar to sara
+CANDIDATE from sar to sara
+ANSWER from sara to sar
+CANDIDATE from sara to sar
+CANDIDATE from sara to sar
+CANDIDATE from sara to sar
+CANDIDATE from sara to sar
+Socket closed: sar
+Socket closed: sara
+OFFER from ddd to d
+CANDIDATE from ddd to d
+CANDIDATE from ddd to d
+CANDIDATE from ddd to d
+CANDIDATE from ddd to d
+CANDIDATE from ddd to d
+CANDIDATE from ddd to d
+ANSWER from d to ddd
+CANDIDATE from d to ddd
+CANDIDATE from d to ddd
+CANDIDATE from d to ddd
+CANDIDATE from d to ddd
+Socket closed: ddd
+Socket closed: d
+Socket closed: sara
+Socket closed: sara
+Socket closed: sa
+Socket closed: dd
+Socket closed: ss
+OFFER from gbc to ds
+CANDIDATE from gbc to ds
+CANDIDATE from gbc to ds
+CANDIDATE from gbc to ds
+CANDIDATE from gbc to ds
+CANDIDATE from gbc to ds
+CANDIDATE from gbc to ds
+ANSWER from ds to gbc
+CANDIDATE from ds to gbc
+CANDIDATE from ds to gbc
+CANDIDATE from ds to gbc
+CANDIDATE from ds to gbc
+Socket closed: gbc
+Socket closed: ds
+Socket closed: ss
+Socket closed: dsts
+Socket closed: dsad
+Socket closed: sara
+OFFER from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+ANSWER from sara to dd
+CANDIDATE from sara to dd
+CANDIDATE from sara to dd
+CANDIDATE from sara to dd
+CANDIDATE from sara to dd
+Socket closed: dd
+Socket closed: sara
+OFFER from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+ANSWER from sara to dd
+CANDIDATE from sara to dd
+CANDIDATE from sara to dd
+CANDIDATE from sara to dd
+CANDIDATE from sara to dd
+Socket closed: dd
+Socket closed: sara
+Socket closed: sara
+EXPIRE from sara to ddd
+Socket closed: ddd
+OFFER from sa to sara
+CANDIDATE from sa to sara
+CANDIDATE from sa to sara
+CANDIDATE from sa to sara
+CANDIDATE from sa to sara
+CANDIDATE from sa to sara
+CANDIDATE from sa to sara
+ANSWER from sara to sa
+CANDIDATE from sara to sa
+CANDIDATE from sara to sa
+CANDIDATE from sara to sa
+CANDIDATE from sara to sa
+CANDIDATE from sara to sa
+CANDIDATE from sara to sa
+CANDIDATE from sara to sa
+CANDIDATE from sara to sa
+Socket closed: sa
+Socket closed: sara
+Socket closed: ee
+OFFER from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+ANSWER from sara to dd
+CANDIDATE from sara to dd
+CANDIDATE from sara to dd
+CANDIDATE from sara to dd
+CANDIDATE from sara to dd
+Socket closed: dd
+Socket closed: sara
+OFFER from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+ANSWER from sara to dd
+CANDIDATE from sara to dd
+CANDIDATE from sara to dd
+CANDIDATE from sara to dd
+CANDIDATE from sara to dd
+Socket closed: dd
+Socket closed: sara
+OFFER from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+ANSWER from sara to ff
+CANDIDATE from sara to ff
+CANDIDATE from sara to ff
+CANDIDATE from sara to ff
+CANDIDATE from sara to ff
+Socket closed: ff
+Socket closed: sara
+Socket closed: sara
+Socket closed: s
+Socket closed: sara
+Socket closed: sara
+OFFER from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+ANSWER from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+Socket closed: ss
+Socket closed: sara
+OFFER from fara to sara
+CANDIDATE from fara to sara
+CANDIDATE from fara to sara
+CANDIDATE from fara to sara
+CANDIDATE from fara to sara
+CANDIDATE from fara to sara
+CANDIDATE from fara to sara
+ANSWER from sara to fara
+CANDIDATE from sara to fara
+CANDIDATE from sara to fara
+CANDIDATE from sara to fara
+CANDIDATE from sara to fara
+Socket closed: fara
+Socket closed: sara
+OFFER from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+CANDIDATE from ff to sara
+ANSWER from sara to ff
+CANDIDATE from sara to ff
+CANDIDATE from sara to ff
+CANDIDATE from sara to ff
+CANDIDATE from sara to ff
+Socket closed: ff

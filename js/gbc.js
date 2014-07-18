@@ -12,6 +12,8 @@ GameboyColorView = function(){
 		this.sram.rtc = [];
 		this.sram.mem = [];
 
+		this.iterations = 0;
+
 	}
 	this.create = function(canv){
 		this.canv = canv;
@@ -37,23 +39,28 @@ GameboyColorView = function(){
 		this.gbc.iterations = 0;
 		
 	}
+	this.clock = function(){
+		return 0;
+	}
+	this.ready = function() {
+		//return ((this.gbc.stopEmulator & 2) == 0);
+		return true;
+	}
+
 	this.step = function(n){
 		var that = this;
 		this.i = 0;
-		this.runner = setInterval(function () {
-			if(that.i < n){
-				that.gbc.run();
-				that.i++;
-			}
-			else {
-				clearInterval(that.runner);
-			}
-		}, this.delay);
-		
+
+		for(var i=0; i < n; i++){
+			that.gbc.run();
+			this.iterations+=1;
+		}
+		//this.gbc.handleSTOP();
 	}
 
 	this.input = function(key, down){
 		var idx = this.keymap.indexOf(key);
+		this.gbc.handleSTOP();
 		if(idx >= 0){
 			this.gbc.JoyPadEvent(idx, down);
 		}
@@ -72,7 +79,7 @@ GameboyColorView = function(){
 		this.gbc.stopEmulator &= 1;
 		this.gbc.returnFromState(this.sram.st);
 		this.gbc.returnFromRTCState(this.sram.rtc);
-		this.step(1);
+		//this.step(1);
 	}
 	this.save = function(){
 		//this.sram = {};

@@ -11,6 +11,9 @@ require(["js/game.js"], function(){
 			else if(pkg.type == "DemocracyManager"){
 				return new DemocracyManager(game, net,name, host)
 			}
+			else if(pkg.type == "WatchManager"){
+				return new WatchManager(game, net,name, host)
+			}
 		}
 	}
 	PlayLoop = function(game){
@@ -27,7 +30,7 @@ require(["js/game.js"], function(){
 			}
 			*/
 			this.time_chunk = 16.75; //number of milliseconds to wait before stepping.
-			this.input_chunk = 3; //number of time units per input.
+			this.input_chunk = 4; //number of time units per input.
 			this.step_chunk = 1; //smallest unit, amount you step per time unit
 			this._interval= null;
 			this.game = game;
@@ -44,7 +47,7 @@ require(["js/game.js"], function(){
 		this.input = function(keys){
 			this.queue.push(keys);
 		}
-		this.pause = function(){
+		this.stop = function(){
 			this.pause = true;
 		}
 		this.run = function(){
@@ -53,7 +56,7 @@ require(["js/game.js"], function(){
 			if(this._interval == null){
 				this._interval = setInterval(function() {
 				      if(that.i == that.input_chunk-1){
-					      if(that.queue.length > 0 && that.pause == false){
+					      if(that.queue.length > 0 && that.pause == false && that.game.ready()){
 					      	var e = that.queue.shift(); //take move
 					      	this.n++;
 					      	that._up_keys = [];
@@ -110,6 +113,9 @@ require(["js/game.js"], function(){
 				this.callbacks[evt][n](args);
 			}
 		}
+		this.stop = function(){
+			this.pause = true;
+		}
 		this.run = function(){
 			var that = this;
 			if(this._interval == null){
@@ -123,6 +129,7 @@ require(["js/game.js"], function(){
 				  	  
 				}, this.n/this.n_ticks);
 			}
+			this.pause = false;
 		}
 		this.init(n, nticks);
 	}
@@ -142,7 +149,7 @@ require(["js/game.js"], function(){
 			this.game.run();
 		}
 		this.stop = function(){
-			this.game.pause();
+			this.game.stop();
 		}
 		this.bind = function(evts, name, cbk){
 			for(var i=0; i < evts.length; i++){
@@ -187,6 +194,10 @@ require(["js/game.js"], function(){
 		this.start = function(){
 			this.__proto__.start();
 			if(this.is_host) this.input_loop.run();
+		}
+		this.stop = function(){
+			this.__proto__.stop();
+			if(this.is_host) this.input_loop.stop();
 		}
 		this.update = function(){
 			if(this.is_host) this._consensus();
@@ -255,6 +266,60 @@ require(["js/game.js"], function(){
 		this.init(game, net, name, host);
 	}
 	DemocracyManager.prototype = new Manager();
+
+	WatchManager = function(game, net, name, host) {
+		this.init = function(game, net, name, host){
+			var that = this;
+			this.__proto__.init(game);
+			this.net = net;
+			this.host = host;
+			this.name = name;
+			this.is_host = (name == host);
+			this.keys = [];
+			this.input_loop = new InputLoop(this.game.delay(), 10);
+			this.input_loop.bind(['tick'], "update.tick", function(t){
+				that._trigger('tick', t);
+			});
+			this.input_loop.bind(['update'], "update.upd", function(u){
+				u.keys = that.key;
+				that.update();
+				that._trigger('update',u);
+			})
+		}
+		this.recv = function(d){
+			this.game.input(d.keys);
+		}
+		this.start = function(){
+			this.__proto__.start();
+			if(this.is_host) this.input_loop.run();
+		}
+		this.pack = function(){
+			return this.__proto__.pack("WatchManager");
+		}
+		this.input = function(code, isdown){
+			if(this.is_host) this.keys.push({code:code, down:isdown});
+		}
+		this.update = function(){
+			this.game.clear();
+			this.game.input(this.keys);
+			this.net.broadcast_data({cmd:"upd", keys: this.keys});
+			this.keys = []; // input update
+		}
+		this.init(game, net, name, host);
+	}
+	WatchManager.prototype = new Manager();
+	//Scheme: 
+	RoundRobinManager = function(host, plist, game){
+
+	}
+	AnarchyManager = function(host, plist, game){
+
+	}
+	
+	ScatterManager = function(host, plist, game){
+
+	}
+	WatchManager.prototype = new Manager();
 	//play a solo game
 	SoloManager = function(game) {
 		this.init = function(game){

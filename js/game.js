@@ -66,6 +66,12 @@ define(["js/gbc.js"/*, "js/gba.js"*/], function(){
 				}
 			}
 		}
+		this.ready = function(){
+			return this.emul.ready();
+		}
+		this.clock = function(){
+			return this.emul.clock();
+		}
 		this.input = function(key, isdown){
 			this.emul.input(key, isdown);
 		}
