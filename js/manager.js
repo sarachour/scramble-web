@@ -4,57 +4,101 @@ TODO: key, steps, queue. play is a continuous loop that waits for more work.
 */
 require(["js/game.js"], function(){
 	ManagerFactory = {
-		unpack: function(pkg,game,net){
+		unpack: function(pkg,game,net,name, host){
 			console.log(pkg, game);
 			if(pkg.type == "SoloManager"){
-				return new SoloManager(pkg.host, pkg.peers, game);
+				return new SoloManager(game);
 			}
 			else if(pkg.type == "DemocracyManager"){
-				return new DemocracyManager(pkg.host, pkg.peers, game, net)
+				return new DemocracyManager(game, net,name, host)
 			}
 		}
 	}
-	Manager = function(hostname, peerlist, game){
-		this.init = function(hostname, peerlist, game){
-			this.host = hostname;
-			this.peers = peerlist;
-			this.game = game;
-
+	PlayLoop = function(game){
+		this.init = function(game){
+			this.queue = [];
+			this.n = 0;
+			/*
 			this.timer = {
 				unit: 1000, // 3 seconds
 				step: 100, //correspond to one step
 				chunk: 1,
-				_timer: null,
+				_interval: null,
 				n: 0
 			}
-			this.callbacks = {};
-			this.callbacks["update"] = {};
-			this.callbacks["tick"] = {};
+			*/
+			this.time_chunk = 10; //number of milliseconds to wait before stepping.
+			this.input_chunk = 10; //number of time units per input.
+			this.step_chunk = 1; //smallest unit, amount you step per time unit
+			this._interval= null;
+			this.game = game;
+			this.i = this.input_chunk-1;
+			this.pause = false;
+			this._up_keys = [];
 		}
-		this.set_name = function(name){
-			this.name = name;
-			this.is_host = this.name == this.host;
+		this.clear = function(){
+			this.queue = [];
 		}
-		this.pack = function(type){
-			return {
-				host: this.host,
-				peers: this.peers,
-				type: type
+		this.delay = function(){
+			return this.time_chunk*this.input_chunk;
+		}
+		this.input = function(keys){
+			this.queue.push(keys);
+		}
+		this.pause = function(){
+			this.pause = true;
+		}
+		this.run = function(){
+			//run the game loop
+			var that = this;
+			if(this._interval == null){
+				this._interval = setInterval(function() {
+				      if(that.i == that.input_chunk-1){
+					      if(that.queue.length > 0 && that.pause == false){
+					      	var e = that.queue.shift(); //take move
+					      	this.n++;
+					      	that._up_keys = [];
+					      	for(var i=0; i < e.length; i++){
+					      		var c= e[i].code;
+					      		if(e[i].down) that.game.input(c,true);
+					      		else that._up_keys.push(c);
+					      	}
+					      	that.game.step(that.step_chunk);
+					      	that.i = (that.i + 1)%that.input_chunk;
+					      }
+				  	  }
+				  	  else{
+				  	  	if(Math.floor(that.input_chunk/2) == that.i ){
+				  	  		for(var i=0; i < that._up_keys.length; i++){
+				  	  			var c = that._up_keys[i];
+				  	  			that.game.input(c,false);
+				  	  		}
+				  	  	}
+				  	  	that.game.step(that.step_chunk);
+				  	  	that.i = (that.i + 1)%that.input_chunk;
+				  	  }
+				  	  
+				}, this.time_chunk);
 			}
+			this.pause = false;
 		}
-		this.speed = function(n){
-			this.timer.chunk = n;
-		}
-		this.add = function(peername){
-			this.peers.push(peername);
+		this.init(game);
+	}
+	InputLoop = function(n, nticks){
+		this.init = function(n, nticks){
+			this._interval = null;
+			this.n_ticks = nticks;
+			this.n = n;
+			this.i = 0;
+			this.callbacks = {};
+			this.callbacks['tick'] = {};
+			this.callbacks['update'] = {};
+			this.pause = false;
 		}
 		this.bind = function(evts, name, cbk){
 			for(var i=0; i < evts.length; i++){
 				this.callbacks[evts[i]][name] = cbk;
 			}
-		}
-		this.recv = function(){
-
 		}
 		this.unbind = function(evts, name){
 			for(var i=0; i < evts.length; i++){
@@ -67,56 +111,70 @@ require(["js/game.js"], function(){
 				this.callbacks[evt][n](args);
 			}
 		}
-		this.input = function(code, isdown){
-			
+		this.run = function(){
+			var that = this;
+			if(this._interval == null){
+				this._interval = setInterval(function() {
+					if(that.pause) return;
+					that._trigger('tick', {i:that.i, n:that.n_ticks});
+					if(that.i == that.n_ticks-1){
+						that._trigger('update', {});
+					}
+					that.i = (that.i + 1)%that.n_ticks;
+				  	  
+				}, this.n/this.n_ticks);
+			}
 		}
-		this.tick = function(){
-			return {i:that.timer.n, n:that.timer.step};
+		this.init(n, nticks);
+	}
+	Manager = function(game){
+		this.init = function(game){
+			this.game = new PlayLoop(game);
+			this.callbacks = {};
+			this.callbacks['tick'] = {};
+			this.callbacks['update'] = {};
+		}
+		this.pack = function(type){
+			return {
+				type: type
+			}
 		}
 		this.start = function(){
-			this.play();
-		}
-		this.play = function(){ //start new round
-			var that = this;
-			this.timer._timer = setInterval(function() {
-			      // Do something after 5 seconds
-			      var tdat = that.tick();
-			      tdat.i = that.timer.n;
-			      tdat.n = that.timer.step;
-			      if(that.timer.n + 1 == that.timer.step) {
-			      	var dat = that.update();
-			      	that._trigger("update", dat);
-			      }
-			      that._trigger("tick", tdat);
-			      //update step index
-			      that.timer.n = (that.timer.n+1)%that.timer.step;
-			}, this.timer.unit/this.timer.step);
-		}
-		//push changes to game
-		this.update = function(){
-			return {};
+			this.game.run();
 		}
 		this.stop = function(){
-			clearInterval(this.timer._timer);
+			this.game.pause();
 		}
-		this.init(hostname, peerlist, game);
+		this.bind = function(evts, name, cbk){
+			for(var i=0; i < evts.length; i++){
+				this.callbacks[evts[i]][name] = cbk;
+			}
+		}
+		this.unbind = function(evts, name){
+			for(var i=0; i < evts.length; i++){
+				delete this.callbacks[evts[i]][name];
+			}
+		}
+		this._trigger = function(evt, args){
+			args.EVENT = evt;
+			for(var n in this.callbacks[evt]){
+				this.callbacks[evt][n](args);
+			}
+		}
+		this.init(game);
 	}
-	DemocracyManager = function(hostname, peerlist, game, net){
-
-
-		this.init = function(hostname, peerlist, game, net){
-			console.log(this);
+	DemocracyManager = function(game, net, name, host){
+		this.init = function(game, net, name, host){
 			this.net = net;
+			this.host = host;
+			this.name = name;
+			this.is_host = (name == host);
 			this.consensus = {};
-			this.gathered = 0;
 			this.index = 0;
-			this.__proto__.init(hostname, peerlist, game);
+			this.__proto__.init(game);
 		}
 		this.pack = function(){
 			return this.__proto__.pack("DemocracyManager");
-		}
-		this.tick = function(){
-			
 		}
 		this.recv = function(d){
 			console.log("recv:",d);
@@ -124,10 +182,6 @@ require(["js/game.js"], function(){
 				this._consensus(d);
 			else if(d.scmd == "k")
 				this._key(d);
-		}
-		this._sync = function(k){
-
-
 		}
 		this._consensus = function(k){
 			if(this.is_host){
@@ -151,12 +205,13 @@ require(["js/game.js"], function(){
 				}
 				this.consensus = {};
 				this.key = maxc;
-				this.play();
+
 			}
 			else {
 				this.key = k.key;
-				this.play();
 			}
+			this.game.input([{code:this.key, down:true}]);
+			this.game.input([{code:this.key, down:false}]);
 			console.log("idx", this.index);
 			
 		}
@@ -174,66 +229,43 @@ require(["js/game.js"], function(){
 				this.consensus[k.peer] = code;
 			}
 		}
-		this.start = function(){ //start new round
-			if(this.is_host) this.play();
-		}
-		this.stop = function(){
-
-		}
 		this.input = function(code, isdown){
-			if(!isdown) return;
-			this._key({code:code});
-			
+			if(isdown) this._key(code);
 		}
-		this.tick = function(){
-			if(this.key != null){
-				if(this.timer.n == 0){
-					this.game.input(this.key, true);
-				}
-				else if(this.timer.n == this.timer.step/2){
-					this.game.input(this.key, false);
-				}
-			}
-			this.game.step(this.timer.chunk);
-			return {};
-		}
-		//push changes to game
-		this.update = function(){
-			
-			clearInterval(this.timer._timer);
-			if(this.is_host){
-				this._consensus();
-				console.log("consensus", this.key);
-				
-			}
-			//increase the number of ticks.
-			this.index+=1;
-			return {keys: [this.key]};
-		}
-		this.init(hostname, peerlist, game, net);
+		this.init(game, net, name, host);
 	}
 	DemocracyManager.prototype = new Manager();
 	//play a solo game
-	SoloManager = function(hostname, peerlist, game) {
-		this.init = function(hostname, peerlist, game){
-			console.log(this);
-			this.__proto__.init(hostname, peerlist, game);
+	SoloManager = function(game) {
+		this.init = function(game){
+			var that = this;
+			this.__proto__.init(game);
+			this.keys = [];
+			this.input_loop = new InputLoop(this.game.delay(), 10);
+			this.input_loop.bind(['tick'], "update.tick", function(t){
+				that._trigger('tick', t);
+			});
+			this.input_loop.bind(['update'], "update.upd", function(u){
+				that.update();
+				that._trigger('update',u);
+			})
+		}
+		this.start = function(){
+			this.__proto__.start();
+			this.input_loop.run();
 		}
 		this.pack = function(){
 			return this.__proto__.pack("SoloManager");
 		}
-		this.tick = function(){
-			this.game.step(this.timer.chunk);
-		}
-
 		this.input = function(code, isdown){
-			this.game.input(code, isdown);
+			this.keys.push({code:code, down:isdown});
 		}
-		//push changes to game
-		this.update = function(game){
-			
+		this.update = function(){
+			this.game.clear();
+			this.game.input(this.keys);
+			this.keys = []; // input update
 		}
-		this.init(hostname, peerlist, game);
+		this.init(game);
 	}
 	SoloManager.prototype = new Manager();
 	//Scheme: 

@@ -23,8 +23,7 @@ GamePeer = function(name, canv){
 		})
 		this.net.bind_data(['init'], "init_game", function(d){
 			that.game.unpack(d.game);
-			that.manager = ManagerFactory.unpack(d.manager,that.game, that.net);
-			that.manager.set_name(that.name);
+			that.manager = ManagerFactory.unpack(d.manager,that.game, that.net, that.name, that.host);
 			that.manager.start();
 			//bind manager callbacks
 			that.manager.bind(["update"], "game.update", function(d){
@@ -79,6 +78,7 @@ GamePeer = function(name, canv){
 			this.manager.input(code, down);
 	}
 	this.join = function(host){
+		this.host = host;
 		this.net.request_connection(host);
 	}
 

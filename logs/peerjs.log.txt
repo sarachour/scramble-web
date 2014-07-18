@@ -1,309 +1,46 @@
 Started PeerServer, port: 9000, path: / (v. 0.2.6)
-Socket closed: sara
-Socket closed: sara
-OFFER from ss to sara
-CANDIDATE from ss to sara
-CANDIDATE from ss to sara
-CANDIDATE from ss to sara
-CANDIDATE from ss to sara
-CANDIDATE from ss to sara
-CANDIDATE from ss to sara
-ANSWER from sara to ss
-CANDIDATE from sara to ss
-CANDIDATE from sara to ss
-CANDIDATE from sara to ss
-CANDIDATE from sara to ss
-Socket closed: sara
-Socket closed: ss
-OFFER from fff to sara
-CANDIDATE from fff to sara
-CANDIDATE from fff to sara
-CANDIDATE from fff to sara
-CANDIDATE from fff to sara
-CANDIDATE from fff to sara
-CANDIDATE from fff to sara
-ANSWER from sara to fff
-CANDIDATE from sara to fff
-CANDIDATE from sara to fff
-CANDIDATE from sara to fff
-CANDIDATE from sara to fff
-Socket closed: fff
-OFFER from ss to sara
-CANDIDATE from ss to sara
-CANDIDATE from ss to sara
-CANDIDATE from ss to sara
-CANDIDATE from ss to sara
-CANDIDATE from ss to sara
-CANDIDATE from ss to sara
-ANSWER from sara to ss
-CANDIDATE from sara to ss
-CANDIDATE from sara to ss
-CANDIDATE from sara to ss
-CANDIDATE from sara to ss
-Socket closed: sara
-Socket closed: ss
-OFFER from farfalle to sara
-CANDIDATE from farfalle to sara
-CANDIDATE from farfalle to sara
-CANDIDATE from farfalle to sara
-CANDIDATE from farfalle to sara
-CANDIDATE from farfalle to sara
-CANDIDATE from farfalle to sara
-ANSWER from sara to farfalle
-CANDIDATE from sara to farfalle
-CANDIDATE from sara to farfalle
-CANDIDATE from sara to farfalle
-CANDIDATE from sara to farfalle
-Socket closed: farfalle
-Socket closed: sara
-OFFER from farfalle to sara
-CANDIDATE from farfalle to sara
-CANDIDATE from farfalle to sara
-CANDIDATE from farfalle to sara
-CANDIDATE from farfalle to sara
-CANDIDATE from farfalle to sara
-CANDIDATE from farfalle to sara
-ANSWER from sara to farfalle
-CANDIDATE from sara to farfalle
-CANDIDATE from sara to farfalle
-CANDIDATE from sara to farfalle
-CANDIDATE from sara to farfalle
-Socket closed: farfalle
-Socket closed: sara
-OFFER from fa to sara
-CANDIDATE from fa to sara
-CANDIDATE from fa to sara
-CANDIDATE from fa to sara
-CANDIDATE from fa to sara
-CANDIDATE from fa to sara
-CANDIDATE from fa to sara
-ANSWER from sara to fa
-CANDIDATE from sara to fa
-CANDIDATE from sara to fa
-CANDIDATE from sara to fa
-CANDIDATE from sara to fa
-Socket closed: fa
-Socket closed: sara
-OFFER from d to fara
-CANDIDATE from d to fara
-CANDIDATE from d to fara
-CANDIDATE from d to fara
-CANDIDATE from d to fara
-CANDIDATE from d to fara
-CANDIDATE from d to fara
-ANSWER from fara to d
-CANDIDATE from fara to d
-CANDIDATE from fara to d
-CANDIDATE from fara to d
-CANDIDATE from fara to d
-Socket closed: d
-Socket closed: fara
-OFFER from bob to sara
-CANDIDATE from bob to sara
-CANDIDATE from bob to sara
-CANDIDATE from bob to sara
-CANDIDATE from bob to sara
-CANDIDATE from bob to sara
-CANDIDATE from bob to sara
-ANSWER from sara to bob
-CANDIDATE from sara to bob
-CANDIDATE from sara to bob
-CANDIDATE from sara to bob
-CANDIDATE from sara to bob
-Socket closed: bob
-Socket closed: sara
-OFFER from near to far
-CANDIDATE from near to far
-CANDIDATE from near to far
-CANDIDATE from near to far
-CANDIDATE from near to far
-CANDIDATE from near to far
-CANDIDATE from near to far
-ANSWER from far to near
-CANDIDATE from far to near
-CANDIDATE from far to near
-CANDIDATE from far to near
-CANDIDATE from far to near
-Socket closed: near
 Socket closed: far
-OFFER from near to far
-CANDIDATE from near to far
-CANDIDATE from near to far
-CANDIDATE from near to far
-CANDIDATE from near to far
-CANDIDATE from near to far
-CANDIDATE from near to far
-ANSWER from far to near
-CANDIDATE from far to near
-CANDIDATE from far to near
-CANDIDATE from far to near
-CANDIDATE from far to near
-Socket closed: near
-Socket closed: far
-OFFER from marmar to gargar
-CANDIDATE from marmar to gargar
-CANDIDATE from marmar to gargar
-CANDIDATE from marmar to gargar
-CANDIDATE from marmar to gargar
-CANDIDATE from marmar to gargar
-CANDIDATE from marmar to gargar
-ANSWER from gargar to marmar
-CANDIDATE from gargar to marmar
-CANDIDATE from gargar to marmar
-CANDIDATE from gargar to marmar
-CANDIDATE from gargar to marmar
-Socket closed: marmar
-EXPIRE from farfar to barbar
-Socket closed: barbar
-EXPIRE from farfar to ff
-Socket closed: gargar
-Socket closed: ff
-OFFER from ff to sara
-CANDIDATE from ff to sara
-CANDIDATE from ff to sara
-CANDIDATE from ff to sara
-CANDIDATE from ff to sara
-CANDIDATE from ff to sara
-CANDIDATE from ff to sara
-ANSWER from sara to ff
-CANDIDATE from sara to ff
-CANDIDATE from sara to ff
-CANDIDATE from sara to ff
-CANDIDATE from sara to ff
-Socket closed: ff
-OFFER from bara to sara
-CANDIDATE from bara to sara
-CANDIDATE from bara to sara
-CANDIDATE from bara to sara
-CANDIDATE from bara to sara
-CANDIDATE from bara to sara
-CANDIDATE from bara to sara
-ANSWER from sara to bara
-CANDIDATE from sara to bara
-CANDIDATE from sara to bara
-CANDIDATE from sara to bara
-CANDIDATE from sara to bara
-Socket closed: bara
-OFFER from qq to sara
-CANDIDATE from qq to sara
-CANDIDATE from qq to sara
-CANDIDATE from qq to sara
-CANDIDATE from qq to sara
-CANDIDATE from qq to sara
-CANDIDATE from qq to sara
-ANSWER from sara to qq
-CANDIDATE from sara to qq
-CANDIDATE from sara to qq
-CANDIDATE from sara to qq
-CANDIDATE from sara to qq
-Socket closed: qq
-OFFER from qqd to sara
-CANDIDATE from qqd to sara
-CANDIDATE from qqd to sara
-CANDIDATE from qqd to sara
-CANDIDATE from qqd to sara
-CANDIDATE from qqd to sara
-CANDIDATE from qqd to sara
-ANSWER from sara to qqd
-CANDIDATE from sara to qqd
-CANDIDATE from sara to qqd
-CANDIDATE from sara to qqd
-CANDIDATE from sara to qqd
-Socket closed: qqd
-Socket closed: sara
-Socket closed: sara
-Socket closed: fffs
-Socket closed: ff
-Socket closed: ss
-Socket closed: fare
-Socket closed: sara
-Socket closed: sara
-Socket closed: sara
-Socket closed: sara
-Socket closed: sara
-Socket closed: dd
-Socket closed: sara
 Socket closed: ss
 Socket closed: sss
+Socket closed: qq
+Socket closed: qq
+Socket closed: ddd
+Socket closed: a
+Socket closed: ff
+Socket closed: ss
+Socket closed: s
+Socket closed: qq
+Socket closed: ss
+Socket closed: ss
+Socket closed: ss
+Socket closed: ss
+Socket closed: ss
 Socket closed: ss
 Socket closed: sara
 Socket closed: sara
+Socket closed: q
+Socket closed: ew5w
+Socket closed: qq
+Socket closed: qq
+Socket closed: q
+Socket closed: ss
+Socket closed: far
+Socket closed: ss
+Socket closed: ss
+Socket closed: ss
+Socket closed: ss
+Socket closed: sara
+Socket closed: sara
+Socket closed: qq
 Socket closed: dd
 Socket closed: sara
-Socket closed: sara
-Socket closed: sara
-OFFER from ss to sara
-CANDIDATE from ss to sara
-CANDIDATE from ss to sara
-CANDIDATE from ss to sara
-CANDIDATE from ss to sara
-CANDIDATE from ss to sara
-CANDIDATE from ss to sara
-ANSWER from sara to ss
-CANDIDATE from sara to ss
-CANDIDATE from sara to ss
-CANDIDATE from sara to ss
-CANDIDATE from sara to ss
+Socket closed: ss
+Socket closed: s
+Socket closed: ss
+Socket closed: s
+Socket closed: ss
 Socket closed: ss
 Socket closed: sara
-OFFER from bob to sara
-CANDIDATE from bob to sara
-CANDIDATE from bob to sara
-CANDIDATE from bob to sara
-CANDIDATE from bob to sara
-CANDIDATE from bob to sara
-CANDIDATE from bob to sara
-ANSWER from sara to bob
-CANDIDATE from sara to bob
-CANDIDATE from sara to bob
-CANDIDATE from sara to bob
-CANDIDATE from sara to bob
-Socket closed: bob
-Socket closed: sara
-OFFER from G to sara
-CANDIDATE from G to sara
-CANDIDATE from G to sara
-CANDIDATE from G to sara
-ANSWER from sara to G
-CANDIDATE from sara to G
-CANDIDATE from sara to G
-CANDIDATE from sara to G
-CANDIDATE from sara to G
-CANDIDATE from G to sara
-CANDIDATE from G to sara
-CANDIDATE from G to sara
-CANDIDATE from G to sara
-CANDIDATE from sara to G
-CANDIDATE from sara to G
-CANDIDATE from sara to G
-CANDIDATE from sara to G
-Socket closed: G
-Socket closed: sara
-OFFER from bob to sara
-CANDIDATE from bob to sara
-CANDIDATE from bob to sara
-CANDIDATE from bob to sara
-CANDIDATE from bob to sara
-CANDIDATE from bob to sara
-CANDIDATE from bob to sara
-ANSWER from sara to bob
-CANDIDATE from sara to bob
-CANDIDATE from sara to bob
-CANDIDATE from sara to bob
-CANDIDATE from sara to bob
-Socket closed: bob
-Socket closed: sara
-OFFER from st to qr
-CANDIDATE from st to qr
-CANDIDATE from st to qr
-CANDIDATE from st to qr
-CANDIDATE from st to qr
-CANDIDATE from st to qr
-CANDIDATE from st to qr
-ANSWER from qr to st
-CANDIDATE from qr to st
-CANDIDATE from qr to st
-CANDIDATE from qr to st
-CANDIDATE from qr to st
-Socket closed: st
-Socket closed: qr
+Socket closed: s
+Socket closed: aa
+Socket closed: a
