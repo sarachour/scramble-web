@@ -169,6 +169,7 @@ require(["js/game.js"], function(){
 			this.net = net;
 			this.host = host;
 			this.name = name;
+			this.key = [];
 			this.is_host = (name == host);
 			if(this.is_host){
 				this.input_loop = new InputLoop(this.game.delay(), 10);
@@ -218,7 +219,6 @@ require(["js/game.js"], function(){
 						this.key.push(codes[p].data);
 					}
 				}
-				if(this.key.length > 0) console.log("consensus:", this.key);
 				var d = {cmd:"upd", scmd:"c", key:this.key};
 				this.net.broadcast_data(d);
 				this.consensus = {};
@@ -228,6 +228,7 @@ require(["js/game.js"], function(){
 			else {
 				this.key = k.key;
 				this.game.input(this.key);
+				this._trigger('update',{keys:this.key});
 			}
 			
 			//console.log("idx", this.key);

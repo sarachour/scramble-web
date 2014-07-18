@@ -232,14 +232,17 @@ function initBoth(){
 		if(ctrls != null){
 			if(d.hasOwnProperty("keys")){
 				var k = d.keys;
+				/*
 				for(var c in ctrls.keys){
 					$("#"+ctrls.keys[c].image.out).hide();
 				}
+				*/
 				if(k.length > 0) console.log(d);
 				for(var i=0; i < k.length; i++){
 					var ky = k[i];
-					if(ctrls.keys.hasOwnProperty(ky.code) && ky.down){
-						$("#"+ctrls.keys[ky.code].image.out).show();
+					if(ctrls.keys.hasOwnProperty(ky.code)){
+						if(ky.down) $("#"+ctrls.keys[ky.code].image.out).show();
+						else $("#"+ctrls.keys[ky.code].image.out).hide();
 					}
 				}
 			}

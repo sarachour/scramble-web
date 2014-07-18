@@ -333,3 +333,79 @@ CANDIDATE from sara to ffd
 CANDIDATE from sara to ffd
 CANDIDATE from sara to ffd
 Socket closed: ffd
+Socket closed: sara
+Socket closed: sara
+Socket closed: ss
+Socket closed: sss
+Socket closed: sara
+OFFER from g to sara
+CANDIDATE from g to sara
+CANDIDATE from g to sara
+CANDIDATE from g to sara
+CANDIDATE from g to sara
+CANDIDATE from g to sara
+CANDIDATE from g to sara
+ANSWER from sara to g
+CANDIDATE from sara to g
+CANDIDATE from sara to g
+CANDIDATE from sara to g
+CANDIDATE from sara to g
+Socket closed: g
+Socket closed: sara
+Socket closed: sara
+Socket closed: sara
+OFFER from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+ANSWER from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+Socket closed: ss
+Socket closed: sara
+EXPIRE from sara to fara
+Socket closed: fara
+OFFER from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+CANDIDATE from dd to sara
+ANSWER from sara to dd
+CANDIDATE from sara to dd
+CANDIDATE from sara to dd
+CANDIDATE from sara to dd
+CANDIDATE from sara to dd
+Socket closed: dd
+OFFER from volde to sara
+CANDIDATE from volde to sara
+CANDIDATE from volde to sara
+CANDIDATE from volde to sara
+CANDIDATE from volde to sara
+CANDIDATE from volde to sara
+CANDIDATE from volde to sara
+ANSWER from sara to volde
+CANDIDATE from sara to volde
+CANDIDATE from sara to volde
+CANDIDATE from sara to volde
+CANDIDATE from sara to volde
+Socket closed: volde
+OFFER from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+CANDIDATE from ss to sara
+ANSWER from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+CANDIDATE from sara to ss
+Socket closed: ss
