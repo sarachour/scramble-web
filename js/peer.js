@@ -23,7 +23,7 @@ GamePeer = function(name, canv){
 		})
 		this.net.bind_data(['init'], "init_game", function(d){
 			that.game.unpack(d.game);
-			that.manager = ManagerFactory.unpack(d.manager,that.game, that.net, that.name, that.host);
+			that.manager = ManagerFactory.unpack(d.manager,that.game, that.net, that.name, d.peer);
 			that.manager.start();
 			//bind manager callbacks
 			that.manager.bind(["update"], "game.update", function(d){
@@ -36,7 +36,6 @@ GamePeer = function(name, canv){
 			that._trigger(["game.init"],  d);
 		});
 		this.net.bind_data(['upd'], "pass_manager", function(d){
-			console.log("MGR", d);
 			if(that.hasOwnProperty('manager'))
 				that.manager.recv(d);
 		});
@@ -78,7 +77,6 @@ GamePeer = function(name, canv){
 			this.manager.input(code, down);
 	}
 	this.join = function(host){
-		this.host = host;
 		this.net.request_connection(host);
 	}
 

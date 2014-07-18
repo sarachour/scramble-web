@@ -171,6 +171,12 @@ NetNode = function(name){
 			}
 		})
 	}
+	this.broadcast_data = function(data){
+		for(var other in this.conns){
+			if(this.conns[other].hasOwnProperty("c"))
+				this.conns[other].c.send(data)
+		}
+	}
 	this.send_data = function(other, data){
 		if(this.conns.hasOwnProperty(other))
 			this.conns[other].c.send(data)

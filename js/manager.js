@@ -5,7 +5,6 @@ TODO: key, steps, queue. play is a continuous loop that waits for more work.
 require(["js/game.js"], function(){
 	ManagerFactory = {
 		unpack: function(pkg,game,net,name, host){
-			console.log(pkg, game);
 			if(pkg.type == "SoloManager"){
 				return new SoloManager(game);
 			}
@@ -27,8 +26,8 @@ require(["js/game.js"], function(){
 				n: 0
 			}
 			*/
-			this.time_chunk = 10; //number of milliseconds to wait before stepping.
-			this.input_chunk = 10; //number of time units per input.
+			this.time_chunk = 16.75; //number of milliseconds to wait before stepping.
+			this.input_chunk = 3; //number of time units per input.
 			this.step_chunk = 1; //smallest unit, amount you step per time unit
 			this._interval= null;
 			this.game = game;
@@ -165,19 +164,37 @@ require(["js/game.js"], function(){
 	}
 	DemocracyManager = function(game, net, name, host){
 		this.init = function(game, net, name, host){
+			this.__proto__.init(game);
+			var that = this;
 			this.net = net;
 			this.host = host;
 			this.name = name;
 			this.is_host = (name == host);
+			if(this.is_host){
+				this.input_loop = new InputLoop(this.game.delay(), 10);
+					this.input_loop.bind(['tick'], "update.tick", function(t){
+					that._trigger('tick', t);
+				});
+				this.input_loop.bind(['update'], "update.upd", function(u){
+					that.update();
+					u.keys = [that.key];
+					that._trigger('update',u);
+				})
+			}
 			this.consensus = {};
-			this.index = 0;
-			this.__proto__.init(game);
+		}
+		this.start = function(){
+			this.__proto__.start();
+			if(this.is_host) this.input_loop.run();
+		}
+		this.update = function(){
+			if(this.is_host) this._consensus();
+			
 		}
 		this.pack = function(){
 			return this.__proto__.pack("DemocracyManager");
 		}
 		this.recv = function(d){
-			console.log("recv:",d);
 			if(d.scmd == "c")
 				this._consensus(d);
 			else if(d.scmd == "k")
@@ -200,9 +217,7 @@ require(["js/game.js"], function(){
 					}
 				}
 				var d = {cmd:"upd", scmd:"c", key:maxc};
-				for(var i=0; i < this.peers.length; i++){
-					this.net.send_data(this.peers[i], d)
-				}
+				this.net.broadcast_data(d);
 				this.consensus = {};
 				this.key = maxc;
 
@@ -210,13 +225,13 @@ require(["js/game.js"], function(){
 			else {
 				this.key = k.key;
 			}
-			this.game.input([{code:this.key, down:true}]);
-			this.game.input([{code:this.key, down:false}]);
-			console.log("idx", this.index);
+			this.game.input([{code:this.key, down:true},{code:this.key, down:false}]);
+			//console.log("idx", this.key);
 			
 		}
 		this._key = function(k){
 			if(!this.is_host){
+				console.log("host?", this.host);
 				this.net.send_data(this.host, {
 					cmd: "upd",
 					scmd: "k",
@@ -230,7 +245,7 @@ require(["js/game.js"], function(){
 			}
 		}
 		this.input = function(code, isdown){
-			if(isdown) this._key(code);
+			if(isdown) this._key({code:code, peer:this.name});
 		}
 		this.init(game, net, name, host);
 	}

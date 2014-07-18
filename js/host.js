@@ -17,8 +17,8 @@ GameHost = function(name,canv){
 		this.net = new NetNode(name);
 		this.game = new Game();
 		this.game.canvas(canv); 
-		this.manager = new SoloManager(this.game);
-		//this.manager = new DemocracyManager(this.game, this.net, this.name, this.name);
+		//this.manager = new SoloManager(this.game);
+		this.manager = new DemocracyManager(this.game, this.net, this.name, this.name);
 
 		this.net.bind(["connect.request"],"allow_or_reject", function(p){
 			var result = window.confirm("Allow "+p.peer+" to connect?");
@@ -26,9 +26,9 @@ GameHost = function(name,canv){
 			else that.net.reject_connection(p.peer);
 		})
 		this.net.bind(["connect.ready"], "send_game", function(p){
-			that.manager.add(p.peer);
 			var pkg = {
 				cmd:"init", 
+				peer: that.name,
 				game:that.game.pack('create'),
 				manager: that.manager.pack()
 			};
