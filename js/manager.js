@@ -298,7 +298,7 @@ require(["js/game.js"], function(){
 			this.keys = [];
 			
 			this.input_loop = new InputLoop(this.game.delay(), 10);
-			/*
+	
 			this.input_loop.bind(['tick'], "update.tick", function(t){
 				that._trigger('tick', t);
 			});
@@ -307,7 +307,7 @@ require(["js/game.js"], function(){
 				that.update();
 				that._trigger('update',u);
 			})
-			*/
+			
 		}
 		this.recv = function(d){
 			this.game.input(d.keys);
