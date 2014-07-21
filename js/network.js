@@ -1,8 +1,8 @@
 
 
 require(["lib/peerjs/peer.min.js", "js/game.js"], function(name){
-//var HOST = "curious-cube.csail.mit.edu";
-var HOST="127.0.0.1"
+var HOST = "curious-cube.csail.mit.edu";
+//var HOST="127.0.0.1"
 var PEERJS_KEY = "peerjs"
 var PEERJS_PORT = 9000
 var HTTP_PORT = 8000
@@ -26,6 +26,7 @@ NetNode = function(name){
 		});
 		
 		this.conns = {};
+		this.streams = {};
 		this.callbacks = {};
 		//connection data
 		this.callbacks["connect.request"] = {};
@@ -34,6 +35,7 @@ NetNode = function(name){
 		this.callbacks["connect.ready"] = {};
 		this.callbacks["connect.kick"] = {};
 		this.callbacks["connect.close"] = {};
+		this.callbacks["stream.call"] = {};
 		this.callbacks["data.recv"] = {};
 		this.callbacks["error"] = {};
 		this._setup();
@@ -87,6 +89,10 @@ NetNode = function(name){
 				delete that.conns[conn.peer];
 				that._trigger("connect.close", {peer:conn.peer});
 			});
+		});
+		this.peer.on('call', function(call) {
+		  // Answer the call, providing our mediaStream
+		  that._trigger("stream.call", call);
 		});
 		this.peer.on('error', function(e){
 			that._trigger("error", e);
@@ -185,7 +191,6 @@ NetNode = function(name){
 	this.recv_data = function(cbk){
 		this.bind(["data.recv"], "RECV", cbk);
 	}
-
 	this.init(name);
 }
 

@@ -56,7 +56,8 @@ require(["js/game.js"], function(){
 			this.queue = [];
 		}
 		this.delay = function(){
-			return this.time_chunk*this.input_chunk;
+			var padding = this.time_chunk*0.1;
+			return this.time_chunk*this.input_chunk+padding;
 		}
 		this.input = function(keys){
 			this.queue.push(keys);
@@ -92,8 +93,6 @@ require(["js/game.js"], function(){
 		  	  		}
 		  	  	}
 		  	  	that.game.step(that.step_chunk);
-		  	  	console.log("INDEX:",that.idx);
-		  	  	that.idx+=1;
 		  	  	that.i = (that.i + 1)%that.input_chunk;
 		  	  }
 
@@ -138,16 +137,20 @@ require(["js/game.js"], function(){
 		}
 		this.run = function(){
 			var that = this;
+			this.CALLBACK = function() {
+				if(that.pause){
+					that._interval = null;
+					return;
+				}
+				that._trigger('tick', {i:that.i, n:that.n_ticks});
+				if(that.i == that.n_ticks-1){
+					that._trigger('update', {});
+				}
+				that.i = (that.i + 1)%that.n_ticks;
+			  	that._interval = setTimeout(that.CALLBACK, that.n/that.n_ticks);
+			}
 			if(this._interval == null){
-				this._interval = setInterval(function() {
-					if(that.pause) return;
-					that._trigger('tick', {i:that.i, n:that.n_ticks});
-					if(that.i == that.n_ticks-1){
-						that._trigger('update', {});
-					}
-					that.i = (that.i + 1)%that.n_ticks;
-				  	  
-				}, this.n/this.n_ticks);
+				this._interval = setTimeout(this.CALLBACK,this.n/this.n_ticks);
 			}
 			this.pause = false;
 		}
@@ -212,7 +215,7 @@ require(["js/game.js"], function(){
 			this.consensus = {};
 		}
 		this.start = function(){
-			this.__proto__.start();
+			//this.__proto__.start();
 			if(this.is_host) this.input_loop.run();
 		}
 		this.stop = function(){
@@ -317,7 +320,7 @@ require(["js/game.js"], function(){
 			if(this.is_host) this.input_loop.run();
 		}
 		this.stop = function(){
-			this.__proto__.stop();
+			//this.__proto__.stop();
 			if(this.is_host) this.input_loop.stop();
 		}
 		this.pack = function(){
@@ -327,9 +330,11 @@ require(["js/game.js"], function(){
 			if(this.is_host) this.keys.push({code:code, down:isdown});
 		}
 		this.update = function(){
-			this.game.input(this.keys);
-			this.net.broadcast_data({cmd:"upd", keys: this.keys});
-			this.keys = []; // input update
+			if(this.is_host){
+				this.game.input(this.keys);
+				this.net.broadcast_data({cmd:"upd", keys: this.keys});
+				this.keys = []; // input update
+			}
 		}
 		this.init(game, net, name, host);
 	}
