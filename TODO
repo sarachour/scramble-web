@@ -1,6 +1,6 @@
 1. Timer: Fix timer for client - start counting from consensus. 
    - Fixed most races, still an out of sync issue.
-   
+   - add timestamps to messages, print to make sure no out of order messaging permitted
 2. Manager
 	- Peerlist from Net.
 	- Shadow chosen keys.

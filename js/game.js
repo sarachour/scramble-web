@@ -75,12 +75,23 @@ define(["js/gbc.js"/*, "js/gba.js"*/], function(){
 		this.input = function(key, isdown){
 			this.emul.input(key, isdown);
 		}
+		this.qsave = function(){
+			this.sav.data = this.emul.save();
+			return this.sav.data;
+		}
 		this.save = function(){
 			this.sav.data = this.emul.save();
+			return this.sav.data;
 		}
 		this.state = function(){
-			this.emul.write(this.sav.data);
+			this.emul.qstate();
+		}
+		this.state = function(){
 			this.emul.state();
+		}
+		this.write = function(data){
+			this.sav.data = data;
+			this.emul.write(data);
 		}
 		this.step = function(n){
 			this.emul.step(n);

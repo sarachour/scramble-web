@@ -20,8 +20,8 @@ require(["js/game.js"], function(){
 		this.init = function(game){
 			this.queue = [];
 			this.n = 0;
-			this.time_chunk = 16.75; //number of milliseconds to wait before stepping.
-			this.input_chunk = 4; //number of time units per input.
+			this.time_chunk = 17; //number of milliseconds to wait before stepping.
+			this.input_chunk = 1; //number of time units per input.
 			this.step_chunk = 1; //smallest unit, amount you step per time unit
 			this._interval= null;
 			this.game = game;
@@ -56,11 +56,27 @@ require(["js/game.js"], function(){
 			this.queue = [];
 		}
 		this.delay = function(){
-			var padding = this.time_chunk*0.1;
-			return this.time_chunk*this.input_chunk+padding;
+			return this.time_chunk*this.input_chunk*5; //get inputs every 5 chunks
 		}
 		this.input = function(keys){
-			this.queue.push(keys);
+			if(keys.length == 0)
+				this.queue.push([]);
+			for(var i=0; i < keys.length; i++)
+				this.queue.push([keys[i]]);
+		}
+		this.sync = function(dat){
+			this.pause = true;
+			this.queue = [];
+			this.game.write(dat);
+			this.game.qstate();
+			this.pause = false;
+		}
+		this.save = function(){
+			this.pause = true;
+			this.queue = [];
+			var sav = this.game.qsave();
+			this.pause = false;
+			return sav;
 		}
 		this.stop = function(){
 			this.pause = true;
@@ -69,36 +85,35 @@ require(["js/game.js"], function(){
 			//run the game loop
 			var that = this;
 			this.CALLBACK = function(){
+				var curr = new Date();
+				var diff = curr.getTime()-that._last.getTime();
+				if(diff < that.time_chunk*0.9){
+					console.log("shortcircuit");
+					that._interval = setTimeout(function(){that.CALLBACK();}, that.time_chunk);
+					return;
+				}
+				else{
+					that._last = curr;
+				}
+				if(that.queue.length > 0 && that.pause == false){
+					var e = that.queue.shift(); //take move
+					this.n++;
+					that._up_keys = [];
+					for(var i=0; i < e.length; i++){
+						that.game.input(e[i].code,e[i].down);
+					}
+					that.game.step(that.step_chunk);
+					that.idx+=1;
+				//console.log("run",that.idx, diff);
+				}
 				if(that.i == that.input_chunk-1){
-			      if(that.queue.length > 0 && that.pause == false && that.game.ready()){
-			      	var e = that.queue.shift(); //take move
-			      	this.n++;
-			      	that._up_keys = [];
-			      	for(var i=0; i < e.length; i++){
-			      		var c= e[i].code;
-			      		if(e[i].down) that.game.input(c,true);
-			      		else that._up_keys.push(c);
-			      	}
-			      	that.game.step(that.step_chunk);
-			      	console.log("INPUT:",that.idx);
-		  	  		that.idx+=1;
-			      	that.i = (that.i + 1)%that.input_chunk;
-			      }
-		  	  }
-		  	  else{
-		  	  	if(Math.floor(that.input_chunk/2) == that.i ){
-		  	  		for(var i=0; i < that._up_keys.length; i++){
-		  	  			var c = that._up_keys[i];
-		  	  			that.game.input(c,false);
-		  	  		}
-		  	  	}
-		  	  	that.game.step(that.step_chunk);
-		  	  	that.i = (that.i + 1)%that.input_chunk;
-		  	  }
-
-		  	  that._interval = setTimeout(function(){that.CALLBACK();}, that.time_chunk)
+					that._trigger('update', {});
+				}
+				that.i = (that.i + 1)%that.input_chunk;
+		  		that._interval = setTimeout(function(){that.CALLBACK();}, that.time_chunk)
 			}
 			if(this._interval == null){
+				that._last = new Date();
 				this._interval = setTimeout(this.CALLBACK, this.time_chunk);
 			}
 			this.pause = false;
@@ -200,13 +215,13 @@ require(["js/game.js"], function(){
 			this.host = host;
 			this.name = name;
 			this.key = [];
+			this.paused = false;
 			this.is_host = (name == host);
 			if(this.is_host){
-				this.input_loop = new InputLoop(this.game.delay(), 10);
-					this.input_loop.bind(['tick'], "update.tick", function(t){
+				this.game.bind(['tick'], "update.tick", function(t){
 					that._trigger('tick', t);
 				});
-				this.input_loop.bind(['update'], "update.upd", function(u){
+				this.game.bind(['update'], "update.upd", function(u){
 					that.update();
 					u.keys = that.key;
 					that._trigger('update',u);
@@ -215,16 +230,16 @@ require(["js/game.js"], function(){
 			this.consensus = {};
 		}
 		this.start = function(){
-			//this.__proto__.start();
-			if(this.is_host) this.input_loop.run();
+			this.__proto__.start();
+			this.paused = false;
 		}
 		this.stop = function(){
-			this.__proto__.stop();
-			if(this.is_host) this.input_loop.stop();
+			this.paused = true;
 		}
 		this.update = function(){
-			if(this.is_host) this._consensus();
-			
+			if(!this.paused) {
+				this._consensus();
+			}
 		}
 		this.pack = function(){
 			return this.__proto__.pack("DemocracyManager");
@@ -234,6 +249,8 @@ require(["js/game.js"], function(){
 				this._consensus(d);
 			else if(d.scmd == "k")
 				this._key(d);
+			else if(d.scmd == "s")
+				this._sync(d)
 		}
 		this._consensus = function(k){
 			if(this.is_host){
@@ -256,12 +273,24 @@ require(["js/game.js"], function(){
 				var d = {cmd:"upd", scmd:"c", key:this.key};
 				this.net.broadcast_data(d);
 				this.consensus = {};
-				this.game.input(this.key);
+				/*
+				if(this.key.length == 0) this.game.input([]);
+				for(var i=0; i < this.key.length; i++){
+					this.game.input([this.key[i]]);
+				}
+				*/
+				this.game.input(this.key)
 
 			}
 			else {
 				this.key = k.key;
-				this.game.input(this.key);
+				/*
+				if(this.key.length == 0) this.game.input([]);
+				for(var i=0; i < this.key.length; i++){
+					this.game.input([this.key[i]]);
+				}
+				*/
+				this.game.input(this.key)
 				this._trigger('update',{keys:this.key});
 			}
 			
@@ -300,12 +329,11 @@ require(["js/game.js"], function(){
 			this.is_host = (name == host);
 			this.keys = [];
 			
-			this.input_loop = new InputLoop(this.game.delay(), 10);
-	
-			this.input_loop.bind(['tick'], "update.tick", function(t){
+			this.paused = false;
+			this.game.bind(['tick'], "update.tick", function(t){
 				that._trigger('tick', t);
 			});
-			this.input_loop.bind(['update'], "update.upd", function(u){
+			this.game.bind(['update'], "update.upd", function(u){
 				u.keys = that.keys;
 				that.update();
 				that._trigger('update',u);
@@ -313,24 +341,25 @@ require(["js/game.js"], function(){
 			
 		}
 		this.recv = function(d){
+			console.log("RECV", d);
 			this.game.input(d.keys);
 		}
 		this.start = function(){
 			this.__proto__.start();
-			if(this.is_host) this.input_loop.run();
+			this.paused = false;
 		}
 		this.stop = function(){
 			//this.__proto__.stop();
-			if(this.is_host) this.input_loop.stop();
+			this.paused = true;
 		}
 		this.pack = function(){
 			return this.__proto__.pack("WatchManager");
 		}
 		this.input = function(code, isdown){
-			if(this.is_host) this.keys.push({code:code, down:isdown});
+			if(this.is_host && !this.paused) this.keys.push({code:code, down:isdown});
 		}
 		this.update = function(){
-			if(this.is_host){
+			if(this.is_host && !this.paused){
 				this.game.input(this.keys);
 				this.net.broadcast_data({cmd:"upd", keys: this.keys});
 				this.keys = []; // input update

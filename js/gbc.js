@@ -39,6 +39,9 @@ GameboyColorView = function(){
 		this.gbc.iterations = 0;
 		
 	}
+	this.stop = function(){
+		
+	}
 	this.clock = function(){
 		return 0;
 	}
@@ -73,6 +76,14 @@ GameboyColorView = function(){
 		if(s.hasOwnProperty("st"))
 			this.sram.st = s.st;
 	}
+
+	//fixme
+	this.qstate = function(){
+		this.gbc.stopEmulator &= 1;
+		this.gbc.returnFromState(this.sram.st);
+		this.gbc.returnFromRTCState(this.sram.rtc);
+		//this.step(1);
+	}
 	this.state = function(){
 		var that = this;
 		this.start();
@@ -80,6 +91,10 @@ GameboyColorView = function(){
 		this.gbc.returnFromState(this.sram.st);
 		this.gbc.returnFromRTCState(this.sram.rtc);
 		//this.step(1);
+	}
+	this.qsave = function(){
+		this.sram.st = this.gbc.saveState();
+		return {st:this.sram.st};
 	}
 	this.save = function(){
 		//this.sram = {};
@@ -89,6 +104,7 @@ GameboyColorView = function(){
 
 		return {mem: this.sram.mem, rtc: this.sram.rtc, st:this.sram.st};
 	}
+	
 	this.controls = function(){
 		return {
 			svg: "res/image/gbc.svg",
