@@ -41,10 +41,11 @@ function handleInput(e, isdown){
 	if(globals.peer != null){
 		var ctrl = globals.peer.controls();
 		if(ctrl != null){
-			var entry = ctrl.map(code);
-			if(entry != null){
+			var name = ctrl.map[code];
+			if(name != undefined){
+				var entry = ctrl.keys[name];
 				var img = "#"+entry.image.on;
-				globals.peer.input(entry.code, isdown);
+				globals.peer.input(name, isdown);
 				if(isdown) $(img).show();
 				else $(img).hide();
 	  			return false;

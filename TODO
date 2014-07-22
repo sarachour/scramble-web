@@ -1,3 +1,12 @@
+# Big Refactor
+1. Peers are transparent 
+	-> On connect, setup controls
+	
+2. Clients are opaque - full emulator. On connect -> transfer control info.
+	-> On connect, transfer control info
+	-> On update, transfer canvas, music
+
+----
 1. Timer: Fix timer for client - start counting from consensus. 
    - Fixed most races, still an out of sync issue.
    - add timestamps to messages, print to make sure no out of order messaging permitted

@@ -1,11 +1,48 @@
 
 define(["js/gbc.js"/*, "js/gba.js"*/], function(){
+	SkinnyGame = function(canv){
+		this.init = function(canv){
+			this.targ = canv; 
+			//canv
+			this.canv = document.createElement('canvas');
+			this.cctx = this.canv.getContext('2d')
+			//set minimum size
+			var minsiz = this.targ.width < this.targ.height ? this.targ.width : this.targ.height;
+			this.targ.width = minsiz;
+			this.targ.height = minsiz;
+			this.tctx = this.targ.getContext('2d')
+		}
+		this.setDimensions = function(dim){
+			this.dims = dim;
+			this.canv.width = this.dims.w;
+			this.canv.height = this.dims.h;
+			this.cctx = this.canv.getContext('2d')
+		}
+		this.setControls = function(ctrls){
+			this.ctrls = ctrls;
+		}
+		this.show = function(fb){
+			var imgData=this.cctx.getImageData(0,0,this.canv.width,this.canv.height);
+			var idatView= new Uint8ClampedArray(imgData.data);
+			var fbu8 = new Uint8ClampedArray(fb);
+			for(var i=0; i < imgData.data.length; i++){
+				imgData.data[i] = fbu8[i];
+			}
+			imgData.data.set(fbu8);
+			this.cctx.putImageData(imgData,0,0);
+			this.tctx.drawImage(this.canv, 0, 0, this.targ.width, this.targ.height);
+		}
+		this.controls = function(){
+			return this.ctrls;
+		}
+		this.init(canv);
+	}
+
 	Game = function(){
 		this.init = function(){
 			this.type = null;
 			this.game = {};
 			this.sav = {};
-			this.qsav = null; //a quick save after performing a batter save.
 			this.emul = null;
 		}
 		this.canvas = function(c){
@@ -17,74 +54,15 @@ define(["js/gbc.js"/*, "js/gba.js"*/], function(){
 			else
 				return null;
 		}
-		this.pack = function(cmd, n, keys){
-			this.save();
-			if(cmd == "create")
-				return {
-					cmd: "create",
-					type: this.type,
-					game: {
-						info: this.game.info,
-						data: this.game.data
-					},
-					save: {
-						data: this.sav.data
-					}
-				}
-			else if(cmd == "sync")
-				return {
-					cmd: "sync",
-					save: this.sav.data
-				}
-			else if(cmd == "qsync")
-				return {
-					cmd: "qsync",
-					save: this.qsav
-				}
-			else if(cmd == "step")
-				return {
-					cmd: "step",
-					n: n,
-					keys: keys
-				}
-		}
-		this.unpack = function(dat){
-			if(dat.cmd == "create"){
-				this.game.info = dat.game.info;
-				this.game.data = dat.game.data;
-				this.sav.data = dat.save.data;
-				this.type = dat.type;
-				if(dat.type == "gbc"){
-					this.emul = new GameboyColorView();
-					this.emul.create(this.canv);
-					this.emul.load(this.game.data);
-					this.emul.write(this.sav.data);
-					this.emul.state();
-				}
-				else if(dat.type == "gba"){
-
-				}
-			}
-		}
-		this.ready = function(){
-			return this.emul.ready();
-		}
-		this.clock = function(){
-			return this.emul.clock();
+		this.dimensions = function(){
+			return this.emul.dimensions();
 		}
 		this.input = function(key, isdown){
 			this.emul.input(key, isdown);
 		}
-		this.qsave = function(){
-			this.sav.data = this.emul.save();
-			return this.sav.data;
-		}
 		this.save = function(){
 			this.sav.data = this.emul.save();
 			return this.sav.data;
-		}
-		this.state = function(){
-			this.emul.qstate();
 		}
 		this.state = function(){
 			this.emul.state();
@@ -95,6 +73,9 @@ define(["js/gbc.js"/*, "js/gba.js"*/], function(){
 		}
 		this.step = function(n){
 			this.emul.step(n);
+		}
+		this.screen = function(){
+			return this.emul.screen();
 		}
 		this.create = function(rom, save){
 			var name = rom.f.name;

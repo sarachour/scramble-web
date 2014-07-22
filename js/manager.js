@@ -51,32 +51,17 @@ require(["js/game.js"], function(){
 				this.callbacks[evt][n](args);
 			}
 		}
-
-		this.clear = function(){
-			this.queue = [];
-		}
-		this.delay = function(){
-			return this.time_chunk*this.input_chunk*5; //get inputs every 5 chunks
-		}
 		this.input = function(keys){
-			if(keys.length == 0)
-				this.queue.push([]);
-			for(var i=0; i < keys.length; i++)
-				this.queue.push([keys[i]]);
+			if(keys.length == 0) this.queue.push([]);
+			else{
+				for(var i=0; i < keys.length; i++){
+					this.queue.push([keys[i]]);
+				}
+			}
+			
 		}
-		this.sync = function(dat){
-			this.pause = true;
-			this.queue = [];
-			this.game.write(dat);
-			this.game.qstate();
-			this.pause = false;
-		}
-		this.save = function(){
-			this.pause = true;
-			this.queue = [];
-			var sav = this.game.qsave();
-			this.pause = false;
-			return sav;
+		this.getFrameBuffer = function(){
+			return this.game.screen();
 		}
 		this.stop = function(){
 			this.pause = true;
@@ -85,25 +70,13 @@ require(["js/game.js"], function(){
 			//run the game loop
 			var that = this;
 			this.CALLBACK = function(){
-				var curr = new Date();
-				var diff = curr.getTime()-that._last.getTime();
-				if(diff < that.time_chunk*0.9){
-					console.log("shortcircuit");
-					that._interval = setTimeout(function(){that.CALLBACK();}, that.time_chunk);
-					return;
-				}
-				else{
-					that._last = curr;
-				}
 				if(that.queue.length > 0 && that.pause == false){
 					var e = that.queue.shift(); //take move
 					this.n++;
-					that._up_keys = [];
 					for(var i=0; i < e.length; i++){
 						that.game.input(e[i].code,e[i].down);
 					}
 					that.game.step(that.step_chunk);
-					that.idx+=1;
 				//console.log("run",that.idx, diff);
 				}
 				if(that.i == that.input_chunk-1){
@@ -113,63 +86,11 @@ require(["js/game.js"], function(){
 		  		that._interval = setTimeout(function(){that.CALLBACK();}, that.time_chunk)
 			}
 			if(this._interval == null){
-				that._last = new Date();
 				this._interval = setTimeout(this.CALLBACK, this.time_chunk);
 			}
 			this.pause = false;
 		}
 		this.init(game);
-	}
-	InputLoop = function(n, nticks){
-		this.init = function(n, nticks){
-			this._interval = null;
-			this.n_ticks = nticks;
-			this.n = n;
-			this.i = 0;
-			this.callbacks = {};
-			this.callbacks['tick'] = {};
-			this.callbacks['update'] = {};
-			this.pause = false;
-		}
-		this.bind = function(evts, name, cbk){
-			for(var i=0; i < evts.length; i++){
-				this.callbacks[evts[i]][name] = cbk;
-			}
-		}
-		this.unbind = function(evts, name){
-			for(var i=0; i < evts.length; i++){
-				delete this.callbacks[evts[i]][name];
-			}
-		}
-		this._trigger = function(evt, args){
-			args.EVENT = evt;
-			for(var n in this.callbacks[evt]){
-				this.callbacks[evt][n](args);
-			}
-		}
-		this.stop = function(){
-			this.pause = true;
-		}
-		this.run = function(){
-			var that = this;
-			this.CALLBACK = function() {
-				if(that.pause){
-					that._interval = null;
-					return;
-				}
-				that._trigger('tick', {i:that.i, n:that.n_ticks});
-				if(that.i == that.n_ticks-1){
-					that._trigger('update', {});
-				}
-				that.i = (that.i + 1)%that.n_ticks;
-			  	that._interval = setTimeout(that.CALLBACK, that.n/that.n_ticks);
-			}
-			if(this._interval == null){
-				this._interval = setTimeout(this.CALLBACK,this.n/this.n_ticks);
-			}
-			this.pause = false;
-		}
-		this.init(n, nticks);
 	}
 	Manager = function(game){
 		this.init = function(game){
@@ -322,7 +243,7 @@ require(["js/game.js"], function(){
 	WatchManager = function(game, net, name, host) {
 		this.init = function(game, net, name, host){
 			var that = this;
-			this.__proto__.init(game);
+			
 			this.net = net;
 			this.host = host;
 			this.name = name;
@@ -330,19 +251,25 @@ require(["js/game.js"], function(){
 			this.keys = [];
 			
 			this.paused = false;
-			this.game.bind(['tick'], "update.tick", function(t){
-				that._trigger('tick', t);
-			});
-			this.game.bind(['update'], "update.upd", function(u){
-				u.keys = that.keys;
-				that.update();
-				that._trigger('update',u);
-			})
+			if(this.is_host){
+				this.__proto__.init(game);
+				this.game.bind(['tick'], "update.tick", function(t){
+					that._trigger('tick', t);
+				});
+				this.game.bind(['update'], "update.upd", function(u){
+					u.keys = that.keys;
+					that.update();
+					that._trigger('update',u);
+				})
+			}
+			else {
+				this.game = game;
+			}
 			
 		}
 		this.recv = function(d){
 			console.log("RECV", d);
-			this.game.input(d.keys);
+			this.game.show(d.fb);
 		}
 		this.start = function(){
 			this.__proto__.start();
@@ -356,12 +283,13 @@ require(["js/game.js"], function(){
 			return this.__proto__.pack("WatchManager");
 		}
 		this.input = function(code, isdown){
-			if(this.is_host && !this.paused) this.keys.push({code:code, down:isdown});
+			if(this.is_host && !this.paused) 
+				this.keys.push({code:code, down:isdown});
 		}
 		this.update = function(){
 			if(this.is_host && !this.paused){
 				this.game.input(this.keys);
-				this.net.broadcast_data({cmd:"upd", keys: this.keys});
+				this.net.broadcast_data({cmd:"upd", keys: this.keys, fb: this.game.getFrameBuffer()});
 				this.keys = []; // input update
 			}
 		}
@@ -379,40 +307,6 @@ require(["js/game.js"], function(){
 	ScatterManager = function(host, plist, game){
 
 	}
-	WatchManager.prototype = new Manager();
-	//play a solo game
-	SoloManager = function(game) {
-		this.init = function(game){
-			var that = this;
-			this.__proto__.init(game);
-			this.keys = [];
-			this.input_loop = new InputLoop(this.game.delay(), 10);
-			this.input_loop.bind(['tick'], "update.tick", function(t){
-				that._trigger('tick', t);
-			});
-			this.input_loop.bind(['update'], "update.upd", function(u){
-				that.update();
-				that._trigger('update',u);
-			})
-		}
-		this.start = function(){
-			this.__proto__.start();
-			this.input_loop.run();
-		}
-		this.pack = function(){
-			return this.__proto__.pack("SoloManager");
-		}
-		this.input = function(code, isdown){
-			this.keys.push({code:code, down:isdown});
-		}
-		this.update = function(){
-			this.game.clear();
-			this.game.input(this.keys);
-			this.keys = []; // input update
-		}
-		this.init(game);
-	}
-	SoloManager.prototype = new Manager();
 	//Scheme: 
 	RoundRobinManager = function(host, plist, game){
 

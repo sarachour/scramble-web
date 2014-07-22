@@ -30,10 +30,11 @@ GameHost = function(name,canv){
 			var pkg = {
 				cmd:"init", 
 				peer: that.name,
-				game:that.game.pack('create'),
+				controls:that.game.controls(),
+				dimensions: that.game.dimensions(),
 				manager: that.manager.pack()
 			};
-			console.log("Sending Game");
+			console.log("Sending Controls");
 			that.net.send_data(p.peer, pkg);
 
 		})

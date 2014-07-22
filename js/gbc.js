@@ -12,17 +12,29 @@ GameboyColorView = function(){
 		this.sram.rtc = [];
 		this.sram.mem = [];
 
+		this.canv = document.createElement('canvas');
+		this.targ = null;
 		this.iterations = 0;
 
 	}
+	this.dimensions = function(){
+		return {w: 160, h: 144};
+	}
 	this.create = function(canv){
-		this.canv = canv;
-		var minsiz = this.canv.width < this.canv.height ? this.canv.width : this.canv.height;
-		this.canv.height = minsiz;
-		this.canv.width = minsiz;
+		this.targ = canv;
+		var minsiz = this.targ.width < this.targ.height ? this.targ.width : this.targ.height;
+		this.targ.width = minsiz;
+		this.targ.height = minsiz;
+		this.tctx = this.targ.getContext('2d')
+		this.canv.width = this.dimensions().w;
+		this.canv.height = this.dimensions().h;
+		this.cctx = this.canv.getContext('2d');
 	}
 	this.load = function(rdata){
 		this.rom = rdata;
+	}
+	this.screen = function(){
+		return this.cctx.getImageData(0,0,this.dimensions().w,this.dimensions().h).data;
 	}
 	this.start = function(){
 		var that = this;
@@ -39,32 +51,19 @@ GameboyColorView = function(){
 		this.gbc.iterations = 0;
 		
 	}
-	this.stop = function(){
-		
-	}
-	this.clock = function(){
-		return 0;
-	}
-	this.ready = function() {
-		//return ((this.gbc.stopEmulator & 2) == 0);
-		return true;
-	}
 
-	this.step = function(n){
+	this.step = function(){
 		var that = this;
 		this.i = 0;
-
-		for(var i=0; i < n; i++){
-			that.gbc.run();
-			this.iterations+=1;
-		}
+		that.gbc.run();
+		this.tctx.drawImage(this.canv, 0, 0, this.targ.width, this.targ.height);
 		//this.gbc.handleSTOP();
 	}
 
 	this.input = function(key, down){
 		var idx = this.keymap.indexOf(key);
-		this.gbc.handleSTOP();
 		if(idx >= 0){
+			this.gbc.handleSTOP();
 			this.gbc.JoyPadEvent(idx, down);
 		}
 	}
@@ -77,13 +76,6 @@ GameboyColorView = function(){
 			this.sram.st = s.st;
 	}
 
-	//fixme
-	this.qstate = function(){
-		this.gbc.stopEmulator &= 1;
-		this.gbc.returnFromState(this.sram.st);
-		this.gbc.returnFromRTCState(this.sram.rtc);
-		//this.step(1);
-	}
 	this.state = function(){
 		var that = this;
 		this.start();
@@ -91,10 +83,6 @@ GameboyColorView = function(){
 		this.gbc.returnFromState(this.sram.st);
 		this.gbc.returnFromRTCState(this.sram.rtc);
 		//this.step(1);
-	}
-	this.qsave = function(){
-		this.sram.st = this.gbc.saveState();
-		return {st:this.sram.st};
 	}
 	this.save = function(){
 		//this.sram = {};
@@ -104,63 +92,47 @@ GameboyColorView = function(){
 
 		return {mem: this.sram.mem, rtc: this.sram.rtc, st:this.sram.st};
 	}
-	
 	this.controls = function(){
 		return {
 			svg: "res/image/gbc.svg",
-			map: function(code){
-				for(var k in this.keys){
-					var ky = this.keys[k];
-					if(ky.map == code){
-						return ky;
-					}
-				}
-				return null;
-			},
+			map: {
+					right: "right",
+					left: "left",
+					up: "up",
+					down: "down",
+					s: "a",
+					a: "b",
+					w: "select",
+					q: "start"
+				},
 			keys: {
 				right: {
-					map:"right",
-					code:"right",
 					description: "move right.",
 					image: {on:"right_on", off:"right_off", out:"right_out"}
 				},
 				left: {
-					map:"left",
-					code:"left",
 					description: "move left.",
 					image: {on:"left_on", off:"left_off", out:"left_out"}
 				},
 				up: {
-					map:"up",
-					code:"up",
 					description: "move up.",
 					image: {on:"up_on", off:"up_off", out:"up_out"}
 				},
 				down: {
-					map:"down",
-					code:"down",
 					description: "move down.",
 					image: {on:"down_on", off:"down_off", out:"down_out"}
 				},
 				a: {
-					map: "s",
-					code:"a",
 					description: "a button.",
 					image: {on:"a_on", off:"a_off", out:"a_out"}
 				},
 				b: {
-					map: "a",
-					code:"b",
 					image: {on:"b_on", off:"b_off", out:"b_out"}
 				},
 				select: {
-					map: "w",
-					code: "select",
 					image: {on:"sel_on", off:"sel_off", out:"sel_out"}
 				},
 				start: {
-					map: "q",
-					code: "start",
 					image: {on:"start_on", off:"start_off", out:"start_out"}
 				}
 			}

@@ -12,9 +12,8 @@ GamePeer = function(name, canv){
 	this.init = function(name,canv){
 		var that = this;
 		this.name = name;
-		this.game = new Game();
-		this.game.canvas(canv);
 		this.net = new NetNode(name);
+		this.game = new SkinnyGame(canv);
 		this.net.bind(["connect.accept","connect.reject", "error"], "print", function(p){
 			console.log("MSG:", p);
 		})
@@ -22,7 +21,8 @@ GamePeer = function(name, canv){
 			that._trigger(["update.host.status"],  p);
 		})
 		this.net.bind_data(['init'], "init_game", function(d){
-			that.game.unpack(d.game);
+			that.game.setDimensions(d.dimensions);
+			that.game.setControls(d.controls);
 			that.manager = ManagerFactory.unpack(d.manager,that.game, that.net, that.name, d.peer);
 			that.manager.start();
 			//bind manager callbacks
