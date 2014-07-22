@@ -270,6 +270,7 @@ require(["js/game.js"], function(){
 		this.recv = function(d){
 			console.log("RECV", d);
 			this.game.show(d.fb);
+			this._trigger('update',{keys:d.keys});
 		}
 		this.start = function(){
 			this.__proto__.start();

@@ -1,10 +1,5 @@
 # Big Refactor
-1. Peers are transparent 
-	-> On connect, setup controls
-	
-2. Clients are opaque - full emulator. On connect -> transfer control info.
-	-> On connect, transfer control info
-	-> On update, transfer canvas, music
+3. Up/down compounding keys again
 
 ----
 1. Timer: Fix timer for client - start counting from consensus. 
