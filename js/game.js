@@ -3,6 +3,7 @@ define(["js/gbc.js"/*, "js/gba.js"*/], function(){
 	SkinnyGame = function(canv){
 		this.init = function(canv){
 			this.targ = canv; 
+			this.type = "SkinnyGame"
 			//canv
 			this.canv = document.createElement('canvas');
 			this.cctx = this.canv.getContext('2d')
@@ -11,6 +12,7 @@ define(["js/gbc.js"/*, "js/gba.js"*/], function(){
 			this.targ.width = minsiz;
 			this.targ.height = minsiz;
 			this.tctx = this.targ.getContext('2d')
+			this.paused =false;
 		}
 		this.setDimensions = function(dim){
 			this.dims = dim;
@@ -22,6 +24,7 @@ define(["js/gbc.js"/*, "js/gba.js"*/], function(){
 			this.ctrls = ctrls;
 		}
 		this.show = function(fb){
+			if(this.paused) return;
 			var imgData=this.cctx.getImageData(0,0,this.canv.width,this.canv.height);
 			var idatView= new Uint8ClampedArray(imgData.data);
 			var fbu8 = new Uint8ClampedArray(fb);
@@ -31,6 +34,12 @@ define(["js/gbc.js"/*, "js/gba.js"*/], function(){
 			imgData.data.set(fbu8);
 			this.cctx.putImageData(imgData,0,0);
 			this.tctx.drawImage(this.canv, 0, 0, this.targ.width, this.targ.height);
+		}
+		this.run = function(){
+			this.paused = false;
+		}
+		this.stop = function(){
+			this.paused = true;
 		}
 		this.controls = function(){
 			return this.ctrls;

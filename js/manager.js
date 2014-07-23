@@ -98,7 +98,13 @@ require(["js/game.js"], function(){
 	}
 	Manager = function(game){
 		this.init = function(game){
-			this.game = new PlayLoop(game);
+			//if we're skinny, don't run a gameloop
+			if(game == null) return;
+			if(game.type == "SkinnyGame")
+				this.game = game;
+			else
+				this.game = new PlayLoop(game);
+
 			this.callbacks = {};
 			this.callbacks['tick'] = {};
 			this.callbacks['update'] = {};
@@ -136,14 +142,18 @@ require(["js/game.js"], function(){
 		this.init = function(game, net, name, host){
 			this.__proto__.init(game);
 			var that = this;
+
 			this.net = net;
 			this.host = host;
 			this.name = name;
+			this.is_host = (name == host);
+
 			this.key = [];
 			this.paused = false;
-			this.is_host = (name == host);
+
 			if(this.is_host){
 				this.game.bind(['tick'], "update.tick", function(t){
+					that.net.broadcast_data({cmd:"upd", scmd:"d", fb: that.game.getFrameBuffer()});
 					that._trigger('tick', t);
 				});
 				this.game.bind(['update'], "update.upd", function(u){
@@ -159,6 +169,7 @@ require(["js/game.js"], function(){
 			this.paused = false;
 		}
 		this.stop = function(){
+			this._proto_.stop();
 			this.paused = true;
 		}
 		this.update = function(){
@@ -170,7 +181,9 @@ require(["js/game.js"], function(){
 			return this.__proto__.pack("DemocracyManager");
 		}
 		this.recv = function(d){
-			if(d.scmd == "c")
+			if(d.scmd == "d")
+				this.game.show(d.fb);
+			else if(d.scmd == "c")
 				this._consensus(d);
 			else if(d.scmd == "k")
 				this._key(d);
@@ -198,24 +211,11 @@ require(["js/game.js"], function(){
 				var d = {cmd:"upd", scmd:"c", key:this.key};
 				this.net.broadcast_data(d);
 				this.consensus = {};
-				/*
-				if(this.key.length == 0) this.game.input([]);
-				for(var i=0; i < this.key.length; i++){
-					this.game.input([this.key[i]]);
-				}
-				*/
 				this.game.input(this.key)
 
 			}
 			else {
 				this.key = k.key;
-				/*
-				if(this.key.length == 0) this.game.input([]);
-				for(var i=0; i < this.key.length; i++){
-					this.game.input([this.key[i]]);
-				}
-				*/
-				this.game.input(this.key)
 				this._trigger('update',{keys:this.key});
 			}
 			
@@ -246,8 +246,8 @@ require(["js/game.js"], function(){
 	
 	WatchManager = function(game, net, name, host) {
 		this.init = function(game, net, name, host){
+			this.__proto__.init(game);
 			var that = this;
-			
 			this.net = net;
 			this.host = host;
 			this.name = name;
@@ -256,7 +256,7 @@ require(["js/game.js"], function(){
 			
 			this.paused = false;
 			if(this.is_host){
-				this.__proto__.init(game);
+				
 				this.game.bind(['tick'], "update.tick", function(t){
 					that.net.broadcast_data({cmd:"upd", subcmd:"d", fb: that.game.getFrameBuffer()});
 					that._trigger('tick', t);
@@ -266,9 +266,6 @@ require(["js/game.js"], function(){
 					that.update();
 					that._trigger('update',u);
 				})
-			}
-			else {
-				this.game = game;
 			}
 			
 		}
