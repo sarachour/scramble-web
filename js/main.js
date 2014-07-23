@@ -408,6 +408,22 @@ function setupWizard(){
    		globals.info.manager = "WatchManager"; 
    		globals.info.stage4h();
    	});
+   $("#democracy").click(function(){
+   		globals.info.manager = "DemocracyManager"; 
+   		globals.info.stage4h();
+   	});
+   $("#anarchy").click(function(){
+   		globals.info.manager = "AnarchyManager"; 
+   		globals.info.stage4h();
+   	});
+   $("#liberty").click(function(){
+   		globals.info.manager = "ScatterManager"; 
+   		globals.info.stage4h();
+   	});
+   $("#communism").click(function(){
+   		globals.info.manager = "CarouselManager"; 
+   		globals.info.stage4h();
+   	});
 
    $( "#game-styles" ).addClass( "ui-tabs-vertical ui-helper-clearfix scramble-rounded" );
     $( "#game-styles li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
