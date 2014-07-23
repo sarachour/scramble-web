@@ -8,8 +8,8 @@ step: execute key for step - all peers step
 
 */
 require(["js/network.js", "js/game.js"], function(){
-GamePeer = function(name, canv){
-	this.init = function(name,canv){
+GamePeer = function(name, color, canv){
+	this.init = function(name,color,canv){
 		var that = this;
 		this.name = name;
 		this.net = new NetNode(name);
@@ -44,6 +44,9 @@ GamePeer = function(name, canv){
 		this.callbacks["game.init"] = {};
 		this.callbacks["game.tick"] = {};
 		this.callbacks["game.update"] = {};
+	}
+	this.close = function(){
+		this.net.close();
 	}
 	this.controls = function(){
 		return this.game.controls();
@@ -80,6 +83,6 @@ GamePeer = function(name, canv){
 		this.net.request_connection(host);
 	}
 
-	this.init(name,canv);
+	this.init(name,color,canv);
 }
 })

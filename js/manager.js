@@ -5,13 +5,13 @@ TODO: key, steps, queue. play is a continuous loop that waits for more work.
 require(["js/game.js"], function(){
 	ManagerFactory = {
 		unpack: function(pkg,game,net,name, host){
-			if(pkg.type == "SoloManager"){
+			if(pkg == "SoloManager"){
 				return new SoloManager(game);
 			}
-			else if(pkg.type == "DemocracyManager"){
+			else if(pkg == "DemocracyManager"){
 				return new DemocracyManager(game, net,name, host)
 			}
-			else if(pkg.type == "WatchManager"){
+			else if(pkg == "WatchManager"){
 				return new WatchManager(game, net,name, host)
 			}
 		}
@@ -110,9 +110,7 @@ require(["js/game.js"], function(){
 			this.callbacks['update'] = {};
 		}
 		this.pack = function(type){
-			return {
-				type: type
-			}
+			return type;
 		}
 		this.start = function(){
 			this.game.run();

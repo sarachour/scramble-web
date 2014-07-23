@@ -10,10 +10,11 @@ step: execute key for step - all peers step
 define(["js/network.js", "js/game.js",  "js/manager.js"], function(){
 
 
-GameHost = function(name,canv){
-	this.init = function(name,canv){
+GameHost = function(name, color,canv){
+	this.init = function(name,color,canv){
 		var that = this;
 		this.name = name;
+		this.color = color;
 		this.net = new NetNode(name);
 		this.game = new Game();
 		this.game.canvas(canv); 
@@ -63,6 +64,12 @@ GameHost = function(name,canv){
 		this.callbacks["game.tick"] = {};
 		this.callbacks["game.update"] = {};
 	}
+	this.setManager = function(name){
+		that.manager = ManagerFactory.unpack(name,that.game, that.net, that.name, d.peer);
+	}
+	this.close = function(){
+		this.net.close();
+	}
 	this.controls = function(){
 		return this.game.controls();
 	}
@@ -100,7 +107,7 @@ GameHost = function(name,canv){
 		this.manager.stop();
 	}
 
-	this.init(name,canv);
+	this.init(name,color,canv);
 }
 
 

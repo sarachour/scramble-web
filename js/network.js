@@ -191,6 +191,9 @@ NetNode = function(name){
 	this.recv_data = function(cbk){
 		this.bind(["data.recv"], "RECV", cbk);
 	}
+	this.close = function(){
+		this.peer.destroy();
+	}
 	this.init(name);
 }
 
