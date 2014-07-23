@@ -98,7 +98,7 @@ function setupTimer(){
 function setupMain(){
 	
 	$("#main").layout({resize:false});
-	$(".centered").center();
+	$(".scramble-centered").center();
 
 	$("#game,#controls-container").keydown( function(e) {
 	  return handleInput(e,true);
@@ -216,11 +216,11 @@ function createPeer(name){
 			}
 		});
 		
-		$(".centered").center();
+		$(".scramble-centered").center();
 	})
 
 	$("#setup").fadeOut(200);
-	$(".centered").center();
+	$(".scramble-centered").center();
 }
 
 function initBoth(){
@@ -256,10 +256,19 @@ function setupWizard(){
 	}
 
    $("#host", $("#setup")).hide();
+   
+   $("#color-chooser").farbtastic(function(col){
+   		console.log("changed color!", col);
+   		$(".scramble-game-color").css("background-color", col);
+   });
 
-	$('input[name="game-type"]:radio').change(function(v){
-		console.log("changed",this.value);
-		if(this.value == "make"){
+   $("#game-mode").toggleSwitch({
+	  highlight: true, // default
+	  width: 25, // default
+	  change: function(evt, e) {
+	    // default null
+	    val = e.value;
+	    if(val == 0){
 			$("#client", $("#setup")).fadeOut(200, function(){
 				$("#host", $("#setup")).fadeIn(200);
 			});
@@ -271,7 +280,9 @@ function setupWizard(){
 			});
 			
 		}
-	});
+	  }
+	})
+
 
 	$("#ok", $("#setup")).click(function(){
 		var name = $("#peer-name", $("#setup")).val();

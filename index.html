@@ -1,6 +1,9 @@
 <head>
-
+<link rel="stylesheet" href="css/jquery.ui.css" />
+<link rel="stylesheet" href="css/delta.jquery.ui.css" />
 <link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/farbtastic.css" />
+
 <!--
 <script src="lib/jquery/jquery-1.10.2.js"></script>
 <script src="lib/jquery/jquery-ui-1.10.4.min.js"></script>
@@ -11,27 +14,40 @@
 -->
 <script data-main="js/main.js" src="lib/requirejs/require.js"></script>
 </head>
-<body>
-<div id="setup" class="overlay black white-text thick-border text">
-	<div id="general" class="left-half">
-		<div style='height:25%; width:100%;'>
-			<h1>Setup</h1>
+<body class="scramble-black">
+<div id="setup" class="scramble-overlay scramble-black scramble-thick-border">
+	<div id="general" class="scramble-left-half scramble-white-text">
+		<div style='height:15%; width:100%;'>
+			<h1>SETUP</h1>
 		</div>
-		<div><input id="peer-name" type='text' placeholder='nickname'></input></div>
-		<div class="med-text"><input type="radio" name="game-type" value="join" checked>Join Game</div>
-		<div class="med-text"><input type="radio" name="game-type" value="make">Host Game</div>
+		<h3>GENERAL</h3>
+		<div class="scramble-darkgrey scramble-wide scramble-rounded" style="height:230px;">
+			<div style="position:relative;top:-50px;left:10px;display:inline-block; width:300px;">
+				<input  style="top:10px; left:10px;" id="peer-name" type='text' placeholder='nickname'></input>	
+				<div  style="bottom:15px; left:10px;" class="scramble-text scramble-small" id="peer-name">
+					Welcome to Scramble! Please select a name and color. Other members of the game you join will be able to easily 
+					identify you.
+				</div>
+			</div>
+			<div style="position:relative;display:inline-block; right:-20px;"><div id="color-chooser"></div></div>
+		</div>
+		<select id="game-mode">
+			<option value="host">Host</option>
+			<option value="join">Join</option>
+		</select>
+
 	</div>
-	<div id="details" class="right-half white black-text">
+	<div id="details" class="scramble-right-half scramble-white">
 		<div id="client" >
 			<div id="name" style='height:25%; width:100%;'>
-				<h1>Client</h1>
+				<h1>CLIENT</h1>
 			</div>
 			<div><input id="host-name" type='text' placeholder='host nickname'></input></div>
 		</div>
 
 		<div id="host">
 			<div id="name" style='height:25%; width:100%;'>
-				<h1>Host</h1>
+				<h1>HOST</h1>
 			</div>
 			<div>
 				<h3>Upload Game</h3>
@@ -44,16 +60,16 @@
 				<output id="save-out"></output>
 			</div>
 		</div>
-		<div class="bottom-right black-text">
+		<div class="scramble-bottom-right">
 			<button id="ok">Done</button>
 		</div>
 	</div>
 </div>
-<div id="main" data-layout='{"type": "border", "hgap": 3, "vgap": 3}' class='main'>
-	<div id="title" class="north text">
+<div id="main" data-layout='{"type": "border", "hgap": 3, "vgap": 3}' class='scramble-main scramble-black'>
+	<div id="title" class="north scramble-white scramble-black-text">
 		<h1>Scramble Collaborative Retro Emulator</h1>
 	</div>
-	<div id="menu" class="west blue rounded">
+	<div id="menu" class="west">
 		<div id="host-menu">
 		host menu
 		</div>
@@ -61,7 +77,7 @@
 
 		</div>
 	</div>
-	<div id="players" class="east green rounded">
+	<div id="players" class="east">
 		<table id="peer-list" class="wide">
 		<tr><td>Name</td></tr>
 		</table>
@@ -69,10 +85,10 @@
 		<tr><td>Name</td><td>Kick</td></tr>
 		</table>
 	</div>
-	<div id="game" class="center black rounded thick-border" tabindex="0">
-		<canvas id="screen" width="480" height="320" class="white viewport centered thick-border rounded"></canvas>
+	<div id="game" class="center scramble-rounded scramble-darkgrey" tabindex="0" >
+		<canvas id="screen" width="480" height="320" class="scramble-viewport scramble-centered"></canvas>
 	</div>
-	<div id="controls-container" class="south black rounded" tabindex="1">
+	<div id="controls-container" class="south scramble-rounded scramble-game-color" tabindex="1">
 		<div style="position: relative; width: 50%; left: 25%; height: 90%; top:5%;">
 			<div id="controls" ></div>
 		</div>

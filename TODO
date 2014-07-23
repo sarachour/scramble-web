@@ -24,6 +24,7 @@
    -> feedback [begin]: indicator flashes, 'your turn!' 
 2. Audio
 3. GBA Support
+
 ----
 1. Timer: Fix timer for client - start counting from consensus. 
    - Fixed most races, still an out of sync issue.

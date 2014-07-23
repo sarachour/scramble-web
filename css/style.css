@@ -1,3 +1,4 @@
+
 input[type="text"], input[type="password"]{
     margin-left:5px;
     margin-right:5px;
@@ -7,19 +8,26 @@ input[type="text"], input[type="password"]{
     font-size:28px;
 }
 
-.text{
+.scramble {
+
+}
+.scramble-text{
 	font-family:verdana;
 }
 
-.med-text{
+.scramble-med-text{
 	font-size: 20px;
 	padding:10px;
 }
-.centered {
+.scramble-large-text{
+	font-size: 42px;
+	padding:10px;
+}
+.scramble-centered {
 	position:relative;
 	margin: auto auto;
 }
-.overlay {
+.scramble-overlay {
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -33,85 +41,88 @@ input[type="text"], input[type="password"]{
 	z-index: 100;
 	display: inline-block;
 }
-.viewport {
+.scramble-viewport {
 	padding-left:10px;
 	padding-right:10px;
 	padding-top: 5px;
 	padding-bottom: 5px;
 }
-.thick-border{
+.scramble-thick-border{
 	border: 7px solid;
 	border-color: #222222;
 }
-.rounded {
+.scramble-rounded {
 	border-radius:15px;
 }
-.main {
+.scramble-main {
 	width: 100%;
 	height: 100%;
 }
-.center, .east, .west, .north, .south {
+.scramble-center, .east, .west, .north, .south {
 	text-align: center;
     display: inline-block;
 }
-.main .west, .main .east {
+.scramble-main .west, .main .east {
 	width: 15%;
 }
-.main .south{
+.scramble-main .south{
 	height: 25%;
 }
-.main .north {
+.scramble-main .north {
 	height: 10%;
 }
-.wide {
+.scramble-wide {
 	width: 100%;
 }
-.left-half{
+.scramble-left-half{
 	position: absolute;
 	top:0;
 	left:0;
 	width: 50%;
 	height: 100%;
 }
-.right-half{
+.scramble-right-half{
 	position: absolute;
 	top:0;
 	left:50%;
 	width: 50%;
 	height: 100%;
 }
-.bottom-right{
+.scramble-bottom-right{
 	position:absolute;
 	right:5px;
 	bottom:5px;
 }
-.black {
+.scramble-black {
 	background-color:#444444;
 }
-.darkgrey {
-	background-color:#AAAAAA;
+.scramble-darkgrey {
+	background-color:#666666;
 }
-.grey {
+.scramble-grey {
 	background-color:#C0C0C0;
 }
-.green {
+.scramble-green {
 	background-color:#90EE90;
 }
-.blue {
+.scramble-blue {
 	background-color:#87CEFA;
 }
-.black-text {
+.scramble-black-text {
 	color:#444444;
 }
-.white {
+.scramble-white {
 	background-color:#EEEEEE;
 }
-.white-text {
+.scramble-white-text {
 	color:#EEEEEE;
 }
-.semi {
+.scramble-semi {
 	opacity: 0.9;
 }
-.hidden {
+.scramble-hidden {
 	opacity: 0;
+}
+.scramble-game-color {
+	background-color: #EEEEEE;
 }
