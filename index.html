@@ -1,6 +1,6 @@
 <head>
 <link rel="stylesheet" href="css/jquery.ui.css" />
-<link rel="stylesheet" href="css/delta.jquery.ui.css" />
+<link rel="stylesheet" href="css/jquery.toggleSwitch.css" />
 <link rel="stylesheet" href="css/style.css" />
 <link rel="stylesheet" href="css/farbtastic.css" />
 
@@ -32,11 +32,12 @@
 			</div>
 			<div style="position:relative;display:inline-block; right:-20px;"><div id="color-chooser"></div></div>
 		</div>
+		<div id="game-mode-div" class="scramble-vpad">
 		<select id="game-mode">
 			<option value="host">Host</option>
 			<option value="join">Join</option>
 		</select>
-
+		</div>
 	</div>
 	<div id="details" class="scramble-right-half scramble-white scramble-black-text">
 		<div id="client" >
@@ -52,12 +53,12 @@
 			</div>
 		</div>
 
-		<div id="host">
+		<div id="host" class="scramble-stage2">
 			<div id="name" style='height:10%; width:100%;'>
 				<h1>HOST</h1>
 			</div>
 			<h3>GAME</h3>
-			<div class="scramble-lightgrey scramble-rounded">
+			<div class="scramble-lightgrey scramble-rounded scramble-wide">
 				<div>
 				<label for:"rom">Upload Game:</label>
 				<input type="file" id="rom" name="file" />
@@ -66,11 +67,11 @@
 				<div>
 				<label for:"savest">Upload Save:</label>
 				<input type="file" id="save" name="savest" />
-				<output id="save-out"></output>
+				<output id="save-out"></output> <input id="no-save" type="checkbox">No Save</input>
 				</div>
 			</div>
-			<h3>MODE</h3>
-			<div class="scramble-lightgrey scramble-rounded" style="height:45%;padding:10px;">
+			<h3 class="scramble-stage3">MODE</h3>
+			<div class="scramble-lightgrey scramble-rounded scramble-vpad scramble-stage3" style="height:45%;">
 				<div id="game-styles" >
 				  <ul>
 				    <li><a style="width:80%;" href="#tabs-1">Solo</a></li>
@@ -97,8 +98,41 @@
 				</div>
 			</div>
 		</div>
-		<div class="scramble-bottom-right">
-			<button id="ok">Done</button>
+	</div>
+</div>
+<div id="setup-page2" class="scramble-stage4 scramble-overlay scramble-black scramble-thick-border">
+	<div id="connect-info" class="scramble-stage4 scramble-left-half scramble-white-text">
+		<div id="name" style='height:10%; width:100%;'>
+				<h1>CONNECTION</h1>
+			</div>
+		<div id="host">
+			<div class="scramble-text scramble-vpad">
+				Accept, Reject any peers who wish to join your game here. Peers may also join midgame.
+			</div>
+			<div class="scramble-darkgrey scramble-wide scramble-rounded scramble-vpad" style="height:60%;">
+				<ol id="peerlist" class="ui-list scramble-centered">
+				  <li class="ui-widget-content scramble-text">
+				  	<div class="scramble-swatch" style="background-color:red; float:left;"></div><span>Peer Name</peer>
+				  </li>
+				</ol>
+			</div>
+		</div>
+		<div id="client">
+			<div class="scramble-centered">
+				<div id="progressbar">Connecting...</div>
+			</div>
+		</div>
+	</div>
+	<div id="connection-info-2" class="scramble-stage5 scramble-right-half scramble-white scramble-black-text">
+		<div id="name" style='height:10%; width:100%;'>
+				<h1>GAME</h1>
+			</div>
+		<div id="host">
+			<p>Game Name</p>
+			<button>Start Game</button>
+		</div>
+		<div id="client">
+		Game info-game name, screenshot, manager being used. game controls.
 		</div>
 	</div>
 </div>

@@ -137,7 +137,6 @@ function initHost(rom, sav){
 		}
 	});
 
-	$(".centered").center();
 }
 function createHost(name){
 	var canv = $("#screen", $("#main"))[0];
@@ -220,7 +219,7 @@ function createPeer(name){
 	})
 
 	$("#setup").fadeOut(200);
-	$(".scramble-centered").center();
+	
 }
 
 function initBoth(){
@@ -255,40 +254,132 @@ function setupWizard(){
 		alert(s)
 	}
 
-   $("#host", $("#setup")).hide();
-   
+   globals.info = {
+   		name: null,
+   		color: null,
+   		rom: null,
+   		is_host: false,
+   		rom_loaded: false,
+   		rom_blob: null,
+   		save: null,
+   		save_loaded: false,
+   		save_blob: null
+
+   };
+   globals.info.fadein = 400;
+   globals.info.ready1 = function(){
+   		return (globals.info.name != null && globals.info.color != null && globals.info.name != "");
+   }
+   globals.info.ready2 = function(){
+   		h = ((globals.info.rom != null && globals.info.rom_loaded) && 
+   			(globals.info.no_save || (globals.info.save != null && globals.info.save_loaded)));
+   		c = (globals.info.host != null && globals.info.host != "")
+   		return (globals.info.is_host && h) || (!globals.info.is_host && c)
+   }
+   globals.info.stage2 = function(){
+   	if(globals.info.ready1()){
+		$("#game-mode-div", $("#setup")).fadeIn(globals.info.fadein);
+		var v = $("#game-mode").val();
+		if(v == "host"){
+			globals.info.is_host = true;
+			$("#client", $("#setup")).fadeOut(globals.info.fadein, function(){
+				$("#host", $("#setup")).fadeIn(globals.info.fadein);
+			});
+			
+		}
+		else{
+			globals.info.is_host = true;
+			$("#host", $("#setup")).fadeOut(globals.info.fadein, function(){
+				$("#client", $("#setup")).fadeIn(globals.info.fadein);
+			});
+		}
+	}
+	else{
+		$("#client, #host, #game-mode-div", $("#setup")).fadeOut(globals.info.fadein);
+	}
+   }
+   globals.info.stage3 = function(){
+   		if(globals.info.ready2())
+   			$(".scramble-stage3").fadeIn(globals.info.fadeIn);
+   }
+   //update first pass
    $("#color-chooser").farbtastic(function(col){
    		console.log("changed color!", col);
    		$(".scramble-game-color").css("background-color", col);
+   		globals.info.color = col;
+   		globals.info.stage2();
    });
+
+   $("#peer-name").keypress(function(e){
+   		var v = $(this).val();
+   		globals.info.name = v;
+   		globals.info.stage2();
+   })
+   $("#peer-name").change(function(e){
+   		var v = $(this).val();
+   		globals.info.name = v;
+   		globals.info.stage2();
+   })
 
    $( "#game-styles" ).tabs()
    $( "#game-styles" ).addClass( "ui-tabs-vertical ui-helper-clearfix scramble-rounded" );
     $( "#game-styles li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
   
+    $( ".ui-list" ).selectable();
+
+    $( "#progressbar" ).progressbar({
+      value: false
+    }).css('width', "300px");
+
+    //hide stuff.
+   $("#host, #client, #game-mode", $("#setup")).hide();
+   $("#client", $("#setup")).hide();
+   $("#game-mode-div", $("#setup")).hide();
+   $(".setup-stage2, .scramble-stage3, .scramble-stage4, .scramble-stage5").hide();
+
 
    $("#game-mode").toggleSwitch({
 	  highlight: true, // default
-	  width: 25, // default
+	  width: 50, // default
 	  change: function(evt, e) {
 	    // default null
-	    val = e.value;
-	    if(val == 0){
-			$("#client", $("#setup")).fadeOut(200, function(){
-				$("#host", $("#setup")).fadeIn(200);
-			});
-			
-		}
-		else{
-			$("#host", $("#setup")).fadeOut(200, function(){
-				$("#client", $("#setup")).fadeIn(200);
-			});
-			
-		}
+	    globals.info.stage2();
 	  }
 	})
 
+   $("#rom").change(function(e){
+   		var path = $(this).val();
+   		var rom = $("#rom", $("#setup"))[0].files;
+   		globals.info.rom = path;
 
+   		FileUtils.read(rom[0], function(d){
+			var rom = d[0]; 
+			globals.info.rom_loaded = true;
+			globals.info.stage3();
+		})
+   })
+   $("#savest").change(function(e){
+   		var path = $(this).val();
+   		var sav = $("#save", $("#setup"))[0].files;
+   		globals.info.save = path;
+
+   		FileUtils.read(sav[0], function(d){
+			var save = d[0]; 
+			globals.info.save_loaded = true;
+			globals.info.stage3();
+		})
+   })
+   $("#no-save").change(function(e){
+   		var v = $(this).val();
+   		if(v == "on"){
+   			globals.info.no_save = true;
+   		}
+   		else{
+   			globals.info.no_save = false;
+   		}
+   		globals.info.stage3();
+   })
+   /*
 	$("#ok", $("#setup")).click(function(){
 		var name = $("#peer-name", $("#setup")).val();
 		var type = $('input[name="game-type"]:checked').val();
@@ -304,9 +395,9 @@ function setupWizard(){
 		}
 		initBoth();
 	})
+	*/
 
-
-
+	
 }
 
 (function(){
@@ -324,6 +415,7 @@ function setupWizard(){
 
 		setupMain();
 		setupWizard();
+		$(".scramble-centered").center();
 	})
 })()
 

@@ -11,6 +11,12 @@ input[type="text"], input[type="password"]{
 .scramble {
 
 }
+.scramble-swatch {
+	width:25px;
+	height:25px;
+	border-radius:10px;
+	display:inline-block;
+}
 .scramble-text{
 	font-family:verdana;
 }
@@ -94,6 +100,11 @@ input[type="text"], input[type="password"]{
 	right:5px;
 	bottom:5px;
 }
+.scramble-top-left{
+	position:absolute;
+	left:5px;
+	top:5px;
+}
 .scramble-black {
 	background-color:#444444;
 }
@@ -125,23 +136,46 @@ input[type="text"], input[type="password"]{
 	opacity: 0.9;
 }
 .scramble-hidden {
-	opacity: 0;
+	display: none;
 }
 .scramble-game-color {
 	background-color: #EEEEEE;
 }
+.scramble-vpad{
+	padding-top:10px;
+	padding-bottom:10px;
+}
 
 .ui-tabs-vertical { width: 90%; }
 .ui-tabs-vertical .ui-tabs-nav { 
-	padding: .2em .1em .2em .2em; float: left; width: 30%; 
+	padding: .1em .1em .1em .1em; 
+	float: left; 
+	width: 30%; 
 }
-.ui-tabs-vertical .ui-tabs-nav li { clear: left; width: 100%; border-bottom-width: 1px !important; border-right-width: 0 !important; margin: 0 -1px .2em 0; }
+.ui-tabs-vertical .ui-tabs-nav li { 
+	clear: left; 
+	width: 100%; 
+	border-bottom-width: 1px !important; 
+	border-right-width: 0 !important; 
+	margin: 0 -1px .2em 0; 
+}
 .ui-tabs-vertical .ui-tabs-nav li a { display:block; }
 .ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active { padding-bottom: 0; padding-right: .1em; border-right-width: 1px; border-right-width: 1px; }
 .ui-tabs-vertical .ui-tabs-panel { 
-	padding: 1em; 
+	padding: 0.1em; 
 	float: right; 
 	width: 60%;
 	height: 80%;
 	border-radius:15px;
 }
+
+
+.ui-list .ui-selecting { background: #FECA40; }
+.ui-list .ui-selected { background: #F39814; color: white; }
+.ui-list { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+.ui-list li { 
+	margin: 3px; 
+	padding: 0.4em; 
+	font-size: 1.4em; 
+	height: 25px; 
+	border-radius: 15px;}
