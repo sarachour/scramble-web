@@ -1,6 +1,29 @@
-# Big Refactor
-3. Up/down compounding keys again
-
+# TODO: Big Refactor
+1. UI
+   INITIALIZATION:
+   -> Host: Initial Peer Wait, Select Game Mode
+   -> Peer: Waiting for Connection Screen.
+   -> Both: Select Color.
+   MID-GAME ACTIONS:
+   -> Host: Add Players Mid-game
+   -> Host: Boot players
+   -> Host: Change Gameplay Mode
+   -> Host: Pause Game (Peers are reported as paused)
+   -> Host: Save Game to File
+   GENERAL MODE:
+   		PEER PROGRESS FEEDBACK
+	   -> Maintain weighted list of chosen peers (1.0 mostly chosen, 0: never chosen)
+	   -> UI: Wedge Fades if not chosen
+	    KEYS
+	   -> Change Keybindings
+	   -> Display Keybindings
+   ANARCHY/DEMOCRACY MODE:
+   -> FEEDBACK [chosen]: indicator flashes, 'you were chosen'
+   -> FEEDBACK [not chosen]: indicator flashes 'you were not chosen'
+   ROUND ROBIN MODE
+   -> feedback [begin]: indicator flashes, 'your turn!' 
+2. Audio
+3. GBA Support
 ----
 1. Timer: Fix timer for client - start counting from consensus. 
    - Fixed most races, still an out of sync issue.
