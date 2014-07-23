@@ -17,27 +17,29 @@
 <body class="scramble-black">
 
 
+<div id="dialogs" class="scramble-background-fade"></div>
 
-<div id="dialog-confirm" class="scramble-background-fade">
-	<div class="scramble-dialog scramble-centered" title="TITLE HERE">
-		<h1>TITLE HERE</h1>
-		<div class="scramble-lightgrey-text">MESSAGE HERE</div>
-		<div class="scramble-blue scramble-black-text scramble-rounded scramble-vpad scramble-large-text" 
+<div id="_dummy" class="scramble-hidden">
+	<li id="dummy-peer-entry" class="ui-widget-content scramble-text">
+  		<div id="color" class="scramble-swatch" style="background-color:red; float:left;"></div><span id="name">Peer Name</peer>
+  	</li>
+	<div id="dialog-choice" class="scramble-dialog scramble-centered" title="TITLE HERE">
+		<h1 id="title">TITLE HERE</h1>
+		<div id="message" class="scramble-lightgrey-text">MESSAGE HERE</div>
+		<div id="yes" class="scramble-green scramble-black-text scramble-rounded scramble-vpad scramble-large-text" 
+		style="position:absolute; left: 15px; bottom:15px; width:40%; height: 35px;">Yes</div>
+		<div id="no" class="scramble-red scramble-black-text scramble-rounded scramble-vpad scramble-large-text" 
+		style="position:absolute; right: 15px; bottom:15px; width:40%; height: 35px;">No</div>
+	</div>
+
+	<div id="dialog-confirm" class="scramble-dialog scramble-centered" title="TITLE HERE">
+		<h1 id="title">TITLE HERE</h1>
+		<div id="message" class="scramble-lightgrey-text">MESSAGE HERE</div>
+		<div id="ok" class="scramble-blue scramble-black-text scramble-rounded scramble-vpad scramble-large-text" 
 			style="position:absolute; bottom:15px; width:90%; height: 35px;">Continue</div>
 	</div>
-</div>
- 
-<div id="dialog-choice" class="scramble-background-fade">
-	<div class="scramble-dialog scramble-centered" title="TITLE HERE">
-		<h1>TITLE HERE</h1>
-		<div class="scramble-lightgrey-text">MESSAGE HERE</div>
-		<div class="scramble-green scramble-black-text scramble-rounded scramble-vpad scramble-large-text" 
-			style="position:absolute; left: 15px; bottom:15px; width:40%; height: 35px;">Yes</div>
-			<div class="scramble-red scramble-black-text scramble-rounded scramble-vpad scramble-large-text" 
-			style="position:absolute; right: 15px; bottom:15px; width:40%; height: 35px;">No</div>
-	</div>
-</div>
 
+</div>
 <div id="setup" class="scramble-overlay scramble-black scramble-thick-border scramble-stage1">
 	<div id="general" class="scramble-left-half scramble-white-text">
 		<div style='height:10%; width:100%;'>
@@ -135,9 +137,7 @@
 			</div>
 			<div class="scramble-darkgrey scramble-wide scramble-rounded scramble-vpad" style="height:60%;">
 				<ol id="peerlist" class="ui-list scramble-centered">
-				  <li class="ui-widget-content scramble-text">
-				  	<div class="scramble-swatch" style="background-color:red; float:left;"></div><span>Peer Name</peer>
-				  </li>
+				  
 				</ol>
 			</div>
 		</div>

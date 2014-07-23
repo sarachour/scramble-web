@@ -24,8 +24,52 @@ globals = {
 				$(("#timer"+i)).hide();
 			}
 		}
+	},
+	choice: function(title, message, cbk){
+		var ctx = $("#dialog-choice").clone();
+
+		$("#dialogs").fadeIn(200);
+		$("#message", ctx).html(message);
+		$("#title",ctx).html(title)
+
+		$("#yes", ctx).click(function(){
+			cbk(true);
+			ctx.remove();
+			var len = $("#dialogs").children().length 
+			if(len == 0){
+				$("#dialogs").fadeOut(200);
+			}
+		});
+		$("#no", ctx).click(function(){
+			cbk(false);
+			ctx.remove();
+			var len = $("#dialogs").children().length 
+			if(len == 0){
+				$("#dialogs").fadeOut(200);
+			}
+		});
+		$("#dialogs").append(ctx);
+		ctx.center();
+	},
+	confirm: function(title, message, cbk){
+		var ctx = $("#dialog-confirm").clone();
+		$("#dialogs").fadeIn(200);
+		$("#message", ctx).html(message);
+		$("#title",ctx).html(title)
+
+		$("#ok", ctx).click(function(){
+			cbk();
+			ctx.remove();
+			var len = $("#dialogs").children().length 
+			if(len == 0){
+				$("#dialogs").fadeOut(200);
+			}
+		});
+		$("#dialogs").append(ctx);
+		ctx.center();
 	}
 }
+
 
 function handleInput(e, isdown){
 	var keymap = {
@@ -107,7 +151,7 @@ function setupMain(){
 	  return handleInput(e,false);
 	});
 	
-	
+	$("#dialogs").hide();
 	var config = {
 		preserveAspectRatio:"xMinYMin meet",
 		width:"100%", 
