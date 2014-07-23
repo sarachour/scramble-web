@@ -138,7 +138,7 @@ require(["js/game.js"], function(){
 		}
 		this.init(game);
 	}
-	DemocracyManager = function(game, net, name, host){
+	ConsensusManager = function(game, net, name, host){
 		this.init = function(game, net, name, host){
 			this.__proto__.init(game);
 			var that = this;
@@ -150,8 +150,9 @@ require(["js/game.js"], function(){
 
 			this.key = [];
 			this.paused = false;
+			this.input_idx = 0;
 
-			if(this.is_host){
+			if(this.is_host && this.game != undefined){
 				this.game.bind(['tick'], "update.tick", function(t){
 					that.net.broadcast_data({cmd:"upd", scmd:"d", fb: that.game.getFrameBuffer()});
 					that._trigger('tick', t);
@@ -190,28 +191,18 @@ require(["js/game.js"], function(){
 			else if(d.scmd == "s")
 				this._sync(d)
 		}
+		this.decide = function(){
+			key = [];
+			return key;
+		}
 		this._consensus = function(k){
 			if(this.is_host){
-				var codes = {}; 
-				var npeers = Math.floor(this.net.get_n_connections()/2);
-				for(var p in this.consensus){
-					var k = this.consensus[p];
-					var tag = k.code+"."+k.down; //down and code
-					if(!codes.hasOwnProperty(tag)){
-						codes[tag] = {cnt:0, data:k};
-					}
-					codes[tag].cnt++;
-				}
-				this.key = [];
-				for(var p in codes){
-					if(codes[p].cnt >= npeers){
-						this.key.push(codes[p].data);
-					}
-				}
+				this.key = this.decide();
 				var d = {cmd:"upd", scmd:"c", key:this.key};
 				this.net.broadcast_data(d);
 				this.consensus = {};
 				this.game.input(this.key)
+				this.input_idx = 0;
 
 			}
 			else {
@@ -234,7 +225,8 @@ require(["js/game.js"], function(){
 			}
 			else{
 				var code = k.code;
-				this.consensus[k.peer] = {code:k.code, down:k.down};
+				this.consensus[k.peer] = {code:k.code, down:k.down, order: this.input_idx};
+				this.input_idx++;
 			}
 		}
 		this.input = function(code, isdown){
@@ -242,8 +234,64 @@ require(["js/game.js"], function(){
 		}
 		this.init(game, net, name, host);
 	}
-	DemocracyManager.prototype = new Manager();
-	
+	ConsensusManager.prototype = new Manager();
+
+	DemocracyManager = function(game, net, name, host){
+		this.init = function(game, net, name, host){
+			this.__proto__.init(game,net,name,host);
+			//overwrite
+			this.__proto__.decide = this.decide;
+		}
+		this.decide = function(game, net, name, host){
+			var codes = {}; 
+			var npeers = Math.floor(this.net.get_n_connections()/2);
+			for(var p in this.consensus){
+				var k = this.consensus[p];
+				var tag = k.code+"."+k.down; //down and code
+				if(!codes.hasOwnProperty(tag)){
+					codes[tag] = {cnt:0, data:k};
+				}
+				codes[tag].cnt++;
+			}
+			var key = [];
+			for(var p in codes){
+				if(codes[p].cnt >= npeers){
+					key.push(codes[p].data);
+				}
+			}
+			return key;
+		}
+		this.init(game, net, name, host);
+	}
+	DemocracyManager.prototype = new ConsensusManager();
+
+	AnarchyManager = function(game, net, name, host){
+		this.init = function(game, net, name, host){
+			this.__proto__.init(game,net,name,host);
+			//overwrite
+			this.__proto__.decide = this.decide;
+		}
+		this.decide = function(game, net, name, host){
+			var codes = {}; 
+			var felem = null; var fval = 0;
+			for(var p in this.consensus){
+				var k = this.consensus[p];
+				if(felem == null || k.order < fval){
+					felem = k;
+					fval = k.order;
+				}
+			}
+			//if its the first element
+			var key = [];
+			if(felem != null){
+				key.push(felem);
+			}
+			return key;
+		}
+		this.init(game, net, name, host);
+	}
+	AnarchyManager.prototype = new ConsensusManager();
+
 	WatchManager = function(game, net, name, host) {
 		this.init = function(game, net, name, host){
 			this.__proto__.init(game);
@@ -304,10 +352,6 @@ require(["js/game.js"], function(){
 	RoundRobinManager = function(host, plist, game){
 
 	}
-	AnarchyManager = function(host, plist, game){
-
-	}
-	
 	ScatterManager = function(host, plist, game){
 
 	}
