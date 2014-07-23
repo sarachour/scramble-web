@@ -38,6 +38,7 @@ NetNode = function(name){
 		this.callbacks["stream.call"] = {};
 		this.callbacks["data.recv"] = {};
 		this.callbacks["error"] = {};
+		this.callbacks["ready"] = {};
 		this._setup();
 	}
 	
@@ -76,6 +77,9 @@ NetNode = function(name){
 	}
 	this._setup = function(){
 		var that = this;
+		this.peer.on('open', function(){
+			that._trigger("ready",{});
+		})
 		this.peer.on('connection', function(conn) {
 			that.conns[conn.peer] = {};
 			that.conns[conn.peer].c = conn;

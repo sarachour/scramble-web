@@ -65,7 +65,7 @@ GameHost = function(name, color,canv){
 		this.callbacks["game.update"] = {};
 	}
 	this.setManager = function(name){
-		that.manager = ManagerFactory.unpack(name,that.game, that.net, that.name, d.peer);
+		this.manager = ManagerFactory.unpack(name,that.game, that.net, that.name, d.peer);
 	}
 	this.close = function(){
 		this.net.close();

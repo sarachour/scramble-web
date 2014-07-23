@@ -15,7 +15,7 @@
 <script data-main="js/main.js" src="lib/requirejs/require.js"></script>
 </head>
 <body class="scramble-black">
-<div id="setup" class="scramble-overlay scramble-black scramble-thick-border">
+<div id="setup" class="scramble-overlay scramble-black scramble-thick-border scramble-stage1">
 	<div id="general" class="scramble-left-half scramble-white-text">
 		<div style='height:10%; width:100%;'>
 			<h1>SETUP</h1>
@@ -34,8 +34,8 @@
 		</div>
 		<div id="game-mode-div" class="scramble-vpad">
 		<select id="game-mode">
-			<option value="host">Host</option>
 			<option value="join">Join</option>
+			<option value="host">Host</option>
 		</select>
 		</div>
 	</div>
@@ -71,17 +71,18 @@
 				</div>
 			</div>
 			<h3 class="scramble-stage3">MODE</h3>
-			<div class="scramble-lightgrey scramble-rounded scramble-vpad scramble-stage3" style="height:45%;">
+			<div class="scramble-lightgrey scramble-rounded scramble-vpad scramble-stage3" style="height:50%;">
 				<div id="game-styles" >
 				  <ul>
-				    <li><a style="width:80%;" href="#tabs-1">Solo</a></li>
-				    <li><a style="width:80%;"href="#tabs-2">Democracy</a></li>
-				    <li><a style="width:80%;"href="#tabs-3">Anarchy</a></li>
-				    <li><a style="width:80%;"href="#tabs-4">Libertarian</a></li>
-				    <li><a style="width:80%;"href="#tabs-5">Communism</a></li>
+				    <li><a id="solo" lass="scramble-vert-elem" href="#tabs-1">Solo</a></li>
+				    <li><a id="democracy" class="scramble-vert-elem"  href="#tabs-2">Democracy</a></li>
+				    <li><a id="anarchy" class="scramble-vert-elem"  href="#tabs-3">Anarchy</a></li>
+				    <li><a id="liberty" class="scramble-vert-elem"  href="#tabs-4">Libertarian</a></li>
+				    <li><a id="communism" class="scramble-vert-elem"  href="#tabs-5">Communism</a></li>
 				  </ul>
 				  <div id="tabs-1">
 				    <p>Play alone. Players may join your game and watch you play.</p>
+
 				  </div>
 				  <div id="tabs-2">
 				    <p>Democratically vote on the next move. Only moves with more than half votes will be made.</p>
@@ -119,7 +120,7 @@
 		</div>
 		<div id="client">
 			<div class="scramble-centered">
-				<div id="progressbar">Connecting...</div>
+				<div id="progressbar"><span id="status">Connecting...</span></div>
 			</div>
 		</div>
 	</div>

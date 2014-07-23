@@ -118,137 +118,7 @@ function setupMain(){
 	setupTimer();
 }
 
-function initHost(rom, sav){
-	globals.peer.create(rom, sav);
 
-	
-	//initialize controls
-	var ctrls= globals.peer.controls();
-	$("#controls").svg('get').load(ctrls.svg, {
-		onLoad:function(){
-			var bbox = $("g")[0].getBBox();
-			var bboxstr = bbox.x + "," + bbox.y + "," + bbox.width + "," + bbox.height;
-			$("#controls").svg('get').configure($('#controls').svg('get').root(), {viewBox:bboxstr});
-			for(k in ctrls.keys){
-				var ky = ctrls.keys[k];
-				$("#"+ky.image.on).hide();
-				$("#"+ky.image.out).hide();
-			}
-		}
-	});
-
-}
-function createHost(name){
-	var canv = $("#screen", $("#main"))[0];
-	var rom = $("#rom", $("#setup"))[0].files;
-	var sav = $("#save", $("#setup"))[0].files;
-
-	if(rom.length == 0){
-		error("please specify a game to play");
-		return;
-	}
-	if(globals.peer == null)
-		globals.peer = new GameHost(name,canv);
-
-	if(sav.length > 0)
-		FileUtils.read([rom[0], sav[0]], function(d){
-			var rom = d[0]; var sav = d[1];
-			initHost(rom, sav);
-		})
-	else
-		FileUtils.read([rom[0]], function(d){
-			var rom = d[0];
-			initHost(rom, null);
-		})
-
-	globals.peer.bind(["update.peer.list"], "update.ui", function(plist){
-		var tbl = $("#host-list");
-		tbl.empty();
-		console.log("UPDATE",plist);
-		var header = $("<tr/>").append($("<td/>").html("Name")).append($("<td/>").html("Status")); 
-		tbl.append(header);
-		for(var peer in plist){
-			if(peer != "EVENT"){
-				var row = $("<tr/>").append($("<td/>").html(peer)).append($("<td/>").html(plist[peer].status)); 
-				tbl.append(row);
-			}
-
-		}
-	})
-	
-	$("#setup").fadeOut(200);
-	
-}
-function createPeer(name){
-	var canv = $("#screen", $("#main"))[0];
-	var host = $("#host-name", $("#setup")).val();
-	if(host == ""){
-		error("please specify a host name.");
-		return;
-	}
-	if(globals.peer == null){
-		globals.peer = new GamePeer(name,canv);
-	}
-
-	globals.peer.join(host);
-
-	globals.peer.bind(["update.host.status"], "update.host.page", function(pstat){
-		if(pstat.status == "accept"){
-			
-		}
-		else {
-			alert("Rejected by host: "+pstat.peer);
-			$("#setup").fadeIn(200);
-		}
-	})
-	globals.peer.bind(["game.init"], "game.init.ui", function(){
-		var ctrls= globals.peer.controls();
-		$("#controls").svg('get').load(ctrls.svg, {
-			onLoad:function(){
-				var bbox = $("g")[0].getBBox();
-				var bboxstr = bbox.x + "," + bbox.y + "," + bbox.width + "," + bbox.height;
-				$("#controls").svg('get').configure($('#controls').svg('get').root(), {viewBox:bboxstr});
-				for(k in ctrls.keys){
-					var ky = ctrls.keys[k];
-					$("#"+ky.image.on +",#"+ky.image.out).hide();
-				}
-			}
-		});
-		
-		$(".scramble-centered").center();
-	})
-
-	$("#setup").fadeOut(200);
-	
-}
-
-function initBoth(){
-	globals.peer.bind(["game.tick"], "update.wedge", function(d){
-		var frac = d.i/d.n;
-		globals.timer.update(frac);
-	})
-	globals.peer.bind(["game.update"], "update.past.keys", function(d){
-		var ctrls= globals.peer.controls();
-		if(ctrls != null){
-			if(d.hasOwnProperty("keys")){
-				var k = d.keys;
-				/*
-				for(var c in ctrls.keys){
-					$("#"+ctrls.keys[c].image.out).hide();
-				}
-				*/
-				if(k.length > 0) console.log(d);
-				for(var i=0; i < k.length; i++){
-					var ky = k[i];
-					if(ctrls.keys.hasOwnProperty(ky.code)){
-						if(ky.down) $("#"+ctrls.keys[ky.code].image.out).show();
-						else $("#"+ctrls.keys[ky.code].image.out).hide();
-					}
-				}
-			}
-		}
-	})
-}
 function setupWizard(){
 	function error(s){
 		alert(s)
@@ -258,12 +128,14 @@ function setupWizard(){
    		name: null,
    		color: null,
    		rom: null,
+   		host:null,
    		is_host: false,
    		rom_loaded: false,
    		rom_blob: null,
    		save: null,
    		save_loaded: false,
-   		save_blob: null
+   		save_blob: null,
+   		manager: null
 
    };
    globals.info.fadein = 400;
@@ -276,21 +148,24 @@ function setupWizard(){
    		c = (globals.info.host != null && globals.info.host != "")
    		return (globals.info.is_host && h) || (!globals.info.is_host && c)
    }
+   globals.info.ready3h = function(){
+   		return (globals.info.manager != null && globals.info.manager != "");
+   }
    globals.info.stage2 = function(){
    	if(globals.info.ready1()){
 		$("#game-mode-div", $("#setup")).fadeIn(globals.info.fadein);
 		var v = $("#game-mode").val();
 		if(v == "host"){
 			globals.info.is_host = true;
-			$("#client", $("#setup")).fadeOut(globals.info.fadein, function(){
-				$("#host", $("#setup")).fadeIn(globals.info.fadein);
+			$("#client", $("#setup")).fadeOut(globals.info.fadein*2, function(){
+				$("#host", $("#setup")).fadeIn(globals.info.fadein*2);
 			});
 			
 		}
 		else{
 			globals.info.is_host = false;
-			$("#host", $("#setup")).fadeOut(globals.info.fadein, function(){
-				$("#client", $("#setup")).fadeIn(globals.info.fadein);
+			$("#host", $("#setup")).fadeOut(globals.info.fadein*2, function(){
+				$("#client", $("#setup")).fadeIn(globals.info.fadein*2);
 			});
 		}
 	}
@@ -307,6 +182,26 @@ function setupWizard(){
 			}
 			globals.peer = new GameHost(globals.info.name,globals.info.color,canv);
 			globals.peer.create(globals.info.rom_blob, globals.info.save_blob);
+			globals.peer.bind(["game.tick"], "update.wedge", function(d){
+				var frac = d.i/d.n;
+				globals.timer.update(frac);
+			})
+			globals.peer.bind(["game.update"], "update.past.keys", function(d){
+				var ctrls= globals.peer.controls();
+				if(ctrls != null){
+					if(d.hasOwnProperty("keys")){
+						var k = d.keys;
+						if(k.length > 0) console.log(d);
+						for(var i=0; i < k.length; i++){
+							var ky = k[i];
+							if(ctrls.keys.hasOwnProperty(ky.code)){
+								if(ky.down) $("#"+ctrls.keys[ky.code].image.out).show();
+								else $("#"+ctrls.keys[ky.code].image.out).hide();
+							}
+						}
+					}
+				}
+			})
 			//initialize controls
 			var ctrls= globals.peer.controls();
 			$("#controls").svg('get').load(ctrls.svg, {
@@ -328,6 +223,15 @@ function setupWizard(){
    			$(".scramble-stage3").fadeOut(globals.info.fadeIn);
    		}
    }
+   globals.info.stage4c = function(){
+   		if(globals.info.connected){
+   			$("#progressbar").progressbar("option", {value:100})
+   			$("#progressbar").find( ".ui-progressbar-value" ).css({
+	          "background": 'green'
+	        });
+	        $("#status", $("#progressbar")).html("Connected!");
+   		}
+   }
    globals.info.stage3c = function(){
    		if(globals.info.ready2()){
    			var canv = $("#screen", $("#main"))[0];
@@ -335,9 +239,81 @@ function setupWizard(){
    				globals.peer.close();
    			}
 	   		globals.peer = new GamePeer(globals.info.name,globals.info.color,canv);
-   			$(".scramble-stage4").fadeIn(globals.info.fadeIn);
+	   		globals.peer.bind(["update.host.status"], "update.host.page", function(pstat){
+				console.log("RESPONSE:", pstat);
+				if(pstat.status == "accept"){
+					//make progress bar ready
+					globals.info.connected = true;
+					globals.info.stage4c();
+				}
+				else {
+					alert("Rejected by host: "+pstat.peer);
+					globals.info.host = null;
+					globals.info.stage3c();
+				}
+			})
+			//initialize controls
+			globals.peer.bind(["game.init"], "game.init.ui", function(){
+				var ctrls= globals.peer.controls();
+				$("#controls").svg('get').load(ctrls.svg, {
+					onLoad:function(){
+						var bbox = $("g")[0].getBBox();
+						var bboxstr = bbox.x + "," + bbox.y + "," + bbox.width + "," + bbox.height;
+						$("#controls").svg('get').configure($('#controls').svg('get').root(), {viewBox:bboxstr});
+						for(k in ctrls.keys){
+							var ky = ctrls.keys[k];
+							$("#"+ky.image.on +",#"+ky.image.out).hide();
+						}
+					}
+				});
+				
+				$(".scramble-centered").center();
+			})
+			globals.peer.bind(["game.tick"], "update.wedge", function(d){
+				var frac = d.i/d.n;
+				globals.timer.update(frac);
+			})
+			globals.peer.bind(["game.update"], "update.past.keys", function(d){
+				var ctrls= globals.peer.controls();
+				if(ctrls != null){
+					if(d.hasOwnProperty("keys")){
+						var k = d.keys;
+						if(k.length > 0) console.log(d);
+						for(var i=0; i < k.length; i++){
+							var ky = k[i];
+							if(ctrls.keys.hasOwnProperty(ky.code)){
+								if(ky.down) $("#"+ctrls.keys[ky.code].image.out).show();
+								else $("#"+ctrls.keys[ky.code].image.out).hide();
+							}
+						}
+					}
+				}
+			})
+			globals.peer.bind(["update.peer.ready"], "start.join", function(){
+				console.log("ready..");
+				globals.peer.join(globals.info.host);
+			})
+			//display stuff
+	   		$("#host", $("#setup-page2")).hide();
+
+	   		$(".scramble-stage4").fadeIn(globals.info.fadeIn, function(){
+				
+	   		});
+	   		$(".scramble-stage3, .scramble-stage1, .scramble-stage2").fadeOut(globals.info.fadein)
    		}
    		else {
+   			$(".scramble-stage3, .scramble-stage1, .scramble-stage2").fadeIn(globals.info.fadein)
+   			$(".scramble-stage4").fadeOut(globals.info.fadeIn);
+   		}
+   }
+   globals.info.stage4h = function(){
+   		if(globals.info.ready3h()){
+   			$("#client", $("#setup-page2")).hide();
+   			$(".scramble-stage3, .scramble-stage1, .scramble-stage2").fadeOut(globals.info.fadein)
+   			$(".scramble-stage4").fadeIn(globals.info.fadein);
+   		}
+   		else{
+   			$(".scramble-stage3, .scramble-stage1, .scramble-stage2").fadeIn(globals.info.fadein)
    			$(".scramble-stage4").fadeOut(globals.info.fadeIn);
    		}
    }
@@ -360,7 +336,12 @@ function setupWizard(){
    		globals.info.stage2();
    })
 
-   $( "#game-styles" ).tabs()
+   $( "#game-styles" ).tabs({event:"mouseover"})
+   $("#solo").click(function(){
+   		globals.info.manager = "WatchManager"; 
+   		globals.info.stage4h();
+   	});
+
    $( "#game-styles" ).addClass( "ui-tabs-vertical ui-helper-clearfix scramble-rounded" );
     $( "#game-styles li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
   
@@ -390,7 +371,6 @@ function setupWizard(){
    		var v = $(this).val();
    		globals.info.host = v;
    		globals.info.stage3c();
-   		console.log("changed", v);
    })
 
    $("#rom").change(function(e){
@@ -431,23 +411,6 @@ function setupWizard(){
    		}
    		globals.info.stage3h();
    })
-   /*
-	$("#ok", $("#setup")).click(function(){
-		var name = $("#peer-name", $("#setup")).val();
-		var type = $('input[name="game-type"]:checked').val();
-		if(name == ""){
-			error("please specify a peer name.");
-			return;
-		}
-		if(type == "make"){
-			createHost(name);
-		}
-		else if(type == "join"){
-			createPeer(name);
-		}
-		initBoth();
-	})
-	*/
 
 	
 }

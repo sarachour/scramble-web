@@ -14,6 +14,9 @@ GamePeer = function(name, color, canv){
 		this.name = name;
 		this.net = new NetNode(name);
 		this.game = new SkinnyGame(canv);
+		this.net.bind(["ready"], "update.peer.ready", function(p){
+			that._trigger("update.peer.ready",  p);
+		})
 		this.net.bind(["connect.accept","connect.reject", "error"], "print", function(p){
 			console.log("MSG:", p);
 		})
@@ -41,6 +44,7 @@ GamePeer = function(name, color, canv){
 		});
 		this.callbacks = {};
 		this.callbacks["update.host.status"] = {};
+		this.callbacks["update.peer.ready"] = {};
 		this.callbacks["game.init"] = {};
 		this.callbacks["game.tick"] = {};
 		this.callbacks["game.update"] = {};
