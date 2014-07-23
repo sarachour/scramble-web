@@ -288,7 +288,7 @@ function setupWizard(){
 			
 		}
 		else{
-			globals.info.is_host = true;
+			globals.info.is_host = false;
 			$("#host", $("#setup")).fadeOut(globals.info.fadein, function(){
 				$("#client", $("#setup")).fadeIn(globals.info.fadein);
 			});
@@ -298,9 +298,42 @@ function setupWizard(){
 		$("#client, #host, #game-mode-div", $("#setup")).fadeOut(globals.info.fadein);
 	}
    }
-   globals.info.stage3 = function(){
-   		if(globals.info.ready2())
+   globals.info.stage3h = function(){
+   		if(globals.info.ready2()){
+   			//attempt to create the game
+   			if(globals.peer == null){
+   				var canv = $("#screen", $("#main"))[0];
+				globals.peer = new GameHost(globals.info.name,canv);
+			}
+			globals.peer.create(globals.info.rom_blob, globals.info.save_blob);
+			//initialize controls
+			var ctrls= globals.peer.controls();
+			$("#controls").svg('get').load(ctrls.svg, {
+				onLoad:function(){
+					var bbox = $("g")[0].getBBox();
+					var bboxstr = bbox.x + "," + bbox.y + "," + bbox.width + "," + bbox.height;
+					$("#controls").svg('get').configure($('#controls').svg('get').root(), {viewBox:bboxstr});
+					for(k in ctrls.keys){
+						var ky = ctrls.keys[k];
+						$("#"+ky.image.on).hide();
+						$("#"+ky.image.out).hide();
+					}
+				}
+			});
+
    			$(".scramble-stage3").fadeIn(globals.info.fadeIn);
+   		}
+   		else {
+   			$(".scramble-stage3").fadeOut(globals.info.fadeIn);
+   		}
+   }
+   globals.info.stage3c = function(){
+   		if(globals.info.ready2()){
+   			$(".scramble-stage4").fadeIn(globals.info.fadeIn);
+   		}
+   		else {
+   			$(".scramble-stage4").fadeOut(globals.info.fadeIn);
+   		}
    }
    //update first pass
    $("#color-chooser").farbtastic(function(col){
@@ -347,15 +380,25 @@ function setupWizard(){
 	  }
 	})
 
+   $("#host-name").change(function(e){
+   		var v = $(this).val();
+   		globals.info.host = v;
+   		globals.info.stage3c();
+   		console.log("changed", v);
+   })
+
    $("#rom").change(function(e){
    		var path = $(this).val();
    		var rom = $("#rom", $("#setup"))[0].files;
    		globals.info.rom = path;
 
-   		FileUtils.read(rom[0], function(d){
-			var rom = d[0]; 
-			globals.info.rom_loaded = true;
-			globals.info.stage3();
+   		FileUtils.read([rom[0]], function(d){
+   			if(d.length > 0){
+				var rom = d[0]; 
+				globals.info.rom_loaded = true;
+				globals.info.rom_blob = rom;
+				globals.info.stage3h();
+			}
 		})
    })
    $("#savest").change(function(e){
@@ -363,10 +406,13 @@ function setupWizard(){
    		var sav = $("#save", $("#setup"))[0].files;
    		globals.info.save = path;
 
-   		FileUtils.read(sav[0], function(d){
-			var save = d[0]; 
-			globals.info.save_loaded = true;
-			globals.info.stage3();
+   		FileUtils.read([sav[0]], function(d){
+   			if(d.length > 0){
+				var save = d[0]; 
+				globals.info.save_loaded = true;
+				globals.info.save_blob = save;
+				globals.info.stage3h();
+			}
 		})
    })
    $("#no-save").change(function(e){
@@ -377,7 +423,7 @@ function setupWizard(){
    		else{
    			globals.info.no_save = false;
    		}
-   		globals.info.stage3();
+   		globals.info.stage3h();
    })
    /*
 	$("#ok", $("#setup")).click(function(){
