@@ -20,9 +20,11 @@ require(["js/game.js"], function(){
 		this.init = function(game){
 			this.queue = [];
 			this.n = 0;
+
 			this.time_chunk = 17; //number of milliseconds to wait before stepping.
-			this.input_chunk = 1; //number of time units per input.
+			this.input_chunk = 2; //number of time units per input.
 			this.step_chunk = 1; //smallest unit, amount you step per time unit
+
 			this._interval= null;
 			this.game = game;
 			this.i = this.input_chunk-1;
@@ -52,13 +54,14 @@ require(["js/game.js"], function(){
 			}
 		}
 		this.input = function(keys){
-			if(keys.length == 0) this.queue.push([]);
-			else{
-				for(var i=0; i < keys.length; i++){
-					this.queue.push([keys[i]]);
-				}
+			var up = [];
+			var down = []
+			for(var i=0; i < keys.length; i++){
+				if(keys[i].down) down.push(keys[i]);
+				else up.push(keys[i]); 
 			}
-			
+			this.queue.push(down);
+			this.queue.push(up);
 		}
 		this.getFrameBuffer = function(){
 			return this.game.screen();
@@ -82,6 +85,7 @@ require(["js/game.js"], function(){
 				if(that.i == that.input_chunk-1){
 					that._trigger('update', {});
 				}
+				that._trigger('tick', {});
 				that.i = (that.i + 1)%that.input_chunk;
 		  		that._interval = setTimeout(function(){that.CALLBACK();}, that.time_chunk)
 			}
@@ -254,6 +258,7 @@ require(["js/game.js"], function(){
 			if(this.is_host){
 				this.__proto__.init(game);
 				this.game.bind(['tick'], "update.tick", function(t){
+					that.net.broadcast_data({cmd:"upd", subcmd:"d", fb: that.game.getFrameBuffer()});
 					that._trigger('tick', t);
 				});
 				this.game.bind(['update'], "update.upd", function(u){
@@ -268,9 +273,10 @@ require(["js/game.js"], function(){
 			
 		}
 		this.recv = function(d){
-			console.log("RECV", d);
-			this.game.show(d.fb);
-			this._trigger('update',{keys:d.keys});
+			if(d.subcmd == "d")
+				this.game.show(d.fb);
+			else
+				this._trigger('update',{keys:d.keys});
 		}
 		this.start = function(){
 			this.__proto__.start();
@@ -290,7 +296,7 @@ require(["js/game.js"], function(){
 		this.update = function(){
 			if(this.is_host && !this.paused){
 				this.game.input(this.keys);
-				this.net.broadcast_data({cmd:"upd", keys: this.keys, fb: this.game.getFrameBuffer()});
+				this.net.broadcast_data({cmd:"upd", subcmd:"c", keys: this.keys});
 				this.keys = []; // input update
 			}
 		}
