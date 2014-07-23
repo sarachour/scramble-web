@@ -262,6 +262,11 @@ function setupWizard(){
    		$(".scramble-game-color").css("background-color", col);
    });
 
+   $( "#game-styles" ).tabs()
+   $( "#game-styles" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+    $( "#game-styles li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+  
+
    $("#game-mode").toggleSwitch({
 	  highlight: true, // default
 	  width: 25, // default
