@@ -38,12 +38,18 @@
 		</select>
 
 	</div>
-	<div id="details" class="scramble-right-half scramble-white">
+	<div id="details" class="scramble-right-half scramble-white scramble-black-text">
 		<div id="client" >
 			<div id="name" style='height:10%; width:100%;'>
 				<h1>CLIENT</h1>
 			</div>
-			<div><input id="host-name" type='text' placeholder='host nickname'></input></div>
+			<h3>GAME HOST</h3>
+			<div class="scramble-lightgrey scramble-rounded" style="padding:10px;">
+				<input id="host-name" type='text' placeholder='host nickname'></input>
+				<p class="scramble-text">
+					Please type in the name of the user hosting the game you wish to join.
+				</p>
+			</div>
 		</div>
 
 		<div id="host">
@@ -64,7 +70,7 @@
 				</div>
 			</div>
 			<h3>MODE</h3>
-			<div class="scramble-lightgrey scramble-rounded" style="height:45%;">
+			<div class="scramble-lightgrey scramble-rounded" style="height:45%;padding:10px;">
 				<div id="game-styles" >
 				  <ul>
 				    <li><a style="width:80%;" href="#tabs-1">Solo</a></li>
@@ -73,7 +79,7 @@
 				    <li><a style="width:80%;"href="#tabs-4">Libertarian</a></li>
 				    <li><a style="width:80%;"href="#tabs-5">Communism</a></li>
 				  </ul>
-				  <div id="tabs-1" class="scramble-rounded scramble-tall">
+				  <div id="tabs-1">
 				    <p>Play alone. Players may join your game and watch you play.</p>
 				  </div>
 				  <div id="tabs-2">
