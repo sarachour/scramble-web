@@ -17,7 +17,7 @@
 <body class="scramble-black">
 <div id="setup" class="scramble-overlay scramble-black scramble-thick-border">
 	<div id="general" class="scramble-left-half scramble-white-text">
-		<div style='height:15%; width:100%;'>
+		<div style='height:10%; width:100%;'>
 			<h1>SETUP</h1>
 		</div>
 		<h3>GENERAL</h3>
@@ -39,49 +39,55 @@
 	</div>
 	<div id="details" class="scramble-right-half scramble-white">
 		<div id="client" >
-			<div id="name" style='height:25%; width:100%;'>
+			<div id="name" style='height:10%; width:100%;'>
 				<h1>CLIENT</h1>
 			</div>
 			<div><input id="host-name" type='text' placeholder='host nickname'></input></div>
 		</div>
 
 		<div id="host">
-			<div id="name" style='height:15%; width:100%;'>
+			<div id="name" style='height:10%; width:100%;'>
 				<h1>HOST</h1>
 			</div>
-			<div>
-				<h3>Upload Game</h3>
+			<h3>GAME</h3>
+			<div class="scramble-lightgrey scramble-rounded">
+				<div>
+				<label for:"rom">Upload Game:</label>
 				<input type="file" id="rom" name="file" />
 				<output id="rom-out"></output>
-			</div>
-			<div>
-				<h3>Upload Save</h3>
+				</div>
+				<div>
+				<label for:"savest">Upload Save:</label>
 				<input type="file" id="save" name="savest" />
 				<output id="save-out"></output>
+				</div>
 			</div>
-			<div id="game-styles">
-			  <ul>
-			    <li><a href="#tabs-1">Solo</a></li>
-			    <li><a href="#tabs-2">Democracy</a></li>
-			    <li><a href="#tabs-3">Anarchy</a></li>
-			    <li><a href="#tabs-4">Scatter</a></li>
-			    <li><a href="#tabs-5">Carousel</a></li>
-			  </ul>
-			  <div id="tabs-1">
-			    <p>Play alone. Players may join your game and watch you play.</p>
-			  </div>
-			  <div id="tabs-2">
-			    <p>Democratically vote on the next move. Only moves with more than half votes will be made.</p>
-			  </div>
-			  <div id="tabs-3">
-			    <p>Complete Anarchy. All moves are made.</p>
-			  </div>
-			  <div id="tabs-4">
-			    <p>Scatter. Each player is assigned a button.</p>
-			  </div>
-			  <div id="tabs-5">
-			    <p>Carousel. Players take turns controlling the game.</p>
-			  </div>
+			<h3>MODE</h3>
+			<div class="scramble-lightgrey scramble-rounded" style="height:45%;">
+				<div id="game-styles" >
+				  <ul>
+				    <li><a style="width:80%;" href="#tabs-1">Solo</a></li>
+				    <li><a style="width:80%;"href="#tabs-2">Democracy</a></li>
+				    <li><a style="width:80%;"href="#tabs-3">Anarchy</a></li>
+				    <li><a style="width:80%;"href="#tabs-4">Libertarian</a></li>
+				    <li><a style="width:80%;"href="#tabs-5">Communism</a></li>
+				  </ul>
+				  <div id="tabs-1" class="scramble-rounded scramble-tall">
+				    <p>Play alone. Players may join your game and watch you play.</p>
+				  </div>
+				  <div id="tabs-2">
+				    <p>Democratically vote on the next move. Only moves with more than half votes will be made.</p>
+				  </div>
+				  <div id="tabs-3">
+				    <p>Complete Anarchy. All moves are made.</p>
+				  </div>
+				  <div id="tabs-4">
+				    <p>Libertarianism. Each player is assigned a button.</p>
+				  </div>
+				  <div id="tabs-5">
+				    <p>Communism. Players take turns controlling the game.</p>
+				  </div>
+				</div>
 			</div>
 		</div>
 		<div class="scramble-bottom-right">

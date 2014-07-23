@@ -263,7 +263,7 @@ function setupWizard(){
    });
 
    $( "#game-styles" ).tabs()
-   $( "#game-styles" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+   $( "#game-styles" ).addClass( "ui-tabs-vertical ui-helper-clearfix scramble-rounded" );
     $( "#game-styles li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
   
 
