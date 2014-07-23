@@ -17,6 +17,9 @@ GamePeer = function(name, color, canv){
 		this.net.bind(["ready"], "update.peer.ready", function(p){
 			that._trigger("update.peer.ready",  p);
 		})
+		this.net.bind([ "error"], "handle.error", function(p){
+			that._trigger("net.error", p)
+		})
 		this.net.bind(["connect.accept","connect.reject", "error"], "print", function(p){
 			console.log("MSG:", p);
 		})
@@ -48,6 +51,7 @@ GamePeer = function(name, color, canv){
 		this.callbacks["game.init"] = {};
 		this.callbacks["game.tick"] = {};
 		this.callbacks["game.update"] = {};
+		this.callbacks["net.error"] = {};
 	}
 	this.close = function(){
 		this.net.close();

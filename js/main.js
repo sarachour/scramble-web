@@ -179,7 +179,10 @@ function setupWizard(){
    		save: null,
    		save_loaded: false,
    		save_blob: null,
-   		manager: null
+   		manager: null,
+   		onerror: function(){
+
+   		}
 
    };
    globals.info.fadein = 400;
@@ -226,6 +229,14 @@ function setupWizard(){
 			}
 			globals.peer = new GameHost(globals.info.name,globals.info.color,canv);
 			globals.peer.create(globals.info.rom_blob, globals.info.save_blob);
+			globals.peer.bind(["update.peer.request"], "update.peer.request.dialog", function(d){
+				globals.choice("Connection Request", "Peer "+d.peer+" wants to connect. Allow?", function(y){
+					if(y)
+						d.accept();
+					else
+						d.reject();
+				});
+			})
 			globals.peer.bind(["game.tick"], "update.wedge", function(d){
 				var frac = d.i/d.n;
 				globals.timer.update(frac);
@@ -291,10 +302,17 @@ function setupWizard(){
 					globals.info.stage4c();
 				}
 				else {
-					alert("Rejected by host: "+pstat.peer);
-					globals.info.host = null;
-					globals.info.stage3c();
+					globals.confirm("Host Rejection", "You were rejected by peer "+globals.info.host, function(){
+						globals.info.host = null;
+						globals.info.stage3c();
+					});
+					
 				}
+			})
+			globals.peer.bind(["net.error"], "net.error.dialog", function(e){
+				var msg = e.message;
+				globals.confirm("Network Error", msg, function(){globals.info.onerror()})
+				globals.info.onerror();
 			})
 			//initialize controls
 			globals.peer.bind(["game.init"], "game.init.ui", function(){
@@ -335,6 +353,10 @@ function setupWizard(){
 			})
 			globals.peer.bind(["update.peer.ready"], "start.join", function(){
 				console.log("ready..");
+				globals.info.onerror = function(){
+					globals.info.host = null;
+					globals.info.stage3c();
+				}
 				globals.peer.join(globals.info.host);
 			})
 			//display stuff
@@ -347,6 +369,7 @@ function setupWizard(){
    		}
    		else {
    			$(".scramble-stage3, .scramble-stage1, .scramble-stage2").fadeIn(globals.info.fadein)
+   			$("#host", $("#setup")).hide();
    			$(".scramble-stage4").fadeOut(globals.info.fadeIn);
    		}
    }

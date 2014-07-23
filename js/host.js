@@ -23,14 +23,22 @@ GameHost = function(name, color,canv){
 		//this.manager = new WatchManager(this.game, this.net, this.name, this.name);
 		
 		this.net.bind(["connect.request"],"allow_or_reject", function(p){
-			var result = window.confirm("Allow "+p.peer+" to connect?");
-			if(result == true) that.net.accept_connection(p.peer);
-			else that.net.reject_connection(p.peer);
+			p.accept = function(){
+				that.net.accept_connection(p.peer);
+			}
+			p.reject = function(){
+				that.net.reject_connection(p.peer);
+			}
+			that._trigger("update.peer.request", p);
+		})
+		this.net.bind([ "error"], "handle.error", function(p){
+			that._trigger("net.error", p)
 		})
 		this.net.bind(["connect.ready"], "send_game", function(p){
 			var pkg = {
 				cmd:"init", 
 				peer: that.name,
+				color: that.color,
 				controls:that.game.controls(),
 				dimensions: that.game.dimensions(),
 				manager: that.manager.pack()
@@ -60,7 +68,9 @@ GameHost = function(name, color,canv){
 		})
 
 		this.callbacks = {};
+		this.callbacks["net.error"] = {};
 		this.callbacks["update.peer.list"] = {};
+		this.callbacks["update.peer.request"] = {};
 		this.callbacks["game.tick"] = {};
 		this.callbacks["game.update"] = {};
 	}
