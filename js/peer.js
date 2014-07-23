@@ -12,19 +12,26 @@ GamePeer = function(name, color, canv){
 	this.init = function(name,color,canv){
 		var that = this;
 		this.name = name;
+		that.color = color;
 		this.net = new NetNode(name);
 		this.game = new SkinnyGame(canv);
-		this.net.bind(["ready"], "update.peer.ready", function(p){
-			that._trigger("update.peer.ready",  p);
+		this.net.bind(["ready"], "net.peer.ready", function(p){
+			that._trigger("net.peer.ready",  p);
 		})
 		this.net.bind([ "error"], "handle.error", function(p){
 			that._trigger("net.error", p)
 		})
-		this.net.bind(["connect.accept","connect.reject", "error"], "print", function(p){
-			console.log("MSG:", p);
+		//on any outcome, we update the status
+		this.net.bind(["connect.accept", "connect.reject", "connect.close"], "net.host.status", function(p){
+			that._trigger(["net.host.status"],  p);
 		})
-		this.net.bind(["connect.accept", "connect.reject", "connect.close"], "update.host.status", function(p){
-			that._trigger(["update.host.status"],  p);
+		//if this connection has been accepted, respond
+		this.net.bind(["connect.accept"], "net.host.send.peerinfo", function(p){
+			that.net.send_data(that.host, {
+				cmd:"peer-info",
+				name: that.name,
+				color: that.color
+			});
 		})
 		this.net.bind_data(['init'], "init_game", function(d){
 			that.game.setDimensions(d.dimensions);
@@ -46,8 +53,8 @@ GamePeer = function(name, color, canv){
 				that.manager.recv(d);
 		});
 		this.callbacks = {};
-		this.callbacks["update.host.status"] = {};
-		this.callbacks["update.peer.ready"] = {};
+		this.callbacks["net.host.status"] = {};
+		this.callbacks["net.peer.ready"] = {};
 		this.callbacks["game.init"] = {};
 		this.callbacks["game.tick"] = {};
 		this.callbacks["game.update"] = {};
@@ -88,6 +95,7 @@ GamePeer = function(name, color, canv){
 			this.manager.input(code, down);
 	}
 	this.join = function(host){
+		this.host = host;
 		this.net.request_connection(host);
 	}
 

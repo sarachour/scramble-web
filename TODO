@@ -1,9 +1,9 @@
 # TODO: Big Refactor
 1. UI
    INITIALIZATION:
-   -> Host: Initial Peer Wait, Select Game Mode
-   -> Peer: Waiting for Connection Screen.
-   -> Both: Select Color.
+   -> Host: Initial Peer Wait, Select Game Mode [DONE]
+   -> Peer: Waiting for Connection Screen. [DONE]
+   -> Both: Select Color. [DONE]
    MID-GAME ACTIONS:
    -> Host: Add Players Mid-game
    -> Host: Boot players
@@ -35,3 +35,6 @@
 	- Display context on player bar.
 3. Feedback for join, waiting on join
 4. Choose player icon, control pad color
+
+#Bugs
+1. Peer -> input bad host -> try to become host (Does not display page)

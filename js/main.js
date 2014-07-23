@@ -229,7 +229,7 @@ function setupWizard(){
 			}
 			globals.peer = new GameHost(globals.info.name,globals.info.color,canv);
 			globals.peer.create(globals.info.rom_blob, globals.info.save_blob);
-			globals.peer.bind(["update.peer.request"], "update.peer.request.dialog", function(d){
+			globals.peer.bind(["net.peer.request"], "net.peer.request.dialog", function(d){
 				globals.choice("Connection Request", "Peer "+d.peer+" wants to connect. Allow?", function(y){
 					if(y)
 						d.accept();
@@ -240,6 +240,15 @@ function setupWizard(){
 			globals.peer.bind(["game.tick"], "update.wedge", function(d){
 				var frac = d.i/d.n;
 				globals.timer.update(frac);
+			})
+			globals.peer.bind(["game.peer.list"], "update.setup.list", function(plist){
+				$("#peerlist").empty();
+				for(var name in plist.peers){
+					ctx = $("#dummy-peer-entry").clone();
+					$("#name", ctx).html(name);
+					$("#color", ctx).css("background-color", "green")
+					$("#peerlist").append(ctx);
+				}
 			})
 			globals.peer.bind(["game.update"], "update.past.keys", function(d){
 				var ctrls= globals.peer.controls();
@@ -293,9 +302,12 @@ function setupWizard(){
    			if(globals.peer != null){
    				globals.peer.close();
    			}
+   			globals.info.onerror = function(){
+				globals.info.host = null;
+				globals.info.stage3c();
+			}
 	   		globals.peer = new GamePeer(globals.info.name,globals.info.color,canv);
-	   		globals.peer.bind(["update.host.status"], "update.host.page", function(pstat){
-				console.log("RESPONSE:", pstat);
+	   		globals.peer.bind(["net.host.status"], "net.host.page", function(pstat){
 				if(pstat.status == "accept"){
 					//make progress bar ready
 					globals.info.connected = true;
@@ -314,6 +326,7 @@ function setupWizard(){
 				globals.confirm("Network Error", msg, function(){globals.info.onerror()})
 				globals.info.onerror();
 			})
+
 			//initialize controls
 			globals.peer.bind(["game.init"], "game.init.ui", function(){
 				var ctrls= globals.peer.controls();
@@ -351,12 +364,7 @@ function setupWizard(){
 					}
 				}
 			})
-			globals.peer.bind(["update.peer.ready"], "start.join", function(){
-				console.log("ready..");
-				globals.info.onerror = function(){
-					globals.info.host = null;
-					globals.info.stage3c();
-				}
+			globals.peer.bind(["net.peer.ready"], "start.join", function(){
 				globals.peer.join(globals.info.host);
 			})
 			//display stuff

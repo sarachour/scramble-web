@@ -16,6 +16,7 @@ GameHost = function(name, color,canv){
 		this.name = name;
 		this.color = color;
 		this.net = new NetNode(name);
+		this.peer_info = {n:0, peers:{}};
 		this.game = new Game();
 		this.game.canvas(canv); 
 		//this.manager = new SoloManager(this.game);
@@ -29,7 +30,7 @@ GameHost = function(name, color,canv){
 			p.reject = function(){
 				that.net.reject_connection(p.peer);
 			}
-			that._trigger("update.peer.request", p);
+			that._trigger("net.peer.request", p);
 		})
 		this.net.bind([ "error"], "handle.error", function(p){
 			that._trigger("net.error", p)
@@ -43,7 +44,6 @@ GameHost = function(name, color,canv){
 				dimensions: that.game.dimensions(),
 				manager: that.manager.pack()
 			};
-			console.log("Sending Controls");
 			that.net.send_data(p.peer, pkg);
 
 		})
@@ -51,12 +51,27 @@ GameHost = function(name, color,canv){
 			console.log("MSG:", p);
 		})
 
-		this.net.bind(["connect.request", "connect.ready", "connect.kick", "connect.close"], "update_peer_list", function(p){
-			that._trigger("update.peer.list", that.net.get_connections());
+		this.net.bind(["connect.request", "connect.ready", "connect.kick", "connect.close"], "net_peer_list", function(p){
+			var conns = that.net.get_connections()
+			var n = 0;
+			for(var k in that.peer_info.peers){
+				if(!conns.hasOwnProperty(k)){
+					delete that.peer_info.peers[k];
+				}
+				else n+=1;
+			}
+			that.peer_info.n = n;
+			that._trigger("game.peer.list", that.peer_info);
 		})
 		this.net.bind_data(['upd'], "pass_manager", function(d){
-			console.log("MGR", d);
 			that.manager.recv(d);
+		});	
+		this.net.bind_data(['peer-info'], "peer_info_store", function(d){
+			if(!that.peer_info.hasOwnProperty(d.name)){
+				that.peer_info.n+=1; //increment count
+			}
+			that.peer_info.peers[d.name] = {color:d.color};
+			that._trigger("game.peer.list", that.peer_info);
 		});	
 		//bind manager callbacks
 		this.manager.bind(["update"], "game.update", function(d){
@@ -69,8 +84,8 @@ GameHost = function(name, color,canv){
 
 		this.callbacks = {};
 		this.callbacks["net.error"] = {};
-		this.callbacks["update.peer.list"] = {};
-		this.callbacks["update.peer.request"] = {};
+		this.callbacks["net.peer.request"] = {};
+		this.callbacks["game.peer.list"] = {};
 		this.callbacks["game.tick"] = {};
 		this.callbacks["game.update"] = {};
 	}
