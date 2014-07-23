@@ -301,10 +301,11 @@ function setupWizard(){
    globals.info.stage3h = function(){
    		if(globals.info.ready2()){
    			//attempt to create the game
-   			if(globals.peer == null){
-   				var canv = $("#screen", $("#main"))[0];
-				globals.peer = new GameHost(globals.info.name,canv);
+   			if(globals.peer != null){
+   				globals.peer.close();	
 			}
+			var canv = $("#screen", $("#main"))[0];
+			globals.peer = new GameHost(globals.info.name,canv);
 			globals.peer.create(globals.info.rom_blob, globals.info.save_blob);
 			//initialize controls
 			var ctrls= globals.peer.controls();
@@ -329,6 +330,10 @@ function setupWizard(){
    }
    globals.info.stage3c = function(){
    		if(globals.info.ready2()){
+   			if(this.game.peer != null){
+   				this.game.peer.close();
+   			}
+	   		globals.peer = new GamePeer(game.info.name,canv);
    			$(".scramble-stage4").fadeIn(globals.info.fadeIn);
    		}
    		else {
