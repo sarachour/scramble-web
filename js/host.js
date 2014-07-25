@@ -20,7 +20,7 @@ GameHost = function(name, color,canv){
 		this.game = new Game();
 		this.game.canvas(canv); 
 		//this.manager = new SoloManager(this.game);
-		this.manager = new DemocracyManager(this.game, this.net, this.name, this.name);
+		//this.manager = new DemocracyManager(this.game, this.net, this.name, this.name);
 		//this.manager = new WatchManager(this.game, this.net, this.name, this.name);
 		
 		this.net.bind(["connect.request"],"allow_or_reject", function(p){
@@ -73,14 +73,7 @@ GameHost = function(name, color,canv){
 			that.peer_info.peers[d.name] = {color:d.color};
 			that._trigger("game.peer.list", that.peer_info);
 		});	
-		//bind manager callbacks
-		this.manager.bind(["update"], "game.update", function(d){
-			that._trigger("game.update", d);
-		})
-
-		this.manager.bind(["tick"], "game.tick", function(d){
-			that._trigger("game.tick", d);
-		})
+		
 
 		this.callbacks = {};
 		this.callbacks["net.error"] = {};
@@ -90,7 +83,16 @@ GameHost = function(name, color,canv){
 		this.callbacks["game.update"] = {};
 	}
 	this.setManager = function(name){
-		this.manager = ManagerFactory.unpack(name,that.game, that.net, that.name, d.peer);
+		var that = this;
+		this.manager = ManagerFactory.unpack(name,this.game, this.net, this.name, this.name);
+		//bind manager callbacks
+		this.manager.bind(["update"], "game.update", function(d){
+			that._trigger("game.update", d);
+		})
+
+		this.manager.bind(["tick"], "game.tick", function(d){
+			that._trigger("game.tick", d);
+		})
 	}
 	this.close = function(){
 		this.net.close();

@@ -5,14 +5,14 @@ TODO: key, steps, queue. play is a continuous loop that waits for more work.
 require(["js/game.js"], function(){
 	ManagerFactory = {
 		unpack: function(pkg,game,net,name, host){
-			if(pkg == "SoloManager"){
-				return new SoloManager(game);
-			}
-			else if(pkg == "DemocracyManager"){
+			if(pkg == "DemocracyManager"){
 				return new DemocracyManager(game, net,name, host)
 			}
 			else if(pkg == "WatchManager"){
 				return new WatchManager(game, net,name, host)
+			}
+			else if(pkg == "AnarchyManager"){
+				return new AnarchyManager(game, net,name, host)
 			}
 		}
 	}
@@ -168,7 +168,7 @@ require(["js/game.js"], function(){
 			this.paused = false;
 		}
 		this.stop = function(){
-			this._proto_.stop();
+			this.__proto__.stop();
 			this.paused = true;
 		}
 		this.update = function(){
@@ -186,8 +186,8 @@ require(["js/game.js"], function(){
 				this._consensus(d);
 			else if(d.scmd == "k")
 				this._key(d);
-			else if(d.scmd == "s")
-				this._sync(d)
+			else if(d.scmd == "p")
+				this.stop();
 		}
 		this.decide = function(){
 			key = [];
@@ -195,17 +195,24 @@ require(["js/game.js"], function(){
 		}
 		this._consensus = function(k){
 			if(this.is_host){
-				this.key = this.decide();
-				var d = {cmd:"upd", scmd:"c", key:this.key};
-				this.net.broadcast_data(d);
-				this.consensus = {};
-				this.game.input(this.key)
-				this.input_idx = 0;
-
+				if(!this.paused){
+					this.key = this.decide();
+					var d = {cmd:"upd", scmd:"c", key:this.key};
+					this.net.broadcast_data(d);
+					this.consensus = {};
+					this.game.input(this.key)
+					this.input_idx = 0;
+				}
+				else{
+					var d = {cmd:"upd", scmd:"p"};
+					this.net.broadcast_data(d);
+				}
 			}
 			else {
-				this.key = k.key;
-				this._trigger('update',{keys:this.key});
+				if(!this.paused){
+					this.key = k.key;
+					this._trigger('update',{keys:this.key});
+				}
 			}
 			
 			//console.log("idx", this.key);
@@ -326,7 +333,7 @@ require(["js/game.js"], function(){
 			this.paused = false;
 		}
 		this.stop = function(){
-			//this.__proto__.stop();
+			this.__proto__.stop();
 			this.paused = true;
 		}
 		this.pack = function(){

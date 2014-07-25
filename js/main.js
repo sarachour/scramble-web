@@ -230,11 +230,13 @@ function setupWizard(){
 			globals.peer = new GameHost(globals.info.name,globals.info.color,canv);
 			globals.peer.create(globals.info.rom_blob, globals.info.save_blob);
 			globals.peer.bind(["net.peer.request"], "net.peer.request.dialog", function(d){
+				globals.peer.stop();
 				globals.choice("Connection Request", "Peer "+d.peer+" wants to connect. Allow?", function(y){
 					if(y)
 						d.accept();
 					else
 						d.reject();
+					globals.peer.start();
 				});
 			})
 			globals.peer.bind(["game.tick"], "update.wedge", function(d){
@@ -287,13 +289,21 @@ function setupWizard(){
    			$(".scramble-stage3").fadeOut(globals.info.fadeIn);
    		}
    }
+   globals.info.stage5c = function(){
+   			console.log("FINAL STAGE ");
+   			$(".scramble-stage1, .scramble-stage2, .scramble-stage3, .scramble-stage4").fadeOut(globals.info.fadein, function(){
+   				$("#screen").center();
+   			});
+   }
    globals.info.stage4c = function(){
    		if(globals.info.connected){
+   			console.log("CONNECTED");
    			$("#progressbar").progressbar("option", {value:100})
    			$("#progressbar").find( ".ui-progressbar-value" ).css({
 	          "background": 'green'
 	        });
 	        $("#status", $("#progressbar")).html("Connected!");
+	        globals.info.stage5c();
    		}
    }
    globals.info.stage3c = function(){
@@ -381,11 +391,20 @@ function setupWizard(){
    			$(".scramble-stage4").fadeOut(globals.info.fadeIn);
    		}
    }
+   globals.info.stage5h = function(){
+   			console.log("FINAL STAGE ");
+   			$(".scramble-stage1, .scramble-stage2, .scramble-stage3, .scramble-stage4").fadeOut(globals.info.fadein, function(){
+   				globals.peer.start();	
+   				$("#screen").center();
+   			});
+   			
+   }
    globals.info.stage4h = function(){
    		if(globals.info.ready3h()){
+   			globals.peer.setManager(globals.info.manager);
    			$("#client", $("#setup-page2")).hide();
    			$(".scramble-stage3, .scramble-stage1, .scramble-stage2").fadeOut(globals.info.fadein)
-   			$(".scramble-stage4").fadeIn(globals.info.fadein);
+   			$(".scramble-stage4, .scramble-stage5").fadeIn(globals.info.fadein);
    		}
    		else{
    			$(".scramble-stage3, .scramble-stage1, .scramble-stage2").fadeIn(globals.info.fadein)
@@ -501,6 +520,9 @@ function setupWizard(){
    			globals.info.no_save = false;
    		}
    		globals.info.stage3h();
+   })
+   $("#start-game").click(function(){
+   		globals.info.stage5h();
    })
 
 	
