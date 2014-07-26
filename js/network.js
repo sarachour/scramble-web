@@ -1,8 +1,8 @@
 
 
 require(["lib/peerjs/peer.min.js", "js/game.js"], function(name){
-var HOST = "curious-cube.csail.mit.edu";
-//var HOST="127.0.0.1"
+//var HOST = "curious-cube.csail.mit.edu";
+var HOST="192.168.1.140"
 var PEERJS_KEY = "peerjs"
 var PEERJS_PORT = 9000
 var HTTP_PORT = 8000
@@ -21,8 +21,7 @@ NetNode = function(name){
 		this.peer = new Peer(name, {
 			host: this.host,
 			port: this.port,
-			key: this.key, 
-			reliable:true
+			key: this.key
 		});
 		
 		this.conns = {};

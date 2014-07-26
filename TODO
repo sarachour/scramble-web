@@ -1,4 +1,6 @@
 # TODO: Big Refactor
+1. Gameplay
+   -> Buffer n frames, add ThinGameLoop which buffers, plays frames.
 1. UI
    INITIALIZATION:
    -> Host: Initial Peer Wait, Select Game Mode [DONE]
@@ -38,3 +40,5 @@
 
 #Bugs
 1. Peer -> input bad host -> try to become host (Does not display page)
+2. Watchmode doesn't work
+3. Ingame join doesn't work.

@@ -34,6 +34,7 @@ GamePeer = function(name, color, canv){
 			});
 		})
 		this.net.bind_data(['init'], "init_game", function(d){
+			console.log(d);
 			that.game.setDimensions(d.dimensions);
 			that.game.setControls(d.controls);
 			that.manager = ManagerFactory.unpack(d.manager,that.game, that.net, that.name, d.peer);

@@ -152,6 +152,7 @@ require(["js/game.js"], function(){
 
 			if(this.is_host && this.game != undefined){
 				this.game.bind(['tick'], "update.tick", function(t){
+					console.log("send fb");
 					that.net.broadcast_data({cmd:"upd", scmd:"d", fb: that.game.getFrameBuffer()});
 					that._trigger('tick', t);
 				});
@@ -180,8 +181,10 @@ require(["js/game.js"], function(){
 			return this.__proto__.pack("DemocracyManager");
 		}
 		this.recv = function(d){
-			if(d.scmd == "d")
+			if(d.scmd == "d"){
+				console.log("recv fb");
 				this.game.show(d.fb);
+			}
 			else if(d.scmd == "c")
 				this._consensus(d);
 			else if(d.scmd == "k")
@@ -323,8 +326,9 @@ require(["js/game.js"], function(){
 			
 		}
 		this.recv = function(d){
-			if(d.subcmd == "d")
+			if(d.subcmd == "d"){
 				this.game.show(d.fb);
+			}
 			else
 				this._trigger('update',{keys:d.keys});
 		}
@@ -346,7 +350,7 @@ require(["js/game.js"], function(){
 		this.update = function(){
 			if(this.is_host && !this.paused){
 				this.game.input(this.keys);
-				this.net.broadcast_data({cmd:"upd", subcmd:"c", keys: this.keys});
+				this.net.broadcast_data({cmd:"upd", subcmd:"d", keys: this.keys});
 				this.keys = []; // input update
 			}
 		}
