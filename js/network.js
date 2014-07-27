@@ -2,7 +2,8 @@
 
 require(["lib/peerjs/peer.min.js", "js/game.js"], function(name){
 //var HOST = "curious-cube.csail.mit.edu";
-var HOST="192.168.1.140"
+//var HOST="192.168.1.140"
+var HOST="127.0.0.1"
 var PEERJS_KEY = "peerjs"
 var PEERJS_PORT = 9000
 var HTTP_PORT = 8000

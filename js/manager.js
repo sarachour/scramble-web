@@ -16,97 +16,42 @@ require(["js/game.js"], function(){
 			}
 		}
 	}
-	PlayLoop = function(game){
-		this.init = function(game){
-			this.queue = [];
-			this.n = 0;
-
-			this.time_chunk = 17; //number of milliseconds to wait before stepping.
-			this.input_chunk = 2; //number of time units per input.
-			this.step_chunk = 1; //smallest unit, amount you step per time unit
-
-			this._interval= null;
-			this.game = game;
-			this.i = this.input_chunk-1;
-			this.pause = false;
-			this._up_keys = [];
-
-			this.idx = 0;
-			this.callbacks = {};
-			this.callbacks['tick'] = {};
-			this.callbacks['update'] = {};
-
-		}
-		this.bind = function(evts, name, cbk){
-			for(var i=0; i < evts.length; i++){
-				this.callbacks[evts[i]][name] = cbk;
-			}
-		}
-		this.unbind = function(evts, name){
-			for(var i=0; i < evts.length; i++){
-				delete this.callbacks[evts[i]][name];
-			}
-		}
-		this._trigger = function(evt, args){
-			args.EVENT = evt;
-			for(var n in this.callbacks[evt]){
-				this.callbacks[evt][n](args);
-			}
-		}
-		this.input = function(keys){
-			var up = [];
-			var down = []
-			for(var i=0; i < keys.length; i++){
-				if(keys[i].down) down.push(keys[i]);
-				else up.push(keys[i]); 
-			}
-			this.queue.push(down);
-			this.queue.push(up);
-		}
-		this.getFrameBuffer = function(){
-			return this.game.screen();
-		}
-		this.stop = function(){
-			this.pause = true;
-		}
-		this.run = function(){
-			//run the game loop
-			var that = this;
-			this.CALLBACK = function(){
-				if(that.queue.length > 0 && that.pause == false){
-					var e = that.queue.shift(); //take move
-					this.n++;
-					for(var i=0; i < e.length; i++){
-						that.game.input(e[i].code,e[i].down);
-					}
-					that.game.step(that.step_chunk);
-				//console.log("run",that.idx, diff);
-				}
-				if(that.i == that.input_chunk-1){
-					that._trigger('update', {});
-				}
-				that._trigger('tick', {});
-				that.i = (that.i + 1)%that.input_chunk;
-		  		that._interval = setTimeout(function(){that.CALLBACK();}, that.time_chunk)
-			}
-			if(this._interval == null){
-				this._interval = setTimeout(this.CALLBACK, this.time_chunk);
-			}
-			this.pause = false;
-		}
-		this.init(game);
-	}
+	
 	Manager = function(game){
 		this.init = function(game){
+			var that = this;
 			//if we're skinny, don't run a gameloop
 			if(game == null) return;
-			if(game.type == "SkinnyGame")
-				this.game = game;
-			else
+			if(game.type == "SkinnyGame") {
+				this.game = new SkinnyPlayLoop(game);
+			}
+			else {
 				this.game = new PlayLoop(game);
+				this.game.bind(['tick'], "update.tick", function(t){
+					var fb = that.game.getFrameBuffer();
+					if(that.frame_info.i == that.frame_info.batch_size-1){
+						that._trigger('show', that.frame_info.frames); //show the frames
+						//trigger show
+						that.frame_info.frames = [];
+					}
+					that.frame_info.frames.push(fb);
+					that.frame_info.i = (that.frame_info.i + 1)%that.frame_info.batch_size;
+				});
+				this.game.bind(['update'], "update.upd", function(u){
+					u.keys = that.key;
+					that._trigger('update',u);
+				})
+				this.frame_info = {
+					i:0,
+					batch_size: Math.round(15),
+					frames: []
+				};
+			}
 
+			
 			this.callbacks = {};
 			this.callbacks['tick'] = {};
+			this.callbacks['show'] = {};
 			this.callbacks['update'] = {};
 		}
 		this.pack = function(type){
@@ -130,6 +75,7 @@ require(["js/game.js"], function(){
 		}
 		this._trigger = function(evt, args){
 			args.EVENT = evt;
+			console.log("Triggered",evt);
 			for(var n in this.callbacks[evt]){
 				this.callbacks[evt][n](args);
 			}
@@ -151,15 +97,14 @@ require(["js/game.js"], function(){
 			this.input_idx = 0;
 
 			if(this.is_host && this.game != undefined){
-				this.game.bind(['tick'], "update.tick", function(t){
+				this.bind(['show'], "update.show", function(frames){
 					console.log("send fb");
-					that.net.broadcast_data({cmd:"upd", scmd:"d", fb: that.game.getFrameBuffer()});
-					that._trigger('tick', t);
+					that.net.broadcast_data({cmd:"upd", scmd:"d", fb: frames});
+					that._trigger('tick', frames);
 				});
-				this.game.bind(['update'], "update.upd", function(u){
+				this.bind(['update'], "update.upd", function(u){
 					that.update();
 					u.keys = that.key;
-					that._trigger('update',u);
 				})
 			}
 			this.consensus = {};
@@ -183,7 +128,7 @@ require(["js/game.js"], function(){
 		this.recv = function(d){
 			if(d.scmd == "d"){
 				console.log("recv fb");
-				this.game.show(d.fb);
+				this.game.frame(d.fb);
 			}
 			else if(d.scmd == "c")
 				this._consensus(d);
@@ -201,6 +146,7 @@ require(["js/game.js"], function(){
 				if(!this.paused){
 					this.key = this.decide();
 					var d = {cmd:"upd", scmd:"c", key:this.key};
+					console.log(d);
 					this.net.broadcast_data(d);
 					this.consensus = {};
 					this.game.input(this.key)
@@ -214,7 +160,6 @@ require(["js/game.js"], function(){
 			else {
 				if(!this.paused){
 					this.key = k.key;
-					this._trigger('update',{keys:this.key});
 				}
 			}
 			
